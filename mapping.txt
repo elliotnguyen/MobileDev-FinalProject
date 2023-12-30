@@ -1,0 +1,23 @@
+A. Reading Section
+- Economics & Business = 0
+- Education = 1
+- Leisure & Entertainment = 2
+- Nature & Environment = 3
+- Technology = 4
+1. YES_NO_NOT_GIVEN = 0
+- NO = 0
+- YES = 1
+- NOT GIVEN = 2
+2. MULTIPLE_CHOICE = 1
+- A = 0
+- B = 1
+- C = 2
+- D = 3
+3. FORM_COMPLETION = 2
+
+B. Writing Section
+- Education = 0
+- Social = 1
+- Sport = 2
+- Politics = 3
+- Music & Art = 4
