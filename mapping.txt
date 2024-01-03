@@ -1,0 +1,11 @@
+C. Listening Section
+- Nature & Environment = 0
+- Education = 1
+- People = 2
+- Animals = 3
+
+D. Speaking Section
+- Work and Relaxation = 0
+- Celebration & Holidays = 1
+- Hometown = 2
+- Family = 3

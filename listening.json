@@ -1,0 +1,314 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "title": "Listen to the the talk given by a scientist about dangers to wildlife.",
+      "content": "https://firebasestorage.googleapis.com/v0/b/final-mobildev.appspot.com/o/Q1.mp3?alt=media&token=e7951e41-35b9-4213-a5d0-055b9c904695",
+      "topic": 0,
+      "type": [
+        1,
+        0
+      ],
+      "questions": {
+        "1": {
+          "type": 1,
+          "questions": {
+            "1": {
+              "content": "According to Peter Shawl, wildlife becomes endangered because ___.",
+              "choices": {
+                "A": "the population of some species grow too fast",
+                "B": "natural habitats are destroyed by humans",
+                "C": "the stronger animals kill the weaker"
+              }
+            },
+            "2": {
+              "content": "Animals’ habitats become polluted when humans ____.",
+              "choices": {
+                "A": "cut down forest trees",
+                "B": "build more houses",
+                "C": "use chemicals in agriculture"
+              }
+            },
+            "3": {
+              "content": "When tigers are hunted and killed, which of their parts are collected and used?",
+              "choices": {
+                "A": "Their bones.",
+                "B": "Their fur.",
+                "C": "Their teeth."
+              }
+            }
+          }
+        },
+        "2": {
+          "type": 0,
+          "questions": {
+            "4": {
+              "content": "In the second part, Shawl discusses the two main _________ to wildlife. "
+            },
+            "5": {
+              "content": "The first is loss of _________"
+            },
+            "6": {
+              "content": "The second is hunting and _________"
+            }
+          }
+        }
+      },
+      "answers": {
+        "1": {
+          "1": 1,
+          "2": 2,
+          "3": 0
+        },
+        "2": {
+          "4": "dangers",
+          "5": "habitat",
+          "6": "poaching"
+        }
+      }
+    },
+    {
+      "id": "2",
+      "title": "Listen to a talk show about lifelong learning",
+      "content": "https://firebasestorage.googleapis.com/v0/b/final-mobildev.appspot.com/o/Q2.mp3?alt=media&token=dfd093a8-aa22-408f-94a0-863199475696",
+      "topic": 1,
+      "type": [
+        1,
+        0
+      ],
+      "questions": {
+        "1": {
+          "type": 1,
+          "questions": {
+            "1": {
+              "content": "What was julie’s part-time job? ",
+              "choices": {
+                "A": "An artist.",
+                "B": "A teaching assistant",
+                "C": "A project manager. ",
+                "D": " A marketing manager."
+              }
+            },
+            "2": {
+              "content": "What did Julie study while having a part-time job?",
+              "choices": {
+                "A": "A project management course.",
+                "B": "A marketing course.",
+                "C": "A Vietnamese language course. ",
+                "D": "An international business course."
+              }
+            },
+            "3": {
+              "content": "What type of company is West Corner?",
+              "choices": {
+                "A": "Hospitality",
+                "B": "Traning",
+                "C": "Mining",
+                "D": "Marketing"
+              }
+            }
+          }
+        },
+        "2": {
+          "type": 0,
+          "question": {
+            "4": "The guests on the show were the best students in the class.",
+            "5": "The guests are brother and sister and they work in the same field.",
+            "6": "As a nursery teacher, Julie worked only in the morning.",
+            "7": "Julie’s manager supported her professional development by asking her to attend business meetings.",
+            "8": "Julie’s company has an office in Viet Nam."
+          }
+        }
+      },
+      "answers": {
+        "1": {
+          "1": 1,
+          "2": 3,
+          "3": 2
+        },
+        "2": {
+          "4": 0,
+          "5": 0,
+          "6": 1,
+          "7": 0,
+          "8": 1
+        }
+      }
+    },
+    {
+      "id": "3",
+      "title": "Describing people",
+      "content": "https://firebasestorage.googleapis.com/v0/b/final-mobildev.appspot.com/o/Q3.mp3?alt=media&token=4d9f5445-b5c1-42d0-9e0f-bbb63d7bafe7",
+      "topic": 2,
+      "type": [
+        1,
+        2
+      ],
+      "questions": {
+        "1": {
+          "type": 1,
+          "questions": {
+            "1": {
+              "content": "Aurelia is asking about Hannah’s ...",
+              "choices": {
+                "A": "boyfriend",
+                "B": "brother",
+                "C": "sister"
+              }
+            },
+            "2": {
+              "content": "Hannah’s brother, Jem, has ...",
+              "choices": {
+                "A": "long, brown hair.",
+                "B": "a girlfriend",
+                "C": "a twin sister"
+              }
+            },
+            "3": {
+              "content": "Alex and Jem ...",
+              "choices": {
+                "A": "look different.",
+                "B": "look the same",
+                "C": "have the same hair but different eyes."
+              }
+            }
+          }
+        },
+        "2": {
+          "type": 2,
+          "questions": {
+            "4": {
+              "content": "That? Er, that’s my ____, Jem."
+            },
+            "5": {
+              "content": "And that’s his girlfriend, Lucy. The pretty girl with the _____ hair."
+            },
+            "6": {
+              "content": "Alex and Jem are ____."
+            }
+          }
+        }
+      },
+      "answers": {
+        "1": {
+          "1": 1,
+          "2": 1,
+          "3": 1
+        },
+        "2": {
+          "4": "brother",
+          "5": "long, brown",
+          "6": "fifteen"
+        }
+      }
+    },
+    {
+      "id": "4",
+      "title": "Study tips",
+      "content": "https://firebasestorage.googleapis.com/v0/b/final-mobildev.appspot.com/o/Q4.mp3?alt=media&token=7c14af83-dd0c-4618-856b-e8509d58ef17",
+      "topic": 1,
+      "type": [
+        1,
+        2
+      ],
+      "questions": {
+        "1": {
+          "type": 1,
+          "questions": {
+            "1": {
+              "content": "Ben …",
+              "choices": {
+                "A": "doesn’t study.",
+                "B": "studies and does well.",
+                "C": "studies but doesn’t do well."
+              }
+            },
+            "2": {
+              "content": "Ben usually studies …",
+              "choices": {
+                "A": "in the library.",
+                "B": "at home.",
+                "C": "in his friend’s house."
+              }
+            }
+          }
+        },
+        "2": {
+          "type": 2,
+          "questions": {
+            "3": {
+              "content": "You always have good ____ at school!"
+            },
+            "4": {
+              "content": "I always do ____ things. Do you want to know them?"
+            }
+          }
+        }
+      },
+      "answers": {
+        "1": {
+          "1": 1,
+          "2": 0
+        },
+        "2": {
+          "3": "grades",
+          "4": "three"
+        }
+      }
+    },
+    {
+      "id": "5",
+      "title": "Llamas",
+      "content": "https://firebasestorage.googleapis.com/v0/b/final-mobildev.appspot.com/o/Q5.mp3?alt=media&token=96415152-29a8-43e7-987d-cd003d719aa6",
+      "topic": 3,
+      "type": [
+        0,
+        2
+      ],
+      "questions": {
+        "1": {
+          "type": 0,
+          "quesions": {
+            "1": "Llamas, alpacas, vicuñas and guanacos are all related to camels.",
+            "2": "Llamas are the smallest of the four.",
+            "3": " Llamas only spit at humans if you treat them badly",
+            "4": "Alpacas look as if they are sad.",
+            "5": "Alpaca wool is good for clothes."
+          }
+        },
+        "2": {
+          "type": 2,
+          "questions": {
+            "6": {
+              "content": " Llamas and alpacas are both domesticated animals and vicuñas and guanacos are ____."
+            },
+            "7": {
+              "content": "Llamas are very sociable animals and live together in groups, in ____."
+            },
+            "8": {
+              "content": "Vicuñas can only be shorn of their wool every ____ years."
+            },
+            "9": {
+              "content": "Guanacos are capable of surviving at over ____ in the Andes."
+            }
+          }
+        }
+      },
+      "answers": {
+        "1": {
+          "1": 1,
+          "2": 0,
+          "3": 1,
+          "4": 0,
+          "5": 1
+        },
+        "2": {
+          "6": "wild",
+          "7": "herds",
+          "8": "three",
+          "9": "4000 metres"
+        }
+      }
+    }
+  ]
+}
