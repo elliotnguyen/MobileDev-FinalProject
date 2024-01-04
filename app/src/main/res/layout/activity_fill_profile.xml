@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FillProfileActivity"
+    android:orientation="vertical"
+    android:background="@color/primary"
+    android:padding="10dp"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backarrow"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fill Your Profile"
+            android:layout_margin="10dp"
+            android:textSize="22sp"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/baseline_account_circle_24"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/editTextLayoutStyle"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="10dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_anchorGravity="bottom|center">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/editTextLayoutStyle"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="10dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_anchorGravity="bottom|center">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Nick Name"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/editTextLayoutStyle"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="10dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_anchorGravity="bottom|center">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Email"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/editTextLayoutStyle"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="10dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_anchorGravity="bottom|center">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Phone Number"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"
+        android:backgroundTint="@color/blue"
+        android:text="Continue"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        />
+
+
+</LinearLayout>
