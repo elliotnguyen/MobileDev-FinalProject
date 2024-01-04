@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "question": " Do you think people spend too much time working/studying these days?(Why?/Why not?)",
+      "type": "",
+      "topic": 0,
+      "sample_answer": "Yes, many people do spend too much time working/studying due to various factors such as increased job demands, competition, and societal expectations, leading to potential negative impacts on mental and physical well-being.",
+      "title": ""
+    },
+    {
+      "id": 2,
+      "question": "Which do you think is more interesting: visiting the countryside or visiting a city? (Why?)",
+      "type": "",
+      "topic": 0,
+      "sample_answer": "I'd choose to visit the countryside because it is more interesting. I can find peace, natural beauty, and a break from urban hustle. It offers a serene environment, outdoor activities, and a chance to disconnect from the fast-paced city life.",
+      "title": ""
+    },
+    {
+      "id": 3,
+      "question": "How is the way your national celebrations are celebrated now different from the way they were celebrated in the past?",
+      "type": "",
+      "topic": 1,
+      "sample_answer": "Over the years, the way national celebrations are celebrated in Vietnam has undergone changes. In the past, celebrations might have been more traditional, with a focus on local customs, communal gatherings, and traditional rituals. As Vietnam has modernized, there may be a greater incorporation of technology, urban events, and diverse cultural influences in the celebrations. Urbanization and globalization could also impact the nature of celebrations, making them more dynamic and interconnected with the global community. Additionally, changes in political and societal values may influence the way historical events are commemorated.",
+      "title": ""
+    },
+    {
+      "id": 4,
+      "question": "Tell me something about people in Sai Gon city",
+      "type": "",
+      "topic": 2,
+      "sample_answer": "The people of Saigon are known for their friendliness, and the city reflects a dynamic fusion of traditional Vietnamese values and contemporary urban lifestyle. The pace of life can be fast, reflecting the city's role as an economic hub in Vietnam.",
+      "title": ""
+    },
+    {
+      "id": 5,
+      "question": "How much time do you spend with members of your family?",
+      "type": "",
+      "topic": 3,
+      "sample_answer": "I spend a lot of time with my family members. This is because I consider family to be extremely important and I want to be able to maintain a good relationship with them. I'd feel really guilty if I neglected my family!",
+      "title": ""
+    }
+  ]
+}
