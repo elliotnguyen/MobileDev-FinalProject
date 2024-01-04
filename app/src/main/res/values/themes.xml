@@ -3,6 +3,7 @@
     <style name="Base.Theme.EduPro" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="editTextLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -13,6 +14,10 @@
         <item name="boxCornerRadiusTopEnd">10dp</item>
         <item name="boxCornerRadiusBottomStart">10dp</item>
         <item name="boxCornerRadiusBottomEnd">10dp</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/custom_dialog</item>
     </style>
 
     <style name="Theme.EduPro" parent="Base.Theme.EduPro" />

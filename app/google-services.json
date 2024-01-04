@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "759339164648",
+    "firebase_url": "https://final-mobildev-default-rtdb.firebaseio.com",
+    "project_id": "final-mobildev",
+    "storage_bucket": "final-mobildev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759339164648:android:44c11bd1c9107c773f7a5d",
+        "android_client_info": {
+          "package_name": "com.example.edupro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUGWMYt7Cr_wDgU8Kgw2Q0osuLCu1fIdg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
