@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/reading_question_type_tfngv"
+        android:title="Identifying Information (True / False / Not Given)" />
+    <item
+        android:id="@+id/reading_question_type_mcq"
+        android:title="Multiple Choice" />
+    <item
+        android:id="@+id/reading_question_type_form_completion"
+        android:title="Sentence/Form Completion" />
+</menu>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/reading_topic_eco"
+        android:title="Economics &amp; Business" />
+    <item
+        android:id="@+id/reading_topic_edu"
+        android:title="Education" />
+    <item
+        android:id="@+id/reading_topic_lei"
+        android:title="Leisure &amp; Entertainment" />
+    <item
+        android:id="@+id/reading_topic_env"
+        android:title="Nature &amp; Environment" />
+    <item
+        android:id="@+id/reading_topic_sci"
+        android:title="Science &amp; Technology" />
+</menu>
