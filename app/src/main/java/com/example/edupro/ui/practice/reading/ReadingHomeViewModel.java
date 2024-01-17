@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.edupro.data.repository.ReadingRepository;
-import com.example.edupro.model.ReadingDto;
+import com.example.edupro.model.reading.ReadingDto;
 
 import java.util.ArrayList;
 

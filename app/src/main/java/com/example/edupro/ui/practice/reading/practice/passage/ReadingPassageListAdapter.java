@@ -9,13 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
-
-import java.util.ArrayList;
+import com.example.edupro.model.reading.ReadingDto;
 
 public class ReadingPassageListAdapter extends RecyclerView.Adapter<ReadingPassageListAdapter.ReadingPassageListViewHolder> {
-    ArrayList<String> passages;
-    public ReadingPassageListAdapter(ArrayList<String> passages) {
-        this.passages = passages;
+    //ArrayList<String> passages;
+    ReadingDto readingDto;
+//    public ReadingPassageListAdapter(ArrayList<String> passages) {
+//        this.passages = passages;
+//    }
+    public ReadingPassageListAdapter(ReadingDto readingDto) {
+        this.readingDto = readingDto;
     }
     @NonNull
     @Override
@@ -26,12 +29,13 @@ public class ReadingPassageListAdapter extends RecyclerView.Adapter<ReadingPassa
 
     @Override
     public void onBindViewHolder(@NonNull ReadingPassageListViewHolder holder, int position) {
-        holder.passage.setText(passages.get(position));
+        //holder.passage.setText(passages.get(position));
+        holder.passage.setText(readingDto.getContent().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return passages.size();
+        return readingDto.getContent().size();
     }
 
     public static class ReadingPassageListViewHolder extends RecyclerView.ViewHolder {

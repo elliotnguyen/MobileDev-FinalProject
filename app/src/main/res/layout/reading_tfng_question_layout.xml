@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/reading_tfng_question_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="# Questions 1"
+        android:text="# Question 1"
         android:fontFamily="@font/poppins_bold"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -31,20 +32,23 @@
             android:id="@+id/radioButton_reading_true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TRUE" />
+            android:text="TRUE"
+            android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/radioButton_reading_false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="FALSE" />
+            android:text="FALSE"
+            android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/radioButton_reading_notgiven"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="NOT GIVEN" />
+            android:text="NOT GIVEN"
+            android:textSize="18sp"/>
     </RadioGroup>
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="2dp"
         android:background="@color/gray"/>
 </LinearLayout>

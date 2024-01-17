@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/reading_mcq_question_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
         android:textColor="@color/light_blue"/>
     <TextView
         android:layout_marginTop="10dp"
-        android:id="@+id/reading_tfng_question_content"
+        android:id="@+id/reading_mcq_question_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wood will soon be the main source of heating on Eigg"
@@ -32,32 +33,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="A"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/radioButton_reading_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="B"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/radioButton_reading_c"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="C"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"/>
         <RadioButton
             android:id="@+id/radioButton_reading_d"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="D"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"/>
     </RadioGroup>
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="2dp"
         android:background="@color/gray"/>
 </LinearLayout>

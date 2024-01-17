@@ -1,10 +1,9 @@
 package com.example.edupro.data.repository;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.model.ReadingDto;
+import com.example.edupro.model.reading.ReadingDto;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
