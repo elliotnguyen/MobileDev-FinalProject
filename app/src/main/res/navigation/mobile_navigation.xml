@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_home">
-
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.edupro.ui.homepage.HomeFragment"
@@ -25,5 +24,14 @@
         android:name="com.example.edupro.ui.practice.PracticeFragment"
         android:label="fragment_practice"
         tools:layout="@layout/fragment_practice" />
-
+    <fragment
+        android:id="@+id/navigation_practice_reading"
+        android:name="com.example.edupro.ui.practice.reading.ReadingHomeFragment"
+        android:label="fragment_practice_reading"
+        tools:layout="@layout/fragment_reading_home" />
+    <fragment
+        android:id="@+id/navigation_practice_reading_practice"
+        android:name="com.example.edupro.ui.practice.reading.practice.ReadingPracticeFragment"
+        android:label="fragment_practice_reading_practice"
+        tools:layout="@layout/fragment_reading_practice" />
 </navigation>

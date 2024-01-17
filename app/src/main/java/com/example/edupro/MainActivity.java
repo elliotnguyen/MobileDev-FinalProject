@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.edupro.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,5 +39,19 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.navigation_practice_reading) {
+                hideBottomNavigationBar();
+            } else {
+                showBottomNavigationBar();
+            }
+        });
+    }
+    private void showBottomNavigationBar() {
+        binding.navView.setVisibility(View.VISIBLE);
+    }
+    private void hideBottomNavigationBar() {
+        binding.navView.setVisibility(View.GONE);
     }
 }

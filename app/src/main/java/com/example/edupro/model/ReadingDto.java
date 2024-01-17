@@ -7,22 +7,22 @@ import java.util.ArrayList;
 public class ReadingDto {
     private final String id;
     private final ArrayList<Integer> type;
-    private final Integer topic;
+    private final long topic;
     private final String title;
-    private final String content;
+    private final ArrayList<String> content;
     private final String questions;
     private final ArrayList<ArrayList<String>> answers;
     public ReadingDto() {
         id = "";
         type = null;
-        topic = null;
+        topic = 0;
         title = "";
-        content = "";
+        content = null;
         questions = "";
         answers = null;
     }
 
-    public ReadingDto(String id, ArrayList<Integer> type, Integer topic, String title, String content, String questions, ArrayList<ArrayList<String>> answers) {
+    public ReadingDto(String id, ArrayList<Integer> type, long topic, String title, ArrayList<String> content, String questions, ArrayList<ArrayList<String>> answers) {
         this.id = id;
         this.type = type;
         this.topic = topic;
@@ -32,13 +32,17 @@ public class ReadingDto {
         this.answers = answers;
     }
 
-    @SuppressWarnings("unchecked")
     public static ReadingDto fromFirebaseData(DataSnapshot dataSnapshot) {
         String id = (String) dataSnapshot.child("id").getValue();
         ArrayList<Integer> type = (ArrayList<Integer>) dataSnapshot.child("type").getValue();
-        Integer topic = (Integer) dataSnapshot.child("topic").getValue();
+        long topic = (long) dataSnapshot.child("topic").getValue();
         String title = (String) dataSnapshot.child("title").getValue();
-        String content = (String) dataSnapshot.child("content").getValue();
+        //String content = (String) dataSnapshot.child("content").getValue();
+        ArrayList<String> content = new ArrayList<>();
+        for (DataSnapshot contentSection : dataSnapshot.child("content").getChildren()) {
+            String contentPart = (String) contentSection.getValue();
+            content.add(contentPart);
+        }
         String questions = "";
         ArrayList<ArrayList<String>> answers = new ArrayList<>();
         for (DataSnapshot answerSection : dataSnapshot.child("answers").getChildren()) {
@@ -56,7 +60,7 @@ public class ReadingDto {
         return type;
     }
 
-    public Integer getTopic() {
+    public Long getTopic() {
         return topic;
     }
 
@@ -64,7 +68,7 @@ public class ReadingDto {
         return title;
     }
 
-    public String getContent() {
+    public ArrayList<String> getContent() {
         return content;
     }
 
