@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
@@ -26,13 +25,19 @@ import java.util.ArrayList;
 
 public class ReadingPracticeFragment extends Fragment {
     private static final String TAG = "ReadingPracticeFragment";
+
     private ReadingDto readingDto = new ReadingDto();
+
     private ReadingPracticeViewModel readingViewModel;
+
     private TextView readingPassage;
+
     private TextView readingQuestion;
-    private Button submitButton;
+
     private RecyclerView readingQuestionRecyclerView;
+
     private RecyclerView.Adapter readingQuestionAdapter;
+
     public static ReadingPracticeFragment newInstance() {
         return new ReadingPracticeFragment();
     }
@@ -56,16 +61,15 @@ public class ReadingPracticeFragment extends Fragment {
 
         ObserverAnyChange();
 
-        readingPassage = readingPractice.findViewById(R.id.reading_practice_passage_button);
-        readingPassage.setOnClickListener(v -> readingViewModel.setIsPassageShow(true));
-        readingQuestion = readingPractice.findViewById(R.id.reading_practice_question_button);
-        readingQuestion.setOnClickListener(v -> readingViewModel.setIsPassageShow(false));
+//        readingPassage = readingPractice.findViewById(R.id.reading_practice_passage_button);
+//        readingPassage.setOnClickListener(v -> readingViewModel.setIsPassageShow(true));
+//        readingQuestion = readingPractice.findViewById(R.id.reading_practice_question_button);
+//        readingQuestion.setOnClickListener(v -> readingViewModel.setIsPassageShow(false));
 
-        handleSessionShow();
+        handleSessionShow(readingPractice);
         handleBottomSheet();
 
-        submitButton = readingPractice.findViewById(R.id.reading_practice_submit_button);
-        submitButton.setOnClickListener(v -> handleSubmit());
+        handleSubmit(readingPractice);
 
         return readingPractice;
     }
@@ -80,7 +84,12 @@ public class ReadingPracticeFragment extends Fragment {
         });
     }
 
-    private void handleSessionShow() {
+    private void handleSessionShow(View readingPractice) {
+        readingPassage = readingPractice.findViewById(R.id.reading_practice_passage_button);
+        readingPassage.setOnClickListener(v -> readingViewModel.setIsPassageShow(true));
+        readingQuestion = readingPractice.findViewById(R.id.reading_practice_question_button);
+        readingQuestion.setOnClickListener(v -> readingViewModel.setIsPassageShow(false));
+
         readingViewModel.getIsPassageShow().observe(getViewLifecycleOwner(), isPassageShow -> {
             Fragment newFragment = isPassageShow ? new ReadingPassageFragment() : new ReadingQuestionFragment();
             if (isPassageShow) {
@@ -128,7 +137,17 @@ public class ReadingPracticeFragment extends Fragment {
         });
     }
 
-    private void handleSubmit() {
+    private void handleSubmit(View readingPractice) {
+        Button submitButton = readingPractice.findViewById(R.id.reading_practice_submit_button);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+                    if (isSubmit) {
 
+                    }
+                });
+            }
+        });
     }
 }

@@ -34,4 +34,9 @@
         android:name="com.example.edupro.ui.practice.reading.practice.ReadingPracticeFragment"
         android:label="fragment_practice_reading_practice"
         tools:layout="@layout/fragment_reading_practice" />
+    <fragment
+        android:id="@+id/navigation_practice_writing_practice"
+        android:name="com.example.edupro.ui.practice.writing.practice.WritingPracticeFragment"
+        android:label="fragment_practice_writing_practice"
+        tools:layout="@layout/fragment_writing_practice" />
 </navigation>

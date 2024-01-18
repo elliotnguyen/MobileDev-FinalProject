@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7FCFF">
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Word Count : "
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:id="@+id/writing_practice_count_words_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginStart="2dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/writing_practice_count_words_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/writing_practice_count_words_2"
+        android:textColor="#0C2B79"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/writing_practice_question_write_edit_text_layout"
+        app:layout_constraintTop_toBottomOf="@id/writing_practice_count_words_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#D9E4FF"
+        app:boxStrokeColor="@android:color/darker_gray"
+        app:boxStrokeWidth="2dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCollapsedPaddingTop="12dp"
+        android:paddingBottom="0dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/writing_practice_question_write_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type Your Answer Here"
+            android:lines="10"
+            android:gravity="top"
+            android:overScrollMode="always"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideInset"
+            android:scrollHorizontally="false"
+            android:inputType="textMultiLine"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        app:layout_constraintTop_toBottomOf="@id/writing_practice_question_write_edit_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/writing_practice_question_write_submit_button"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Writing Band Score"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@drawable/fragment_writing_pracice_write_submit_button"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

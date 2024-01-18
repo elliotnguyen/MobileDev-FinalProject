@@ -14,9 +14,19 @@ import android.view.View;
 import com.example.edupro.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private final ArrayList<Integer> hidingBottomBarFragmentIds = new ArrayList<>(
+            Arrays.asList(
+                    R.id.navigation_practice_reading,
+                    R.id.navigation_practice_reading_practice,
+                    R.id.navigation_practice_writing_practice
+            )
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +51,20 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.navigation_practice_reading || destination.getId() == R.id.navigation_practice_reading_practice) {
+//            if (destination.getId() == R.id.navigation_practice_reading || destination.getId() == R.id.navigation_practice_reading_practice) {
+//                hideBottomNavigationBar();
+//            } else {
+//                showBottomNavigationBar();
+//            }
+            if (shouldHideBottomBar(destination.getId())) {
                 hideBottomNavigationBar();
             } else {
                 showBottomNavigationBar();
             }
         });
+    }
+    private boolean shouldHideBottomBar(int id) {
+        return hidingBottomBarFragmentIds.contains(id);
     }
     private void showBottomNavigationBar() {
         binding.navView.setVisibility(View.VISIBLE);

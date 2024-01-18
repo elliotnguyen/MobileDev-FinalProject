@@ -1,31 +1,31 @@
 package com.example.edupro.model.reading;
 
+import com.example.edupro.model.SkillDto;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 
-public class ReadingDto {
-    private final String id;
-    private final ArrayList<Long> type;
-    private final long topic;
+public class ReadingDto extends SkillDto {
     private final String title;
     private final ArrayList<String> content;
     private final ArrayList<QuestionSection> questions;
-    private final ArrayList<ArrayList<String>> answers;
+    private final ArrayList<String> answers;
     public ReadingDto() {
-        id = "";
-        type = new ArrayList<>();
-        topic = 0;
+//        id = "";
+//        type = new ArrayList<>();
+//        topic = 0;
+        super();
         title = "";
         content = new ArrayList<>();
         questions = new ArrayList<>();
         answers = new ArrayList<>();
     }
 
-    public ReadingDto(String id, ArrayList<Long> type, long topic, String title, ArrayList<String> content, ArrayList<QuestionSection> questions, ArrayList<ArrayList<String>> answers) {
-        this.id = id;
-        this.type = type;
-        this.topic = topic;
+    public ReadingDto(String id, ArrayList<Long> type, long topic, String title, ArrayList<String> content, ArrayList<QuestionSection> questions, ArrayList<String> answers) {
+//        this.id = id;
+//        this.type = type;
+//        this.topic = topic;
+        super(id, type, topic);
         this.title = title;
         this.content = content;
         this.questions = questions;
@@ -44,9 +44,9 @@ public class ReadingDto {
             content.add(contentPart);
         }
         ArrayList<QuestionSection> questions = handleQuestions(dataSnapshot);
-        ArrayList<ArrayList<String>> answers = new ArrayList<>();
+        ArrayList<String> answers = new ArrayList<>();
         for (DataSnapshot answerSection : dataSnapshot.child("answers").getChildren()) {
-            ArrayList<String> answer = (ArrayList<String>) answerSection.getValue();
+            String answer = (String) answerSection.getValue();
             answers.add(answer);
         }
         return new ReadingDto(id, type, topic, title, content, questions, answers);
@@ -75,17 +75,17 @@ public class ReadingDto {
         return questions;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public ArrayList<Long> getType() {
-        return type;
-    }
-
-    public Long getTopic() {
-        return topic;
-    }
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public ArrayList<Long> getType() {
+//        return type;
+//    }
+//
+//    public long getTopic() {
+//        return topic;
+//    }
 
     public String getTitle() {
         return title;
@@ -99,7 +99,7 @@ public class ReadingDto {
         return questions;
     }
 
-    public ArrayList<ArrayList<String>> getAnswers() {
+    public ArrayList<String> getAnswers() {
         return answers;
     }
 }

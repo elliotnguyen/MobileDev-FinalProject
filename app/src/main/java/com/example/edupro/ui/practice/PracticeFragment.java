@@ -38,7 +38,19 @@ public class PracticeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View practiceHome = inflater.inflate(R.layout.fragment_practice, container, false);
+        handleReading(practiceHome);
+        handleWriting(practiceHome);
+//        CardView readingCard = practiceHome.findViewById(R.id.card_view_reading);
+//        readingCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view).navigate(R.id.navigation_practice_reading);
+//            }
+//        });
+        return practiceHome;
+    }
 
+    private void handleReading(View practiceHome) {
         CardView readingCard = practiceHome.findViewById(R.id.card_view_reading);
         readingCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +58,18 @@ public class PracticeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.navigation_practice_reading);
             }
         });
-        return practiceHome;
     }
+
+    private void handleWriting(View practiceHome) {
+        CardView writingCard = practiceHome.findViewById(R.id.card_view_writing);
+        writingCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.navigation_practice_writing_practice);
+            }
+        });
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
