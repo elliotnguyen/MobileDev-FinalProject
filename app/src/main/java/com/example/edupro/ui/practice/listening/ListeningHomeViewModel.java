@@ -2,6 +2,6 @@ package com.example.edupro.ui.practice.listening;
 
 import androidx.lifecycle.ViewModel;
 
-public class ListeningViewModel extends ViewModel {
+public class ListeningHomeViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 }

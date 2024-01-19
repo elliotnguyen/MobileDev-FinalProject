@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.edupro.data.repository.ReadingRepository;
-import com.example.edupro.model.ReadingDto;
+import com.example.edupro.model.reading.ReadingDto;
 
 import java.util.ArrayList;
 
-public class ReadingViewModel extends ViewModel {
+public class ReadingHomeViewModel extends ViewModel {
     private final ReadingRepository readingRepository;
-    public ReadingViewModel() {
+    public ReadingHomeViewModel() {
         readingRepository = ReadingRepository.getInstance();
     }
     public void getAllReading() {
@@ -18,9 +18,6 @@ public class ReadingViewModel extends ViewModel {
     }
     public LiveData<ArrayList<ReadingDto>> getAllReadingList() {
         return readingRepository.getReadings();
-    }
-    public void getReadingById(String id) {
-        readingRepository.getReadingById(id);
     }
     @Override
     protected void onCleared() {

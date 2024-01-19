@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="#F7FCFF"
+    tools:context=".ui.practice.reading.practice.passage.ReadingPassageFragment">
+    <LinearLayout
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/writing_practice_question"
+            android:padding="10dp"
+            android:background="@drawable/fragment_writing_practice_question_background"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reading_question"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/writing_practice_writeAnswerButton"
+                android:padding="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/fragment_writing_practice_write_answer_button_background">
+                <ImageView
+                    android:id="@+id/iconImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/pen_icon" />
+
+                <TextView
+                    android:id="@+id/writing_practice_write_your_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@id/iconImageView"
+                    android:text="Write your answer"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/writing_bestAnswerButton"
+                android:padding="5dp"
+                android:background="@drawable/fragment_writing_practice_best_answer_button_background"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iconImageViewBestAnswer"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/light_icon" />
+
+                <TextView
+                    android:id="@+id/writing_practice_best_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@id/iconImageViewBestAnswer"
+                    android:text="View Best Answer"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black" />
+            </RelativeLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/writing_practice_write_answer_container"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

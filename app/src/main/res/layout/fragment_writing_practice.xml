@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_blue_background">
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/writing_practice_cancel_button"
+        android:background="@drawable/cancel_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
+    <LinearLayout
+        android:id="@+id/writing_practice_navigation"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/reading_practice_navigation_background">
+        <TextView
+            android:id="@+id/writing_practice_question_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="Question"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/writing_practice_history_submission_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="History Submission"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/writing_practice_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
