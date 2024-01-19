@@ -2,13 +2,13 @@ package com.example.edupro.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class UserDto implements Serializable {
     private String name;
     private String email;
     private String password;
     private String phoneNumber;
 
-    public User(String email, String password) {
+    public UserDto(String email, String password) {
         this.email = email;
         this.password = password;
     }

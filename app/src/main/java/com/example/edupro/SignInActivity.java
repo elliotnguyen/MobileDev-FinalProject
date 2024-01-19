@@ -29,6 +29,8 @@ public class SignInActivity extends AppCompatActivity {
         signIn = findViewById(R.id.btnSignIn);
         signUp = findViewById(R.id.tvSignUp);
 
+        mAuth = FirebaseAuth.getInstance();
+
         signIn.setOnClickListener(view -> {
             String email = this.email.getText().toString();
             String password = this.password.getText().toString();
@@ -48,8 +50,8 @@ public class SignInActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-//                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-//                        startActivity(intent);
+                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(SignInActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }

@@ -7,4 +7,6 @@
     <color name="blue">#0961F5</color>
     <color name="light_blue">#3A94E7</color>
     <color name="background">#F7FCFF</color>
+    <color name="light_grey">#DEE3F8</color>
+    <color name="grey">#7486AA</color>
 </resources>
