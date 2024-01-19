@@ -35,7 +35,7 @@ public class ReadingQuestionListAdapter extends RecyclerView.Adapter<ReadingQues
     public void onBindViewHolder(ReadingQuestionListAdapter.ViewHolder holder, int position) {
         String questionNumber = String.valueOf(position + 1);
         holder.questionIdx.setText(questionNumber);
-        if (!questionIdx.get(position).equals("")) {
+        if (!questionIdx.get(position).equals("-")) {
             holder.questionIdx.setBackgroundResource(R.drawable.question_finish_background);
         }
         else {

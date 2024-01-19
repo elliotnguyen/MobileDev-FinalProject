@@ -1,6 +1,7 @@
 package com.example.edupro.ui.practice.reading.practice;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.edupro.R;
 import com.example.edupro.model.reading.Question;
 import com.example.edupro.model.reading.ReadingDto;
 import com.example.edupro.ui.RecyclerViewClickInterface;
+import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.reading.practice.passage.ReadingPassageFragment;
 import com.example.edupro.ui.practice.reading.practice.question.ReadingQuestionFragment;
 
@@ -61,14 +63,8 @@ public class ReadingPracticeFragment extends Fragment {
 
         ObserverAnyChange();
 
-//        readingPassage = readingPractice.findViewById(R.id.reading_practice_passage_button);
-//        readingPassage.setOnClickListener(v -> readingViewModel.setIsPassageShow(true));
-//        readingQuestion = readingPractice.findViewById(R.id.reading_practice_question_button);
-//        readingQuestion.setOnClickListener(v -> readingViewModel.setIsPassageShow(false));
-
         handleSessionShow(readingPractice);
         handleBottomSheet();
-
         handleSubmit(readingPractice);
 
         return readingPractice;
@@ -110,7 +106,7 @@ public class ReadingPracticeFragment extends Fragment {
             if (numberOfQuestions != 0) {
                 ArrayList<String> questions = new ArrayList<>();
                 for (int i = 0; i < numberOfQuestions; i++) {
-                    questions.add("");
+                    questions.add("-");
                 }
                 readingQuestionAdapter = new ReadingQuestionListAdapter(questions, new RecyclerViewClickInterface() {
                     @Override
@@ -127,7 +123,7 @@ public class ReadingPracticeFragment extends Fragment {
                 for (int i = 0; i < numberOfQuestions; i++) {
                     int finalI = i;
                     readingViewModel.getAnswerAtIndex(i).observe(getViewLifecycleOwner(), answer -> {
-                        if (answer != null && !answer.equals("")) {
+                        if (answer != null && !answer.equals("-")) {
                             questions.set(finalI, "Q" + (finalI + 1));
                             ((ReadingQuestionListAdapter) readingQuestionAdapter).notifyItemChanged(finalI);
                         }
@@ -142,11 +138,36 @@ public class ReadingPracticeFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
-                    if (isSubmit) {
-
-                    }
-                });
+                Pair<String, String> answersSelected = readingViewModel.getAnswersSelected();
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setContentText("Answered: " + answersSelected.first + "\n" + "Unanswered: " + answersSelected.second)
+                        .setConfirmText("Submit")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog
+                                        .setTitleText("Submitted!")
+                                        .setContentText("Congratulate on finishing the test!")
+                                        .setConfirmText("View Result")
+                                        .setConfirmClickListener(null)
+                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            }
+                        })
+                        .setCancelText("Cancel")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        });
+                sweetAlertDialog.show();
+//                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+//                    if (isSubmit) {
+//
+//                    }
+//                });
             }
         });
     }

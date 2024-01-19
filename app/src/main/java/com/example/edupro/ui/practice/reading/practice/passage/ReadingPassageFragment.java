@@ -52,6 +52,9 @@ public class ReadingPassageFragment extends Fragment {
 
     private void ObserverAnyChange() {
         readingViewModel.getReading().observe(getViewLifecycleOwner(), readingDto -> {
+            if (readingDto == null) {
+                return;
+            }
             this.readingDto = readingDto;
             readingTitle.setText(readingDto.getTitle());
             configureReadingPassageRecyclerView();

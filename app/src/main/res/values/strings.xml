@@ -6,4 +6,9 @@
     <string name="reading_question_tfng">Choose TRUE if the statement agrees with the information given in the text, choose FALSE if the statement contradicts the information, or choose NOT GIVEN if there is no information on this.</string>
     <string name="reading_question_mcq">Choose the correct letter, A, B, C or D.</string>
 
+    <string name="dialog_default_title">Here\'s a message!</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="LOADING">Loading...</string>
+
 </resources>
