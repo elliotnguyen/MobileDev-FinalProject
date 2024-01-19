@@ -23,7 +23,7 @@ public class ReadingTFNGFragment extends Fragment {
     private static final String TAG = "ReadingTFNGFragment";
     private final int index;
     private final ArrayList<TFNGQuestion> tfngQuestions = new ArrayList<>();
-    //private ReadingQuestionViewModel readingQuestionViewModel;
+
     private ReadingPracticeViewModel readingPracticeViewModel;
     public ReadingTFNGFragment(ArrayList<Question> tfngQuestions, int index) {
         for (Question question : tfngQuestions) {
@@ -31,16 +31,14 @@ public class ReadingTFNGFragment extends Fragment {
         }
         this.index = index;
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View readingTFNG = inflater.inflate(R.layout.fragment_reading_tfng, container, false);
 
-        //readingQuestionViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingQuestionViewModel.class);
-//        Fragment parentFragment = getParentFragment();
-//        readingPracticeViewModel = new ViewModelProvider(parentFragment.requireParentFragment()).get(ReadingPracticeViewModel.class);
-        Fragment parentFragment = getParentFragment();
 
+        Fragment parentFragment = getParentFragment();
         if (parentFragment != null && parentFragment.getParentFragment() != null) {
             readingPracticeViewModel = new ViewModelProvider(parentFragment.getParentFragment()).get(ReadingPracticeViewModel.class);
         }
@@ -51,7 +49,6 @@ public class ReadingTFNGFragment extends Fragment {
             @Override
             public void onItemClick(int position, String option) {
                 readingPracticeViewModel.setAnswerAtIndex(position + index, option);
-                //readingQuestionViewModel.setAnswerAtIndex(position + index, option);
             }
         });
         tfngRecyclerView.setAdapter(tfngListAdapter);

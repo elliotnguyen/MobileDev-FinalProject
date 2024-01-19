@@ -11,9 +11,6 @@ public class ReadingDto extends SkillDto {
     private final ArrayList<QuestionSection> questions;
     private final ArrayList<String> answers;
     public ReadingDto() {
-//        id = "";
-//        type = new ArrayList<>();
-//        topic = 0;
         super();
         title = "";
         content = new ArrayList<>();
@@ -22,9 +19,6 @@ public class ReadingDto extends SkillDto {
     }
 
     public ReadingDto(String id, ArrayList<Long> type, long topic, String title, ArrayList<String> content, ArrayList<QuestionSection> questions, ArrayList<String> answers) {
-//        this.id = id;
-//        this.type = type;
-//        this.topic = topic;
         super(id, type, topic);
         this.title = title;
         this.content = content;
@@ -74,18 +68,6 @@ public class ReadingDto extends SkillDto {
         }
         return questions;
     }
-
-//    public String getId() {
-//        return id;
-//    }
-//
-//    public ArrayList<Long> getType() {
-//        return type;
-//    }
-//
-//    public long getTopic() {
-//        return topic;
-//    }
 
     public String getTitle() {
         return title;

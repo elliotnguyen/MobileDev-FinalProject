@@ -37,7 +37,6 @@ public class WritingPracticeViewModel extends ViewModel {
         return isSampleAnswerShow;
     }
     public LiveData<WritingDto> getWritingDto() {
-        //return writingDto;
         writingRepository.getWritingById(writingId.getValue());
         return writingRepository.getWriting();
     }

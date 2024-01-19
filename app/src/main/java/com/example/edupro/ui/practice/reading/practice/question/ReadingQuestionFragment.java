@@ -21,16 +21,15 @@ public class ReadingQuestionFragment extends Fragment {
     private static final String TAG = "ReadingQuestionFragment";
     private ReadingDto readingDto = new ReadingDto();
     private ReadingPracticeViewModel readingViewModel;
-    //private ReadingQuestionViewModel readingQuestionViewModel;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View readingQuestion = inflater.inflate(R.layout.fragment_reading_practice_questions, container, false);
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingPracticeViewModel.class);
 
-        //readingQuestionViewModel = new ViewModelProvider(this).get(ReadingQuestionViewModel.class);
-        //readingQuestionViewModel.init();
         ObserverAnyChange();
+
         return readingQuestion;
     }
 
@@ -40,8 +39,6 @@ public class ReadingQuestionFragment extends Fragment {
 
             ArrayList<Question> part1 = this.readingDto.getQuestions().get(0).getQuestions();
             ArrayList<Question> part2 = this.readingDto.getQuestions().get(1).getQuestions();
-
-            //readingViewModel.setNumberOfQuestions(part1.size() + part2.size());
 
             handleQuestionShow(R.id.reading_practice_question_part1, this.readingDto.getType().get(0), part1,0);
             handleQuestionShow(R.id.reading_practice_question_part2, this.readingDto.getType().get(1), part2, part1.size());

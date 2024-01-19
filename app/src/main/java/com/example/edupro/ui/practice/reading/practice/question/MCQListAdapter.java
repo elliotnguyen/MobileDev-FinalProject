@@ -42,6 +42,7 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
         holder.questionNumber.setText(questionNumber);
         String questionContent = mcqQuestions.get(position).getContent();
         holder.questionContent.setText(questionContent);
+
         holder.optionA.setText(mcqQuestions.get(position).getOptions().get(0));
         holder.optionB.setText(mcqQuestions.get(position).getOptions().get(1));
         holder.optionC.setText(mcqQuestions.get(position).getOptions().get(2));
@@ -49,6 +50,11 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
 
         String answer = readingPracticeViewModel.getAnswerAtIndex(position + index).getValue();
         if (answer != null) {
+            if (!answer.equals("-")) {
+                holder.clearAnswer.setVisibility(View.VISIBLE);
+            } else {
+                holder.clearAnswer.setVisibility(View.GONE);
+            }
             switch (answer) {
                 case "0":
                     holder.optionA.setChecked(true);
@@ -62,6 +68,8 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
                 case "3":
                     holder.optionD.setChecked(true);
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -74,6 +82,7 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView questionNumber;
         TextView questionContent;
+        TextView clearAnswer;
         RadioButton optionA;
         RadioButton optionB;
         RadioButton optionC;
@@ -85,6 +94,7 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
 
             questionNumber = itemView.findViewById(com.example.edupro.R.id.reading_mcq_question_number);
             questionContent = itemView.findViewById(com.example.edupro.R.id.reading_mcq_question_content);
+            clearAnswer = itemView.findViewById(R.id.reading_mcq_question_clear_answer);
 
             optionA = itemView.findViewById(R.id.radioButton_reading_a);
             optionB = itemView.findViewById(R.id.radioButton_reading_b);
@@ -105,7 +115,21 @@ public class MCQListAdapter extends RecyclerView.Adapter<MCQListAdapter.ViewHold
                     } else if (checkedId == R.id.radioButton_reading_d) {
                         option = "3";
                     }
+
+                    if (!option.equals("")) {
+                        clearAnswer.setVisibility(View.VISIBLE);
+                    }
+
                     mcqClickInterface.onItemClick(getAdapterPosition(), option);
+                }
+            });
+
+            clearAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    radioGroup.clearCheck();
+                    readingPracticeViewModel.setAnswerAtIndex(getAdapterPosition() + index, "-");
+                    clearAnswer.setVisibility(View.GONE);
                 }
             });
         }

@@ -1,5 +1,7 @@
 package com.example.edupro.ui.practice.reading.practice;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -10,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,20 +28,26 @@ import com.example.edupro.ui.practice.reading.practice.passage.ReadingPassageFra
 import com.example.edupro.ui.practice.reading.practice.question.ReadingQuestionFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class ReadingPracticeFragment extends Fragment {
     private static final String TAG = "ReadingPracticeFragment";
-
+    private String readingId;
     private ReadingDto readingDto = new ReadingDto();
-
     private ReadingPracticeViewModel readingViewModel;
-
     private TextView readingPassage;
-
     private TextView readingQuestion;
-
     private RecyclerView readingQuestionRecyclerView;
-
     private RecyclerView.Adapter readingQuestionAdapter;
 
     public static ReadingPracticeFragment newInstance() {
@@ -57,7 +67,7 @@ public class ReadingPracticeFragment extends Fragment {
         readingViewModel.init();
 
         if (getArguments() != null) {
-            String readingId = getArguments().getString("readingId");
+            readingId = getArguments().getString("readingId");
             readingViewModel.setReadingId(readingId);
         }
 
@@ -111,9 +121,12 @@ public class ReadingPracticeFragment extends Fragment {
                 readingQuestionAdapter = new ReadingQuestionListAdapter(questions, new RecyclerViewClickInterface() {
                     @Override
                     public void onItemClick(int position) {
-
+                        readingViewModel.setIsPassageShow(false);
+                        RecyclerView.LayoutManager layoutManager = readingQuestionRecyclerView.getLayoutManager();
+                        if (layoutManager != null) {
+                            layoutManager.smoothScrollToPosition(readingQuestionRecyclerView, null, position);
+                        }
                     }
-
                     @Override
                     public void onLongItemClick(int position) {
 
@@ -125,6 +138,9 @@ public class ReadingPracticeFragment extends Fragment {
                     readingViewModel.getAnswerAtIndex(i).observe(getViewLifecycleOwner(), answer -> {
                         if (answer != null && !answer.equals("-")) {
                             questions.set(finalI, "Q" + (finalI + 1));
+                            ((ReadingQuestionListAdapter) readingQuestionAdapter).notifyItemChanged(finalI);
+                        } else if (answer != null) {
+                            questions.set(finalI, "-");
                             ((ReadingQuestionListAdapter) readingQuestionAdapter).notifyItemChanged(finalI);
                         }
                     });
@@ -146,12 +162,32 @@ public class ReadingPracticeFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                sDialog
-                                        .setTitleText("Submitted!")
-                                        .setContentText("Congratulate on finishing the test!")
-                                        .setConfirmText("View Result")
-                                        .setConfirmClickListener(null)
-                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+                                    if (isSubmit) {
+                                        handleParadeAnimation(readingPractice);
+                                        sDialog
+                                                .setTitleText("Submitted!")
+                                                .setContentText("Congratulate on finishing the test!")
+                                                .setConfirmText("View Result")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        handleSubmitted(readingPractice);
+                                                        sDialog.dismissWithAnimation();
+                                                    }
+                                                })
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    } else {
+                                        sDialog
+                                                .setTitleText("Loading")
+                                                .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                        sDialog
+                                                .setCancelable(false);
+                                        sDialog
+                                                .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                        //sDialog.show();
+                                    }
+                                });
                             }
                         })
                         .setCancelText("Cancel")
@@ -163,12 +199,76 @@ public class ReadingPracticeFragment extends Fragment {
                             }
                         });
                 sweetAlertDialog.show();
-//                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
-//                    if (isSubmit) {
-//
-//                    }
-//                });
             }
         });
+    }
+
+    private void handleSubmitted(View readingPractice) {
+        String result = readingViewModel.getMark().getValue() +"/" + readingViewModel.getNumberOfQuestions().getValue();
+        String part1Type = String.valueOf(readingDto.getQuestions().get(0).getType());
+        String part2Type = String.valueOf(readingDto.getQuestions().get(1).getType());
+
+        ArrayList<String> correctAnswersPart1 = new ArrayList<>();
+        ArrayList<String> answersPart1 = new ArrayList<>();
+        int part1Size = readingDto.getQuestions().get(0).getQuestions().size();
+        for (int i = 0; i < part1Size; i++) {
+            correctAnswersPart1.add(readingDto.getAnswers().get(i));
+        }
+        for (int i = 0; i < part1Size; i++) {
+            answersPart1.add(readingViewModel.getAnswerAtIndex(i).getValue());
+        }
+
+        ArrayList<String> correctAnswersPart2 = new ArrayList<>();
+        ArrayList<String> answersPart2 = new ArrayList<>();
+        int part2Size = readingDto.getQuestions().get(1).getQuestions().size();
+        for (int i = 0; i < part2Size; i++) {
+            answersPart2.add(readingViewModel.getAnswerAtIndex(i + part1Size).getValue());
+        }
+        for (int i = 0; i < part2Size; i++) {
+            correctAnswersPart2.add(readingDto.getAnswers().get(i + part1Size));
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("readingId", readingId);
+        bundle.putString("result", result);
+        bundle.putString("part1", part1Type);
+        bundle.putString("part2", part2Type);
+        bundle.putStringArrayList("correctAnswersPart1", correctAnswersPart1);
+        bundle.putStringArrayList("answersPart1", answersPart1);
+        bundle.putStringArrayList("correctAnswersPart2", correctAnswersPart2);
+        bundle.putStringArrayList("answersPart2", answersPart2);
+
+        Navigation.findNavController(readingPractice).navigate(R.id.navigation_practice_reading_result, bundle);
+    }
+
+    private void handleParadeAnimation(View readingPractice) {
+        KonfettiView konfettiView = readingPractice.findViewById(R.id.konfetti_reading_practice);
+        Shape.DrawableShape drawableShape = null;
+
+        final Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart);
+        if (drawable != null) {
+            drawableShape = new Shape.DrawableShape(
+                    drawable,
+                    true, true);
+        }
+
+        EmitterConfig emitterConfig = new Emitter(5, TimeUnit.SECONDS).perSecond(30);
+        konfettiView.start(
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.RIGHT - 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(0.0, 0.5))
+                        .build(),
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.LEFT + 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(1.0, 0.5))
+                        .build());
     }
 }

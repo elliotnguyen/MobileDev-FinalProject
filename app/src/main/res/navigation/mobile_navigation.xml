@@ -35,6 +35,11 @@
         android:label="fragment_practice_reading_practice"
         tools:layout="@layout/fragment_reading_practice" />
     <fragment
+        android:id="@+id/navigation_practice_reading_result"
+        android:name="com.example.edupro.ui.practice.reading.result.ReadingResultFragment"
+        android:label="fragment_practice_reading_result"
+        tools:layout="@layout/fragment_reading_result" />
+    <fragment
         android:id="@+id/navigation_practice_writing_practice"
         android:name="com.example.edupro.ui.practice.writing.practice.WritingPracticeFragment"
         android:label="fragment_practice_writing_practice"

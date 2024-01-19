@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
             Arrays.asList(
                     R.id.navigation_practice_reading,
                     R.id.navigation_practice_reading_practice,
-                    R.id.navigation_practice_writing_practice
+                    R.id.navigation_practice_writing_practice,
+                    R.id.navigation_practice_reading_result
             )
     );
 

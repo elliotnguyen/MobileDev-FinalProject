@@ -53,6 +53,9 @@ dependencies {
     // Progress Wheel
     implementation("com.pnikosis:materialish-progress:1.7")
 
+    // Confetti
+    implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+
     // Firebase Auth
     implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.google.firebase:firebase-database:20.3.0")

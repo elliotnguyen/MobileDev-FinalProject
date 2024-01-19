@@ -21,9 +21,8 @@ import java.util.ArrayList;
 
 public class ReadingMCQFragment extends Fragment {
     private static final String TAG = "ReadingMCQFragment";
-    private int index = 0;
+    private final int index;
     private final ArrayList<MCQQuestion> mcqQuestions = new ArrayList<>();
-    //private ReadingQuestionViewModel readingQuestionViewModel;
     private ReadingPracticeViewModel readingPracticeViewModel;
     public ReadingMCQFragment(ArrayList<Question> mcqQuestions, int index) {
         for (Question question : mcqQuestions) {
@@ -35,8 +34,7 @@ public class ReadingMCQFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View readingMCQ = inflater.inflate(R.layout.fragment_reading_mcq, container, false);
-        //readingQuestionViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingQuestionViewModel.class);
-        //readingPracticeViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingPracticeViewModel.class);
+
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null && parentFragment.getParentFragment() != null) {
             readingPracticeViewModel = new ViewModelProvider(parentFragment.getParentFragment()).get(ReadingPracticeViewModel.class);
@@ -48,7 +46,6 @@ public class ReadingMCQFragment extends Fragment {
             @Override
             public void onItemClick(int position, String option) {
                 readingPracticeViewModel.setAnswerAtIndex(position + index, option);
-                //readingQuestionViewModel.setAnswerAtIndex(position + index, option);
             }
         });
         mcqRecyclerView.setAdapter(mcqListAdapter);

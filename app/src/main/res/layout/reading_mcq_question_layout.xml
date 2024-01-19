@@ -4,16 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/reading_mcq_question_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="# Questions 1"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/light_blue"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/reading_mcq_question_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="# Questions 1"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/light_blue"/>
+        <TextView
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:id="@+id/reading_mcq_question_clear_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear the answer"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+<!--    <TextView-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/reading_mcq_question_number"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="# Questions 1"-->
+<!--        android:fontFamily="@font/poppins_bold"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="@color/light_blue"/>-->
     <TextView
         android:layout_marginTop="10dp"
         android:id="@+id/reading_mcq_question_content"
