@@ -4,11 +4,144 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.note.NoteFragment">
-
-    <TextView
+    tools:context=".ui.practice.reading.ReadingHomeFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="note" />
+        android:background="@color/primary">
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/reading_home_back_button"-->
+<!--            android:elevation="5dp"-->
+<!--            android:background="@drawable/back_icon"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"/>-->
+        <TextView
+            android:id="@+id/note_user_name"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:elevation="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello, "
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/note_motto"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/note_user_name"
+            app:layout_constraintStart_toStartOf="@+id/note_user_name"
+            android:elevation="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Let's test your knowledge"
+            android:textColor="@color/white"
+            android:textSize="23sp"/>
 
+        <View
+            android:background="#3A94E7"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"/>
+        <View
+            android:id="@+id/note_arc"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/fragment_note_arc"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+
+        <androidx.appcompat.widget.SearchView
+            app:layout_constraintTop_toBottomOf="@id/note_motto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/search_view_all"
+            android:textColorHint="@color/black"
+            android:queryHint="Looking for a movie?"
+            android:iconifiedByDefault="false"
+            android:textColor="@color/black"
+            android:background="@drawable/bg_editext_search" />
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/note_arc"
+            android:orientation="horizontal"
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+            android:background="@color/light_blue"/>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/note_arc"
+            android:orientation="horizontal"
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+
+            android:background="@color/light_blue">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/note_arc"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/semi_black"
+            android:text="Vocabulary Sets"/>
+
+        <TextView
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/note_arc"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+
+            android:textColor="@color/light_blue"
+            android:text="View all"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_arc"
+            android:id="@+id/note_recycler_view_my_words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/note_add_note"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginRight="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/add_circle"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
