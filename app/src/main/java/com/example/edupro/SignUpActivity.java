@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,11 +68,11 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.w("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             String uid = user.getUid();
-                            User newUser = new User(email,password);
-//                            mDatabase.child("users").child(uid).setValue(newUser);
+                            User newUser = new User(uid,email,"No name");
+                            UserRepository userRepository = new UserRepository();
+                            userRepository.addUser(newUser);
                             Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignUpActivity.this, FillProfileActivity.class);
-                            intent.putExtra("user",(Serializable) newUser);
                             startActivity(intent);
 
                         } else {
