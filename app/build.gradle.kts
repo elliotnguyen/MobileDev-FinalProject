@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -55,6 +56,31 @@ dependencies {
 
     // Confetti
     implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+
+    // Shimmer Effect
+    implementation("com.facebook.shimmer:shimmer:0.1.0@aar")
+
+    // ML Text Recognizer
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")
+
+    // Load Image
+    implementation("com.squareup.picasso:picasso:2.8")
+
+    // Generative AI
+    // add the dependency for the Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
+
+    // Required for one-shot operations (to use `ListenableFuture` from Reactive Streams)
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    // Required for streaming operations (to use `Publisher` from Guava Android)
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+
+    // Required for streaming operations (to use `ListenableFuture` from Guava Android)
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    // To use CallbackToFutureAdapter
+    implementation("androidx.concurrent:concurrent-futures:1.1.0")
 
     // Firebase Auth
     implementation("com.google.firebase:firebase-auth:22.3.0")
