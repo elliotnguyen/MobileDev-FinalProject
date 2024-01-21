@@ -40,6 +40,8 @@ public class PracticeFragment extends Fragment {
         View practiceHome = inflater.inflate(R.layout.fragment_practice, container, false);
         handleReading(practiceHome);
         handleWriting(practiceHome);
+        handleListening(practiceHome);
+        handleSpeaking(practiceHome);
 //        CardView readingCard = practiceHome.findViewById(R.id.card_view_reading);
 //        readingCard.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -48,6 +50,16 @@ public class PracticeFragment extends Fragment {
 //            }
 //        });
         return practiceHome;
+    }
+
+    private void handleSpeaking(View practiceHome) {
+        CardView speakingCard = practiceHome.findViewById(R.id.card_view_speaking);
+        speakingCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.navigation_practice_speaking);
+            }
+        });
     }
 
     private void handleReading(View practiceHome) {
@@ -69,7 +81,15 @@ public class PracticeFragment extends Fragment {
             }
         });
     }
-
+    private void handleListening(View practiceHome) {
+        CardView listeningCard = practiceHome.findViewById(R.id.card_view_listening);
+        listeningCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.navigation_practice_listening);
+            }
+        });
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

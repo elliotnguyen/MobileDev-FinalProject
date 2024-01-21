@@ -3,7 +3,6 @@ package com.example.edupro.model;
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

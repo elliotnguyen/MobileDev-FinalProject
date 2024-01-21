@@ -12,13 +12,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.model.User;
 import com.example.edupro.viewmodel.UserViewModel;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +27,7 @@ public class FillProfileActivity extends AppCompatActivity {
     private TextInputEditText fullName, phoneNumber,nickName;
     private User user;
     FirebaseUser userAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,17 +39,17 @@ public class FillProfileActivity extends AppCompatActivity {
                 user = currentUser;
                 init();
             }
-
             @Override
             public void onError(Exception e) {
 
             }
         });
-
     }
+
     private  void init(){
 
         userAuth =  FirebaseAuth.getInstance().getCurrentUser();
+
         fullName = findViewById(R.id.edtFullName);
         phoneNumber = findViewById(R.id.edtPhoneNumber);
         nickName = findViewById(R.id.edtNickName);
@@ -97,11 +97,10 @@ public class FillProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 5000); // 5000 milliseconds (5 seconds) delay
+        }, 3000); // delay
     }
 
     private void saveUserInfo() {
-
         user.setName(fullName.getText().toString());
         user.setNickName(nickName.getText().toString());
         user.setPhoneNumber(phoneNumber.getText().toString());

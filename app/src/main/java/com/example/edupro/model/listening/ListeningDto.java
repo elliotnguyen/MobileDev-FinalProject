@@ -1,54 +1,63 @@
-package com.example.edupro.model.reading;
+package com.example.edupro.model.listening;
 
 import android.util.Log;
 
 import com.example.edupro.model.SkillDto;
+import com.example.edupro.model.reading.MCQQuestion;
+import com.example.edupro.model.reading.Question;
+import com.example.edupro.model.reading.QuestionSection;
+import com.example.edupro.model.reading.TFNGQuestion;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ReadingDto extends SkillDto {
-    private final String title;
-    private final ArrayList<String> content;
+public class ListeningDto extends SkillDto {
+    private final String audio;
     private final ArrayList<QuestionSection> questions;
     private final ArrayList<String> answers;
-    public ReadingDto() {
+    private final String title;
+
+    public ListeningDto() {
         super();
-        title = "";
-        content = new ArrayList<>();
+        audio = "";
         questions = new ArrayList<>();
         answers = new ArrayList<>();
+        title = "";
     }
 
-    public ReadingDto(String id, ArrayList<Long> type, long topic, String title, ArrayList<String> content, ArrayList<QuestionSection> questions, ArrayList<String> answers) {
+    public ListeningDto(String id, ArrayList<Long> type, long topic, String audio, ArrayList<QuestionSection> questions, ArrayList<String> answers, String title) {
         super(id, type, topic);
-        this.title = title;
-        this.content = content;
+        this.audio = audio;
         this.questions = questions;
         this.answers = answers;
+        this.title = title;
     }
 
-    public static ReadingDto fromFirebaseData(DataSnapshot dataSnapshot) {
-        String id = (String) dataSnapshot.child("id").getValue();
-        Log.d("ReadingDto", "fromFirebaseData: " + id);
-        ArrayList<Long> type = (ArrayList<Long>) dataSnapshot.child("type").getValue();
-        long topic = (long) dataSnapshot.child("topic").getValue();
-        String title = (String) dataSnapshot.child("title").getValue();
-
-        ArrayList<String> content = new ArrayList<>();
-        for (DataSnapshot contentSection : dataSnapshot.child("content").getChildren()) {
-            String contentPart = (String) contentSection.getValue();
-            content.add(contentPart);
+    public static ListeningDto fromFirebaseData(DataSnapshot listening) {
+        String id = (String) listening.child("id").getValue();
+        Log.d("ListeningDto", "fromFirebaseData: " + id);
+        ArrayList<Long> type = new ArrayList<>();
+        for (DataSnapshot typeSnapshot : listening.child("type").getChildren()) {
+            type.add((Long) typeSnapshot.getValue());
         }
-        ArrayList<QuestionSection> questions = handleQuestions(dataSnapshot);
+        long topic = (long) listening.child("topic").getValue();
+
+        String audio = (String) listening.child("content").getValue();
+        Log.d("ListeningDto", "fromFirebaseData: " + audio);
+
+        ArrayList<QuestionSection> questions = new ArrayList<>();
+        questions = handleQuestions(listening);
+
         ArrayList<String> answers = new ArrayList<>();
-        for (DataSnapshot answerSection : dataSnapshot.child("answers").getChildren()) {
-            String answer = (String) answerSection.getValue();
-            answers.add(answer);
+        for (DataSnapshot answerSnapshot : listening.child("answers").getChildren()) {
+            answers.add((String) answerSnapshot.getValue());
         }
-        return new ReadingDto(id, type, topic, title, content, questions, answers);
-    }
 
+        String title = (String) listening.child("title").getValue();
+        Log.d("ListeningDto", "fromFirebaseData: " + title);
+        return new ListeningDto(id, type, topic, audio, questions, answers, title);
+    }
     private static ArrayList<QuestionSection> handleQuestions(DataSnapshot dataSnapshot) {
         ArrayList<QuestionSection> questions = new ArrayList<>();
         for (DataSnapshot questionSection : dataSnapshot.child("questions").getChildren()) {
@@ -72,12 +81,8 @@ public class ReadingDto extends SkillDto {
         return questions;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public ArrayList<String> getContent() {
-        return content;
+    public String getAudio() {
+        return audio;
     }
 
     public ArrayList<QuestionSection> getQuestions() {
@@ -87,4 +92,9 @@ public class ReadingDto extends SkillDto {
     public ArrayList<String> getAnswers() {
         return answers;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
 }
