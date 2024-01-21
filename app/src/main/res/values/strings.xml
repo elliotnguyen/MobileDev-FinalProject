@@ -7,4 +7,6 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="LOADING">Loading...</string>
+    <string name="default_web_client_id">759339164648-ur1fjr18rrgbh4a71h6prhin2ln75nmh.apps.googleusercontent.com</string>
+    <string name="your_current_streak_is">"Your current streak is "</string>
 </resources>
