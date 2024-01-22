@@ -25,6 +25,7 @@ public class UserViewModel extends ViewModel {
             public void onUserFetched(User user) {
                 setUser(user);
                 callback.onUserFetched(user);
+                updateStreakAutomatically();
             }
 
             @Override
@@ -42,6 +43,14 @@ public class UserViewModel extends ViewModel {
     }
 
     public void setUser(User user) {
+        this.user.setValue(user);
+    }
+
+    public void updateStreakAutomatically(){
+        User user = this.user.getValue();
+        if(user == null) return;
+        user.updateStreakIfLastAccessYesterday();
+        userRepository.updateUser(user);
         this.user.setValue(user);
     }
 
