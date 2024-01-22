@@ -31,19 +31,33 @@ public class FirebaseRepository<T> {
         myRef.addValueEventListener(valueEventListener);
     }
 
+    public void getAllDataOfChild(ArrayList<String> children, ValueEventListener valueEventListener) {
+        DatabaseReference childRef = myRef;
+        for (String child : children) {
+            childRef = childRef.child(child);
+        }
+        childRef.addValueEventListener(valueEventListener);
+    }
+
     public void getDataById(String id, ValueEventListener valueEventListener) {
         myRef.child(id).addValueEventListener(valueEventListener);
     }
 
+    // create data object by list of child id
+    // example: createDataById(["child1", "child2"], data)
+    // -> create data object at /child1/child2
     public void createDataById(ArrayList<String> childrenId, T data, OnCompleteListener<Void> completionListener) {
         DatabaseReference childRef = myRef;
         for (String child : childrenId) {
             childRef = childRef.child(child);
         }
-        //myRef.child(id).setValue(data).addOnCompleteListener(completionListener);
+
         childRef.setValue(data).addOnCompleteListener(completionListener);
     }
 
+    // update attribute of object by list of child id
+    // example: updateDataById(["user", "id", "name"],"nguyen tien thanh")
+    // -> update name attribute of object at /user/id/name
     public <U> void updateDataOfChild(ArrayList<String> children, U data, OnCompleteListener<Void> completionListener) {
         DatabaseReference childRef = myRef;
         for (String child : children) {

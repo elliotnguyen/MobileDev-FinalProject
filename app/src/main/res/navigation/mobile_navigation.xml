@@ -64,4 +64,9 @@
         android:name="com.example.edupro.ui.practice.speaking.practice.SpeakingPracticeFragment"
         android:label="fragment_practice_speaking_practice"
         tools:layout="@layout/fragment_speaking_practice" />
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.example.edupro.ui.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

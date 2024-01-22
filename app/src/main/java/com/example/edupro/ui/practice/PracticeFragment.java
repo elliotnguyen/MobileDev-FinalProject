@@ -42,13 +42,7 @@ public class PracticeFragment extends Fragment {
         handleWriting(practiceHome);
         handleListening(practiceHome);
         handleSpeaking(practiceHome);
-//        CardView readingCard = practiceHome.findViewById(R.id.card_view_reading);
-//        readingCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view).navigate(R.id.navigation_practice_reading);
-//            }
-//        });
+
         return practiceHome;
     }
 
@@ -81,6 +75,7 @@ public class PracticeFragment extends Fragment {
             }
         });
     }
+
     private void handleListening(View practiceHome) {
         CardView listeningCard = practiceHome.findViewById(R.id.card_view_listening);
         listeningCard.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +85,7 @@ public class PracticeFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

@@ -21,8 +21,13 @@ public class ListeningRepository {
         firebaseRepository = FirebaseRepository.getInstance(ListeningDto.class,"listening");
     }
 
+    public static ListeningRepository instance;
+
     public static ListeningRepository getInstance() {
-        return new ListeningRepository();
+        if (instance == null) {
+            instance = new ListeningRepository();
+        }
+        return instance;
     }
 
     public void getAllListening() {
