@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,13 +70,14 @@ public class DashboardFragment extends Fragment {
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null){
-                    //Do anything here which needs to be done after signout is complete
-                    Intent intent = new Intent(getContext(), SignInActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();// Close the current activity to prevent the user from navigating back
-                }
-                else {
+                if (getActivity() != null) {
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        //Do anything here which needs to be done after signout is complete
+                        Intent intent = new Intent(getActivity(), SignInActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();// Close the current activity to prevent the user from navigating back
+                    } else {
+                    }
                 }
             }
         };
@@ -84,8 +86,6 @@ public class DashboardFragment extends Fragment {
         logoutBtn.setOnClickListener(view -> {
             // Sign out the user
             FirebaseAuth.getInstance().signOut();
-
-
 
         });
         return profile;
