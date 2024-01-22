@@ -41,7 +41,7 @@ public class NoteRepository {
                         }
                     });
         }catch (Exception e){
-            Log.d("Loi2","Herre");
+            Log.e("Loi2","Herre");
             listener.onError(e);
         }
 

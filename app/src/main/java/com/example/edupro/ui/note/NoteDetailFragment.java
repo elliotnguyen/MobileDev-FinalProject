@@ -220,7 +220,7 @@ public class NoteDetailFragment extends Fragment {
                     @Override
                     public void onError(Exception e) {
 
-                        Log.d("NoteDetailFragment", "Error updating note: " + e.getMessage());
+                        Log.e("NoteDetailFragment", "Error updating note: " + e.getMessage());
                     }
                 });
             }
