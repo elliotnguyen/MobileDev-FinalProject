@@ -14,6 +14,7 @@ import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -68,18 +69,32 @@ public class SignInActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
                 .requestIdToken(getString(R.string.default_web_client_id))
+
                 .requestEmail()
                 .build();
+
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         ImageView signInWithGoogle = findViewById(R.id.signin_google);
 
         signInWithGoogle.setOnClickListener(view -> {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            if (account != null) {
+                // If already signed in, sign out first
+                mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                });
+            } else {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            }
+
         });
 
         signUp.setOnClickListener(view -> {
