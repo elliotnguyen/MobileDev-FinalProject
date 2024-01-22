@@ -32,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
                     R.id.navigation_practice_reading,
                     R.id.navigation_practice_reading_practice,
                     R.id.navigation_practice_writing_practice,
-                    R.id.navigation_practice_reading_result
+                    R.id.navigation_practice_reading_result,
+                    R.id.navigation_practice_listening,
+                    R.id.navigation_practice_listening_practice,
+                    R.id.navigation_practice_speaking,
+                    R.id.navigation_practice_speaking_practice
             )
     );
 
@@ -59,13 +63,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-
-//            if (destination.getId() == R.id.navigation_practice_reading || destination.getId() == R.id.navigation_practice_reading_practice) {
-//                hideBottomNavigationBar();
-//            } else {
-//                showBottomNavigationBar();
-//            }
-
             if (shouldHideBottomBar(destination.getId())) {
                 hideBottomNavigationBar();
             } else {
@@ -89,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
+
     private boolean shouldHideBottomBar(int id) {
         return hidingBottomBarFragmentIds.contains(id);
     }

@@ -52,6 +52,8 @@ public class SignInActivity extends AppCompatActivity {
         signIn = findViewById(R.id.btnSignIn);
         signUp = findViewById(R.id.tvSignUp);
 
+        mAuth = FirebaseAuth.getInstance();
+
         signIn.setOnClickListener(view -> {
             String email = this.email.getText().toString();
             String password = this.password.getText().toString();
@@ -148,6 +150,4 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

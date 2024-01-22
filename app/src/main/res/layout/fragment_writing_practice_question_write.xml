@@ -5,6 +5,48 @@
     android:layout_height="match_parent"
     android:background="#F7FCFF">
 
+    <RelativeLayout
+        android:id="@+id/writing_practice_question_clear_text"
+        app:layout_constraintEnd_toStartOf="@id/writing_practice_question_scan_text"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <ImageView
+            android:id="@+id/clear_icon_writing"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/clear_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:textSize="16sp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/clear_icon_writing"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/writing_practice_question_scan_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <ImageView
+            android:id="@+id/picture_icon_writing"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/camera_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scan"
+            android:textSize="16sp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/picture_icon_writing"/>
+    </RelativeLayout>
+
     <TextView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,39 +69,59 @@
         android:id="@+id/writing_practice_count_words_2"
         android:textColor="#0C2B79"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/writing_practice_question_write_edit_text_layout"
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:id="@+id/writing_practice_question_write_scroll_view"
         app:layout_constraintTop_toBottomOf="@id/writing_practice_count_words_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="#D9E4FF"
-        app:boxStrokeColor="@android:color/darker_gray"
-        app:boxStrokeWidth="2dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCollapsedPaddingTop="12dp"
-        android:paddingBottom="0dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/writing_practice_question_write_edit_text"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type Your Answer Here"
-            android:lines="10"
-            android:gravity="top"
-            android:overScrollMode="always"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideInset"
-            android:scrollHorizontally="false"
-            android:inputType="textMultiLine"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/writing_practice_question_write_image_view"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:strokeWidth="2dp"
+                android:src="@drawable/ocr"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/writing_practice_question_write_edit_text_layout"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="#D9E4FF"
+                app:boxStrokeColor="@android:color/darker_gray"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCollapsedPaddingTop="12dp"
+                android:paddingBottom="0dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/writing_practice_question_write_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Type Your Answer Here"
+                    android:lines="10"
+                    android:gravity="top"
+                    android:overScrollMode="always"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollHorizontally="false"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-        app:layout_constraintTop_toBottomOf="@id/writing_practice_question_write_edit_text_layout"
+        app:layout_constraintTop_toBottomOf="@id/writing_practice_question_write_scroll_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

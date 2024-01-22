@@ -1,5 +1,7 @@
 package com.example.edupro.model.reading;
 
+import android.util.Log;
+
 import com.example.edupro.model.SkillDto;
 import com.google.firebase.database.DataSnapshot;
 
@@ -28,6 +30,7 @@ public class ReadingDto extends SkillDto {
 
     public static ReadingDto fromFirebaseData(DataSnapshot dataSnapshot) {
         String id = (String) dataSnapshot.child("id").getValue();
+        Log.d("ReadingDto", "fromFirebaseData: " + id);
         ArrayList<Long> type = (ArrayList<Long>) dataSnapshot.child("type").getValue();
         long topic = (long) dataSnapshot.child("topic").getValue();
         String title = (String) dataSnapshot.child("title").getValue();

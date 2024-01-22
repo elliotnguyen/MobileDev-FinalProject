@@ -30,6 +30,16 @@
         android:label="fragment_practice_reading"
         tools:layout="@layout/fragment_reading_home" />
     <fragment
+        android:id="@+id/navigation_practice_listening"
+        android:name="com.example.edupro.ui.practice.listening.ListeningHomeFragment"
+        android:label="fragment_practice_listening"
+        tools:layout="@layout/fragment_listening_home" />
+    <fragment
+        android:id="@+id/navigation_practice_speaking"
+        android:name="com.example.edupro.ui.practice.speaking.SpeakingHomeFragment"
+        android:label="fragment_practice_speaking"
+        tools:layout="@layout/fragment_speaking_home" />
+    <fragment
         android:id="@+id/navigation_practice_reading_practice"
         android:name="com.example.edupro.ui.practice.reading.practice.ReadingPracticeFragment"
         android:label="fragment_practice_reading_practice"
@@ -44,7 +54,6 @@
         android:name="com.example.edupro.ui.practice.writing.practice.WritingPracticeFragment"
         android:label="fragment_practice_writing_practice"
         tools:layout="@layout/fragment_writing_practice" />
-
     <fragment
         android:id="@+id/navigation_note_detail"
         android:name="com.example.edupro.ui.note.NoteDetailFragment"
@@ -56,4 +65,14 @@
         android:name="com.example.edupro.ui.note.SearchNoteFragment"
         android:label="fragment_search_note"
         tools:layout="@layout/fragment_search_note" />
+    <fragment
+        android:id="@+id/navigation_practice_listening_practice"
+        android:name="com.example.edupro.ui.practice.listening.practice.ListeningPracticeFragment"
+        android:label="fragment_practice_listening_practice"
+        tools:layout="@layout/fragment_listening_practice" />
+    <fragment
+        android:id="@+id/navigation_practice_speaking_practice"
+        android:name="com.example.edupro.ui.practice.speaking.practice.SpeakingPracticeFragment"
+        android:label="fragment_practice_speaking_practice"
+        tools:layout="@layout/fragment_speaking_practice" />
 </navigation>

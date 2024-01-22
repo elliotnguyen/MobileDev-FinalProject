@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.model.User;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -65,7 +65,6 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.w("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             String uid = user.getUid();
                             User newUser = new User(uid,email,"No name");
@@ -74,7 +73,6 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignUpActivity.this, FillProfileActivity.class);
                             startActivity(intent);
-
                         } else {
                             Toast.makeText(SignUpActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
                         }

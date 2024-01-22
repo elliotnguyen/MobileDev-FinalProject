@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">EduPro</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="reading_question">You should spend about 20 minutes on these questions, which are based on the reading passage below</string>
     <string name="reading_question_tfng">Choose TRUE if the statement agrees with the information given in the text, choose FALSE if the statement contradicts the information, or choose NOT GIVEN if there is no information on this.</string>
     <string name="reading_question_mcq">Choose the correct letter, A, B, C or D.</string>
+    <string name="listening_question">You should spend about 20 minutes on these questions</string>
+    <string name="listening_question_tfng">Listen and decide whether the statements are True(T), False(F) or Not Given(N)</string>
     <string name="dialog_default_title">Here\'s a message!</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="LOADING">Loading...</string>
+    <string name="apiKey">AIzaSyBGoZEwlQVFG64sJLyL5RvSOTgUN0vfghU</string>
     <string name="default_web_client_id">759339164648-ur1fjr18rrgbh4a71h6prhin2ln75nmh.apps.googleusercontent.com</string>
     <string name="your_current_streak_is">"Your current streak is "</string>
+    <string name="practice_reading">Press the play button to listen to the question and then record your answer</string>
 </resources>
