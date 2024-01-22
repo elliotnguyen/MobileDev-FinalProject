@@ -50,8 +50,9 @@ public class NoteDetailViewModel extends ViewModel {
         });
     }
     public void updateWord(String word, String description, final NoteRepository.OnNoteUpdatedListener listener) {
-
-
+        String regex = "[/\\.#\\$\\[\\]]";
+        String replacement = "-";
+        word = word.replaceAll(regex, replacement);
         isLoading.setValue(true); // Set loading state to true before updating
 
         Note currentNote = note.getValue();
