@@ -2,6 +2,8 @@ package com.example.edupro.model;
 
 import android.os.Parcelable;
 import android.os.Parcel;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Note implements Parcelable {
@@ -15,14 +17,13 @@ public class Note implements Parcelable {
         // Default constructor required for calls to DataSnapshot.getValue(Note.class)
     }
 
-    public Note(String id, String user_id, String category,String user_name, Map<String, String> wordList) {
+    public Note(String id, String user_id, String category, String user_name, Map<String, String> wordList) {
         this.id = id;
         this.user_id = user_id;
         this.user_name = user_name;
         this.category = category;
-        this.wordList = wordList;
+        this.wordList = new LinkedHashMap<>(wordList); // Ensure order is preserved
     }
-
     public String getId() {
         return id;
     }
@@ -59,7 +60,7 @@ public class Note implements Parcelable {
     }
 
     public void setWordList(Map<String, String> wordList) {
-        this.wordList = wordList;
+        this.wordList = new LinkedHashMap<>(wordList); // Ensure order is preserved
     }
 
 
@@ -69,7 +70,8 @@ public class Note implements Parcelable {
         user_name = in.readString();
         category = in.readString();
         // Assuming that your Map<String, String> is a non-null Map
-        wordList = in.readHashMap(String.class.getClassLoader());
+        wordList = new LinkedHashMap<>(); // Initialize as LinkedHashMap
+        in.readMap(wordList, String.class.getClassLoader()); // Read into LinkedHashMap
     }
 
     @Override

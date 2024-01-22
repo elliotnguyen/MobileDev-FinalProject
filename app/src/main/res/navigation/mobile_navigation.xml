@@ -50,4 +50,10 @@
         android:name="com.example.edupro.ui.note.NoteDetailFragment"
         android:label="fragment_practice_writing_practice"
         tools:layout="@layout/fragment_detail_note" />
+
+    <fragment
+        android:id="@+id/navigation_search_note"
+        android:name="com.example.edupro.ui.note.SearchNoteFragment"
+        android:label="fragment_search_note"
+        tools:layout="@layout/fragment_search_note" />
 </navigation>
