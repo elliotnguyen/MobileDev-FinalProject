@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        hideBottomNavigationBar();
+        //hideBottomNavigationBar();
 
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
