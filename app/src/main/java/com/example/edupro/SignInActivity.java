@@ -56,7 +56,6 @@ public class SignInActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
     }
 
     private void handleSignInWithFirebase() {
