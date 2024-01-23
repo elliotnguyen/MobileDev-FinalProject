@@ -1,10 +1,10 @@
 package com.example.edupro;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.model.User;
+import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.SignInButton;
@@ -22,59 +23,114 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-// Add these imports at the top of your file
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-// Add these fields to your SignInActivity
-
-
-// Inside onCreate method, initialize FirebaseAuth and GoogleSignInClient
-
 
 public class SignInActivity extends AppCompatActivity {
     private TextInputEditText email, password;
-    private TextView signUp;
-    private Button signIn;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        email = findViewById(R.id.edtEmail);
-        password = findViewById(R.id.edtPassword);
-        signIn = findViewById(R.id.btnSignIn);
-        signUp = findViewById(R.id.tvSignUp);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
         mAuth = FirebaseAuth.getInstance();
+        redirectWhenLoggedIn();
 
-        signIn.setOnClickListener(view -> {
-            String email = this.email.getText().toString();
-            String password = this.password.getText().toString();
+        handleSignInWithFirebase();
+        handleSignInWithGoogle();
+        handleSignUpWhenLogInFailed();
+    }
 
-            if (validate(email, password)) {
-                performFirebaseLogin(email, password);
-            }
-        });
-        mAuth = FirebaseAuth.getInstance();
+    private void redirectWhenLoggedIn() {
         if(mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
-                .requestIdToken(getString(R.string.default_web_client_id))
 
+    }
+
+    private void handleSignInWithFirebase() {
+        email = findViewById(R.id.edtEmail);
+        password = findViewById(R.id.edtPassword);
+        Button signIn = findViewById(R.id.btnSignIn);
+        signIn.setOnClickListener(view -> {
+            String email = this.email.getText().toString();
+            String password = this.password.getText().toString();
+            if (validate(email, password)) {
+                performFirebaseLogin(email, password);
+            }
+        });
+    }
+
+    private void performFirebaseLogin(String email, String password) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("Loading");
+        sweetAlertDialog.show();
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        sweetAlertDialog.dismissWithAnimation();
+
+                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialog.setTitleText("Login failed");
+                        sweetAlertDialog.setContentText("Please check your email and password");
+                        sweetAlertDialog.setConfirmText("OK");
+                        sweetAlertDialog.setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+                    }
+                });
+    }
+
+    private boolean validate(String email, String password) {
+        if (email.isEmpty()) {
+            this.email.setError("Email is required");
+            this.email.requestFocus();
+            return false;
+        }
+        if (password.isEmpty()) {
+            this.password.setError("Password is required");
+            this.password.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void handleSignUpWhenLogInFailed() {
+        TextView signUp = findViewById(R.id.tvSignUp);
+        signUp.setOnClickListener(view -> {
+            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInWithGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -96,46 +152,6 @@ public class SignInActivity extends AppCompatActivity {
             }
 
         });
-
-        signUp.setOnClickListener(view -> {
-            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void performFirebaseLogin(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(SignInActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private boolean validate(String email, String password) {
-        if (email.isEmpty()) {
-            this.email.setError("Email is required");
-            this.email.requestFocus();
-            return false;
-        }
-        if (password.isEmpty()) {
-            this.password.setError("Password is required");
-            this.password.requestFocus();
-            return false;
-        }
-        return true;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -146,11 +162,17 @@ public class SignInActivity extends AppCompatActivity {
             Toast.makeText(this, "Google Sign-In failed" + e, Toast.LENGTH_LONG).show();
         }
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("Loading");
+        sweetAlertDialog.show();
+
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        sweetAlertDialog.dismissWithAnimation();
                         // Sign in success, update UI or navigate to the next screen
                         // Example: navigate to MainActivity
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
@@ -161,7 +183,12 @@ public class SignInActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialog.setTitleText("Login failed");
+                        sweetAlertDialog.setContentText("Please check your email and password");
+                        sweetAlertDialog.setConfirmText("OK");
+                        sweetAlertDialog.setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
                     }
                 });
     }

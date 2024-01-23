@@ -41,5 +41,7 @@ public class SpeakingDto extends SkillDto {
         return new SpeakingDto(id, type, topic, question, sampleAnswer);
     }
 
-
+   public String getTitle() {
+        return "Speaking Test ";
+   }
 }

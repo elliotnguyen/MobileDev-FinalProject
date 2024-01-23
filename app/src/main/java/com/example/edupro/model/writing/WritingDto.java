@@ -37,4 +37,8 @@ public class WritingDto extends SkillDto {
     public String getSampleAnswer() {
         return sampleAnswer;
     }
+
+    public String getTitle() {
+        return "Writing Test ";
+    }
 }

@@ -39,4 +39,9 @@ public class SpeakingPracticeViewModel extends ViewModel {
         return currentAnswer;
     }
 
+    public void init() {
+        for (int i = 0; i < 10; i++) {
+            speakingRepository.getSpeaking().setValue(new SpeakingDto());
+        }
+    }
 }

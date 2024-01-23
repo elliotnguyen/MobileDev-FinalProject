@@ -83,7 +83,8 @@
                     android:id="@+id/reading_topic_text"
                     android:textAlignment="center"
                     android:text="Topic"
-                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -105,7 +106,8 @@
                     android:id="@+id/reading_question_type_text"
                     android:textAlignment="center"
                     android:text="Question Type"
-                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

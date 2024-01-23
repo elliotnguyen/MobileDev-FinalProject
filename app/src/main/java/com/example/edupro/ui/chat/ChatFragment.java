@@ -1,21 +1,21 @@
-package com.example.edupro;
+package com.example.edupro.ui.chat;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import com.example.edupro.R;
 import com.example.edupro.model.MessageDao;
-import com.example.edupro.ui.chat.MessageAdapter;
+import com.example.edupro.service.GeminiService;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
@@ -31,25 +31,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity {
-    private RecyclerView chatRecyclerView;
+public class ChatFragment extends Fragment {
     private RecyclerView.Adapter chatAdapter;
     private ArrayList<MessageDao> messageArrayList;
     private TextInputEditText messageEditText;
     private ImageView sendButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        View chatView = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
 
-        chatRecyclerView = findViewById(R.id.chat_recycler_view);
-        chatRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        RecyclerView chatRecyclerView = chatView.findViewById(R.id.chat_recycler_view);
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 
         messageArrayList = new ArrayList<>();
         messageArrayList.add(new MessageDao("Hello there! I am Eddy, your personal assistant. How can I help you today?", 2));
@@ -57,37 +52,40 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new MessageAdapter(messageArrayList);
         chatRecyclerView.setAdapter(chatAdapter);
 
-        messageEditText = findViewById(R.id.chat_edit_text);
-        sendButton = findViewById(R.id.sendbtn);
+        messageEditText = chatView.findViewById(R.id.chat_edit_text);
+        sendButton = chatView.findViewById(R.id.sendbtn);
 
         handleGeminiAssistant();
+
+        return chatView;
     }
 
     private void handleGeminiAssistant() {
-        String apiKey = getString(R.string.apiKey);
-        GenerativeModel generativeModel = new GenerativeModel("gemini-pro", apiKey);
-        GenerativeModelFutures generativeModelFutures = GenerativeModelFutures.from(generativeModel);
+//        String apiKey = getString(R.string.apiKey);
+//        GenerativeModel generativeModel = new GenerativeModel("gemini-pro", apiKey);
+//        GenerativeModelFutures generativeModelFutures = GenerativeModelFutures.from(generativeModel);
+        GeminiService geminiService = new GeminiService(getString(R.string.apiKey), "gemini-pro");
 
-        Content.Builder userContentBuilder = new Content.Builder();
-        userContentBuilder.setRole("user");
-        userContentBuilder.addText("Hello, I am studying IELTS");
-        Content userContent = userContentBuilder.build();
+//        Content.Builder userContentBuilder = new Content.Builder();
+//        userContentBuilder.setRole("user");
+//        userContentBuilder.addText("Hello, I am studying IELTS");
+//        Content userContent = userContentBuilder.build();
+//
+//        Content.Builder modelContentBuilder = new Content.Builder();
+//        modelContentBuilder.setRole("model");
+//        modelContentBuilder.addText("Great to meet you. What would you like to know?");
+//        Content modelContent = userContentBuilder.build();
 
-        Content.Builder modelContentBuilder = new Content.Builder();
-        modelContentBuilder.setRole("model");
-        modelContentBuilder.addText("Great to meet you. What would you like to know?");
-        Content modelContent = userContentBuilder.build();
-
-        List<Content> history = Arrays.asList(userContent, modelContent);
+        //List<Content> history = Arrays.asList(userContent, modelContent);
 
         // Initialize the chat
-        ChatFutures chat = generativeModelFutures.startChat(history);
+        //ChatFutures chat = generativeModelFutures.startChat(history);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (messageEditText.getText() == null || messageEditText.getText().toString().isEmpty()) {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(ChatActivity.this, SweetAlertDialog.ERROR_TYPE);
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE);
                     sweetAlertDialog.setTitleText("Error");
                     sweetAlertDialog.setContentText("Please enter your message");
                     sweetAlertDialog.setCancelable(true);
@@ -103,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 messageEditText.setText("");
 
-                ListenableFuture<GenerateContentResponse> response = generativeModelFutures.generateContent(userMessage);
+                ListenableFuture<GenerateContentResponse> response = geminiService.getGenerativeModelFutures().generateContent(userMessage);
                 Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
                     @Override
                     public void onSuccess(@Nullable GenerateContentResponse result) {
@@ -119,7 +117,7 @@ public class ChatActivity extends AppCompatActivity {
                     public void onFailure(Throwable t) {
                         t.printStackTrace();
                     }
-                }, ContextCompat.getMainExecutor(ChatActivity.this));
+                }, ContextCompat.getMainExecutor(requireContext()));
             }
         });
     }

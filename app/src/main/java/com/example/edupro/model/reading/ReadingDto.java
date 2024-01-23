@@ -3,6 +3,10 @@ package com.example.edupro.model.reading;
 import android.util.Log;
 
 import com.example.edupro.model.SkillDto;
+import com.example.edupro.model.question.MCQQuestion;
+import com.example.edupro.model.question.Question;
+import com.example.edupro.model.question.QuestionSection;
+import com.example.edupro.model.question.TFNGQuestion;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -40,7 +44,7 @@ public class ReadingDto extends SkillDto {
             String contentPart = (String) contentSection.getValue();
             content.add(contentPart);
         }
-        ArrayList<QuestionSection> questions = handleQuestions(dataSnapshot);
+        ArrayList<QuestionSection> questions = QuestionSection.handleQuestions(dataSnapshot);
         ArrayList<String> answers = new ArrayList<>();
         for (DataSnapshot answerSection : dataSnapshot.child("answers").getChildren()) {
             String answer = (String) answerSection.getValue();
@@ -49,28 +53,28 @@ public class ReadingDto extends SkillDto {
         return new ReadingDto(id, type, topic, title, content, questions, answers);
     }
 
-    private static ArrayList<QuestionSection> handleQuestions(DataSnapshot dataSnapshot) {
-        ArrayList<QuestionSection> questions = new ArrayList<>();
-        for (DataSnapshot questionSection : dataSnapshot.child("questions").getChildren()) {
-            long type = (long) questionSection.child("type").getValue();
-            ArrayList<Question> questionList = new ArrayList<>();
-            for (DataSnapshot question : questionSection.child("questions").getChildren()) {
-                String content = (String) question.child("content").getValue();
-                if (type == 0) {
-                    questionList.add(new TFNGQuestion(content));
-                } else if (type == 1) {
-                    ArrayList<String> options = new ArrayList<>();
-                    for (DataSnapshot option : question.child("choices").getChildren()) {
-                        String optionContent = (String) option.getValue();
-                        options.add(optionContent);
-                    }
-                    questionList.add(new MCQQuestion(content, options));
-                }
-            }
-            questions.add(new QuestionSection(type, questionList));
-        }
-        return questions;
-    }
+//    private static ArrayList<QuestionSection> handleQuestions(DataSnapshot dataSnapshot) {
+//        ArrayList<QuestionSection> questions = new ArrayList<>();
+//        for (DataSnapshot questionSection : dataSnapshot.child("questions").getChildren()) {
+//            long type = (long) questionSection.child("type").getValue();
+//            ArrayList<Question> questionList = new ArrayList<>();
+//            for (DataSnapshot question : questionSection.child("questions").getChildren()) {
+//                String content = (String) question.child("content").getValue();
+//                if (type == 0) {
+//                    questionList.add(new TFNGQuestion(content));
+//                } else if (type == 1) {
+//                    ArrayList<String> options = new ArrayList<>();
+//                    for (DataSnapshot option : question.child("choices").getChildren()) {
+//                        String optionContent = (String) option.getValue();
+//                        options.add(optionContent);
+//                    }
+//                    questionList.add(new MCQQuestion(content, options));
+//                }
+//            }
+//            questions.add(new QuestionSection(type, questionList));
+//        }
+//        return questions;
+//    }
 
     public String getTitle() {
         return title;

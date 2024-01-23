@@ -20,12 +20,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
-import com.example.edupro.model.reading.Question;
+import com.example.edupro.model.question.Question;
 import com.example.edupro.model.reading.ReadingDto;
 import com.example.edupro.ui.RecyclerViewClickInterface;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.reading.practice.passage.ReadingPassageFragment;
 import com.example.edupro.ui.practice.reading.practice.question.ReadingQuestionFragment;
+import com.example.edupro.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class ReadingPracticeFragment extends Fragment {
     private String readingId;
     private ReadingDto readingDto = new ReadingDto();
     private ReadingPracticeViewModel readingViewModel;
+    private UserViewModel userViewModel;
     private TextView readingPassage;
     private TextView readingQuestion;
     private RecyclerView readingQuestionRecyclerView;
@@ -63,11 +65,18 @@ public class ReadingPracticeFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 6);
         readingQuestionRecyclerView.setLayoutManager(gridLayoutManager);
 
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         readingViewModel = new ViewModelProvider(this).get(ReadingPracticeViewModel.class);
         readingViewModel.init();
 
         if (getArguments() != null) {
             readingId = getArguments().getString("readingId");
+            String answers = getArguments().getString("answers");
+            if (answers != null && !answers.equals("")) {
+                readingViewModel.setAnswers(answers);
+            }
+
             readingViewModel.setReadingId(readingId);
         }
 
@@ -76,6 +85,8 @@ public class ReadingPracticeFragment extends Fragment {
         handleSessionShow(readingPractice);
         handleBottomSheet();
         handleSubmit(readingPractice);
+
+        handleCancel(readingPractice);
 
         return readingPractice;
     }
@@ -149,6 +160,29 @@ public class ReadingPracticeFragment extends Fragment {
         });
     }
 
+    private void handleCancel(View readingPractice) {
+        Button cancel = readingPractice.findViewById(R.id.reading_practice_cancel_button);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                readingViewModel.saveAnswer(userViewModel.getUser().getValue().getId(), false, "0");
+                                Navigation.findNavController(readingPractice).navigate(R.id.navigation_practice_reading);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelText("No")
+                        .setCancelClickListener(null);
+                sweetAlertDialog.show();
+            }
+        });
+    }
+
     private void handleSubmit(View readingPractice) {
         Button submitButton = readingPractice.findViewById(R.id.reading_practice_submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +196,7 @@ public class ReadingPracticeFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+                                readingViewModel.submitAnswer(userViewModel.getUser().getValue().getId()).observe(getViewLifecycleOwner(), isSubmit -> {
                                     if (isSubmit) {
                                         handleParadeAnimation(readingPractice);
                                         sDialog
@@ -204,7 +238,9 @@ public class ReadingPracticeFragment extends Fragment {
     }
 
     private void handleSubmitted(View readingPractice) {
-        String result = readingViewModel.getMark().getValue() +"/" + readingViewModel.getNumberOfQuestions().getValue();
+//        String result = readingViewModel.getResult().getValue() +"/" + readingViewModel.getNumberOfQuestions().getValue();
+        String result = readingViewModel.getResult().getValue();
+
         String part1Type = String.valueOf(readingDto.getQuestions().get(0).getType());
         String part2Type = String.valueOf(readingDto.getQuestions().get(1).getType());
 

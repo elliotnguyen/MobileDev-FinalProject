@@ -22,7 +22,6 @@ public class ReadingRepository {
         if (instance == null) {
             instance = new ReadingRepository();
         }
-        //return new ReadingRepository();
         return instance;
     }
 

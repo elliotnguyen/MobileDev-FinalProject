@@ -10,9 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
-import com.example.edupro.model.reading.TFNGQuestion;
+import com.example.edupro.model.question.TFNGQuestion;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
-import com.example.edupro.ui.practice.reading.practice.ReadingPracticeViewModel;
 import com.example.edupro.ui.practice.reading.practice.question.MCQClickInterface;
 
 import java.util.ArrayList;

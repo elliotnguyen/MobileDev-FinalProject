@@ -1,4 +1,6 @@
-package com.example.edupro.model.reading;
+package com.example.edupro.model.question;
+
+import com.example.edupro.model.question.Question;
 
 import java.util.ArrayList;
 
