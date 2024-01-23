@@ -15,28 +15,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.edupro.R;
-import com.example.edupro.api.TestAPI;
 import com.example.edupro.model.Note;
 import com.example.edupro.model.User;
-import com.example.edupro.viewmodel.NoteViewModel;
 import com.example.edupro.viewmodel.UserViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NoteFragment extends Fragment {
 
@@ -52,23 +47,39 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        UserViewModel userViewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
-        user = userViewModel.getUser().getValue();
         mViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
-        mViewModel.fetchNotesByUserId(user.getId());
-        mViewModel.fetchNotesRandomly(10);
+//        mViewModel.fetchNotesByUserId(user.getId());
+//        mViewModel.fetchNotesRandomly(10);
+        observeAnyChange();
 
-
-        TestAPI.run();
         return inflater.inflate(R.layout.fragment_note, container, false);
     }
+
+    private void observeAnyChange() {
+        UserViewModel userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        if (userViewModel.getUser().getValue() == null) {
+            userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+                @Override
+                public void onChanged(User fetchUser) {
+                    if(fetchUser != null) {
+                        user = fetchUser;
+                        mViewModel.fetchNotesByUserId(user.getId());
+                        mViewModel.fetchNotesRandomly(10);
+                    }
+                }
+            });
+        }
+        else {
+            user = userViewModel.getUser().getValue();
+            mViewModel.fetchNotesByUserId(user.getId());
+            mViewModel.fetchNotesRandomly(10);
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
 
         ((TextView)view.findViewById(R.id.note_user_name)).setText("Hello, "+ user.getNickName());
         noteRecyclerView = view.findViewById(R.id.note_recycler_view_my_words);
@@ -84,9 +95,7 @@ public class NoteFragment extends Fragment {
         noteRecyclerView.setAdapter(myNoteAdapter);
         popularNoteRecyclerView.setAdapter(poplarNoteAdapter);
 
-
-
-        SearchView searchView = view.findViewById(R.id.search_view_all );
+        SearchView searchView = view.findViewById(R.id.search_view_all);
 
         // Set up a listener for the search button in the SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -106,11 +115,9 @@ public class NoteFragment extends Fragment {
             }
         });
 
-
         mViewModel.getMutableNotes().observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
-
                 myNoteAdapter.setNoteList(notes);
                 myNoteAdapter.notifyDataSetChanged();
             }
@@ -119,22 +126,21 @@ public class NoteFragment extends Fragment {
         mViewModel.getPopularNoteList().observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
-
                 poplarNoteAdapter.setNoteList(notes);
                 poplarNoteAdapter.notifyDataSetChanged();
             }
         });
 
-        ImageView add_note = view.findViewById(R.id.note_add_note);
+        FloatingActionButton add_note = view.findViewById(R.id.fragment_add_note);
         add_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAddNoteDialog();
             }
         });
+
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(noteRecyclerView);
-
     }
 
     private void showAddNoteDialog() {
@@ -173,11 +179,11 @@ public class NoteFragment extends Fragment {
         // Show the dialog
         dialog.show();
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         // TODO: Use the ViewModel
     }
-
 }

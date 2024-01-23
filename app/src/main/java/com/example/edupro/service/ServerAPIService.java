@@ -1,4 +1,4 @@
-package com.example.edupro.api;
+package com.example.edupro.service;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

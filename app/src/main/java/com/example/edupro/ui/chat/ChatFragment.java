@@ -5,21 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
+import com.example.edupro.databinding.FragmentChatBinding;
 import com.example.edupro.model.MessageDao;
 import com.example.edupro.service.GeminiService;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
-import com.google.ai.client.generativeai.GenerativeModel;
-import com.google.ai.client.generativeai.java.ChatFutures;
-import com.google.ai.client.generativeai.java.GenerativeModelFutures;
+
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,20 +29,19 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ChatFragment extends Fragment {
     private RecyclerView.Adapter chatAdapter;
     private ArrayList<MessageDao> messageArrayList;
     private TextInputEditText messageEditText;
     private ImageView sendButton;
+    private FragmentChatBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View chatView = inflater.inflate(R.layout.fragment_chat, container, false);
-
+        binding = FragmentChatBinding.inflate(inflater, container, false);
 
         RecyclerView chatRecyclerView = chatView.findViewById(R.id.chat_recycler_view);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -56,6 +56,7 @@ public class ChatFragment extends Fragment {
         sendButton = chatView.findViewById(R.id.sendbtn);
 
         handleGeminiAssistant();
+        handleCancelChatRoom(chatView);
 
         return chatView;
     }
@@ -118,6 +119,16 @@ public class ChatFragment extends Fragment {
                         t.printStackTrace();
                     }
                 }, ContextCompat.getMainExecutor(requireContext()));
+            }
+        });
+    }
+
+    private void handleCancelChatRoom(View view) {
+        TextView cancelChatRoom = view.findViewById(R.id.assistant_chat_window_back_button);
+        cancelChatRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.navigation_home);
             }
         });
     }

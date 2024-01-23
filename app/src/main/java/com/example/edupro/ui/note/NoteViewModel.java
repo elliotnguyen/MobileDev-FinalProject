@@ -1,4 +1,4 @@
-package com.example.edupro.viewmodel;
+package com.example.edupro.ui.note;
 
 import android.util.Log;
 
@@ -12,17 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteViewModel extends ViewModel {
-    private MutableLiveData<List<Note>> noteList = new MutableLiveData<>();
-    private MutableLiveData<List<Note>> popularNoteList = new MutableLiveData<>();
-    private NoteRepository noteRepository;
+    private final MutableLiveData<List<Note>> noteList = new MutableLiveData<>();
+    private final MutableLiveData<List<Note>> popularNoteList = new MutableLiveData<>();
+    private final NoteRepository noteRepository;
 
     public NoteViewModel() {
-
-
         this.noteRepository = new NoteRepository();
-
-
-
     }
 
     // Method to observe the list of notes
@@ -44,10 +39,6 @@ public class NoteViewModel extends ViewModel {
 
         noteRepository.addNote(note);
     }
-
-
-
-
 
     // Method to fetch notes from the repository based on user_id
     public void fetchNotesByUserId(String userId) {

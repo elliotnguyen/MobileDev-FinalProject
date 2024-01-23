@@ -98,5 +98,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
 
-
+    // Swipe Decorator
+    implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
 }

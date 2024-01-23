@@ -1,4 +1,4 @@
-package com.example.edupro.api;
+package com.example.edupro.service;
 
 public class WritingGradingRequestModel {
     private   String question;

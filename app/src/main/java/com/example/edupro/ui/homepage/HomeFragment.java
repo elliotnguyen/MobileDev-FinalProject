@@ -11,7 +11,6 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.edupro.R;
@@ -19,7 +18,6 @@ import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.databinding.FragmentHomeBinding;
 import com.example.edupro.model.User;
 import com.example.edupro.viewmodel.UserViewModel;
-
 
 public class HomeFragment extends Fragment {
 
@@ -34,8 +32,18 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         handleUserInfoDisplay();
+        handleChatRoomDisplay();
 
         return root;
+    }
+
+    private void handleChatRoomDisplay() {
+        binding.messageIconHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.navigation_chat);
+            }
+        });
     }
 
     private void handleUserInfoDisplay() {
