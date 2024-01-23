@@ -7,7 +7,7 @@ public class AnswerDto {
     private String testId;
     private String userId;
     private String answer;
-    private double score;
+    private String score;
     private String timeStamp;
     private String note;
     private Boolean isSubmitted;
@@ -17,13 +17,13 @@ public class AnswerDto {
         testId = "";
         userId = "";
         answer = "";
-        score = 0;
+        score = "";
         timeStamp = "";
         note = "";
         isSubmitted = false;
     }
 
-    public AnswerDto(String id, String testId, String userId, String answer, double score, String timeStamp, String note, Boolean isSubmitted) {
+    public AnswerDto(String id, String testId, String userId, String answer, String score, String timeStamp, String note, Boolean isSubmitted) {
         this.id = id;
         this.testId = testId;
         this.userId = userId;
@@ -39,10 +39,10 @@ public class AnswerDto {
         String testId = (String) dataSnapshot.child("testId").getValue();
         String userId = (String) dataSnapshot.child("userId").getValue();
         String answer = (String) dataSnapshot.child("answer").getValue();
-        double score = (double) dataSnapshot.child("score").getValue();
+        String score = (String) dataSnapshot.child("score").getValue();
         String timeStamp = (String) dataSnapshot.child("timeStamp").getValue();
         String note = (String) dataSnapshot.child("note").getValue();
-        Boolean isSubmitted = (Boolean) dataSnapshot.child("isSubmitted").getValue();
+        Boolean isSubmitted = (Boolean) dataSnapshot.child("submitted").getValue();
         return new AnswerDto(id, testId, userId, answer, score, timeStamp, note, isSubmitted);
     }
 
@@ -62,7 +62,7 @@ public class AnswerDto {
         return answer;
     }
 
-    public double getScore() {
+    public String getScore() {
         return score;
     }
 
@@ -82,7 +82,7 @@ public class AnswerDto {
         this.answer = answer;
     }
 
-    public void setScore(double score) {
+    public void setScore(String score) {
         this.score = score;
     }
 
@@ -104,5 +104,19 @@ public class AnswerDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getProgress() {
+        int numOfQuestion = 0, numOfAnswer = 0;
+        for (String i : answer.split(";")) {
+            if (!i.equals("-")) {
+                numOfAnswer++;
+            }
+            numOfQuestion++;
+        }
+        if (numOfQuestion == 0) {
+            return 0;
+        }
+        return (int) Math.round((double) numOfAnswer / numOfQuestion * 100);
     }
 }

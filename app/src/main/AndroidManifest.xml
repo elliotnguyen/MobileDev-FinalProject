@@ -18,13 +18,12 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WithActionBar.EduPro"
         tools:replace="android:icon">
-        <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
         <activity
             android:name=".FillProfileActivity"
             android:exported="false" />

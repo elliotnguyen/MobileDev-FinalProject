@@ -5,40 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
+import com.example.edupro.constant.NoBottomNavFragment;
 import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.databinding.ActivityMainBinding;
 import com.example.edupro.model.User;
 import com.example.edupro.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
-    private final ArrayList<Integer> hidingBottomBarFragmentIds = new ArrayList<>(
-            Arrays.asList(
-                    R.id.navigation_practice_reading,
-                    R.id.navigation_practice_reading_practice,
-                    R.id.navigation_practice_writing_practice,
-                    R.id.navigation_practice_reading_result,
-                    R.id.navigation_practice_listening,
-                    R.id.navigation_practice_listening_practice,
-                    R.id.navigation_practice_speaking,
-                    R.id.navigation_practice_speaking_practice
-            )
-    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +46,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (shouldHideBottomBar(destination.getId())) {
+            if (NoBottomNavFragment.shouldHideBottomBar(destination.getId())) {
                 hideBottomNavigationBar();
             } else {
                 showBottomNavigationBar();
             }
         });
-
-        //hideBottomNavigationBar();
-
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
@@ -88,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean shouldHideBottomBar(int id) {
-        return hidingBottomBarFragmentIds.contains(id);
-    }
     private void showBottomNavigationBar() {
         binding.navView.setVisibility(View.VISIBLE);
     }

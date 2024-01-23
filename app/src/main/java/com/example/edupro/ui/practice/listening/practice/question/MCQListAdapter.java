@@ -9,13 +9,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
-import com.example.edupro.model.reading.MCQQuestion;
+import com.example.edupro.model.question.MCQQuestion;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
-import com.example.edupro.ui.practice.reading.practice.ReadingPracticeViewModel;
 import com.example.edupro.ui.practice.reading.practice.question.MCQClickInterface;
 
 import java.util.ArrayList;

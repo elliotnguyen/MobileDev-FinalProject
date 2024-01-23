@@ -10,14 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.edupro.R;
 import com.example.edupro.databinding.FragmentListeningMCQBinding;
-import com.example.edupro.databinding.FragmentListeningTFNGBinding;
-import com.example.edupro.model.reading.MCQQuestion;
-import com.example.edupro.model.reading.Question;
-import com.example.edupro.model.reading.TFNGQuestion;
+import com.example.edupro.model.question.MCQQuestion;
+import com.example.edupro.model.question.Question;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
-import com.example.edupro.ui.practice.reading.practice.ReadingPracticeViewModel;
 import com.example.edupro.ui.practice.reading.practice.question.MCQClickInterface;
 
 import java.util.ArrayList;

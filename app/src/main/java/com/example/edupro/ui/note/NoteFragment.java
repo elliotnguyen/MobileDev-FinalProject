@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.edupro.R;
+import com.example.edupro.api.TestAPI;
 import com.example.edupro.model.Note;
 import com.example.edupro.model.User;
 import com.example.edupro.viewmodel.NoteViewModel;
@@ -59,7 +60,7 @@ public class NoteFragment extends Fragment {
         mViewModel.fetchNotesRandomly(10);
 
 
-
+        TestAPI.run();
         return inflater.inflate(R.layout.fragment_note, container, false);
     }
     @Override

@@ -48,10 +48,12 @@ public class UserRepository {
             }
         });
     }
+
     public void updateStreakCount(String userId, int newStreakCount) {
         // Update the streak count for the user in the database based on user's ID
         databaseReference.child(userId).child("streak_count").setValue(newStreakCount);
     }
+
     // Interface for callback when user is fetched
     public interface OnUserFetchedListener {
         void onUserFetched(User user);

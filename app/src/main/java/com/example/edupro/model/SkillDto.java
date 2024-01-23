@@ -30,4 +30,8 @@ public class SkillDto {
     public long getTopic() {
         return topic;
     }
+
+    public String getTitle() {
+        return "";
+    }
 }

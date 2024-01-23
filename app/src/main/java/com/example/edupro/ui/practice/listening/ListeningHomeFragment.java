@@ -29,7 +29,7 @@ public class ListeningHomeFragment extends Fragment {
     private ListeningHomeViewModel mViewModel;
     private FragmentListeningHomeBinding binding;
     private ListeningListAdapter listeningListAdapter;
-    private ArrayList<ListeningDto> listenings = new ArrayList<>();
+    private final ArrayList<ListeningDto> listenings = new ArrayList<>();
 
     public static ListeningHomeFragment newInstance() {
         return new ListeningHomeFragment();
@@ -87,5 +87,4 @@ public class ListeningHomeFragment extends Fragment {
             }
         });
     }
-
 }
