@@ -2,16 +2,19 @@ package com.example.edupro.data.repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.edupro.model.Note;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
 public class NoteRepository {
-    private DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
 
     public NoteRepository() {
         this.databaseReference = FirebaseDatabase.getInstance().getReference().child("notes");
@@ -50,13 +53,14 @@ public class NoteRepository {
         Query query = databaseReference.orderByChild("user_id").equalTo(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Note> notes = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Note note = snapshot.getValue(Note.class);
-                    if(note.getWordList() == null) note.setWordList(new HashMap<>());
 
                     if (note != null) {
+                        if(note.getWordList() == null) note.setWordList(new HashMap<>());
+
                         notes.add(note);
                     }
                 }
@@ -75,13 +79,13 @@ public class NoteRepository {
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Note> notes = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Note note = snapshot.getValue(Note.class);
 
-                    if(note.getWordList() == null) note.setWordList(new HashMap<>());
                     if (note != null) {
+                        if(note.getWordList() == null) note.setWordList(new LinkedHashMap<>());
                         notes.add(note);
                     }
                 }
@@ -107,7 +111,7 @@ public class NoteRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors
                 listener.onError(databaseError.toException());
             }
@@ -143,10 +147,10 @@ public class NoteRepository {
         // Retrieve a note from the database based on note's ID
         databaseReference.child(noteId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Note note = dataSnapshot.getValue(Note.class);
-                if(note.getWordList() == null) note.setWordList(new HashMap<>());
                 if (note != null) {
+                    if(note.getWordList() == null) note.setWordList(new HashMap<>());
                     listener.onNoteFetched(note);
                 } else {
                     // Handle the case where the note with the specified ID is not found
@@ -155,7 +159,7 @@ public class NoteRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors
                 listener.onError(databaseError.toException());
             }
@@ -174,12 +178,12 @@ public class NoteRepository {
         Query query = databaseReference.orderByChild("category");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Note> notes = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Note note = snapshot.getValue(Note.class);
-    Log.d("cate",note.getCategory());
                     if (note != null && note.getCategory() != null && note.getCategory().toLowerCase().contains(searchTerm.toLowerCase())) {
+                        if(note.getWordList() == null) note.setWordList(new LinkedHashMap<>());
                         notes.add(note);
                         Log.d("yes",note.getCategory());
 
@@ -190,7 +194,7 @@ public class NoteRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors
                 listener.onError(databaseError.toException());
             }

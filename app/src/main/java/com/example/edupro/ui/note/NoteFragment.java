@@ -1,10 +1,14 @@
 package com.example.edupro.ui.note;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -60,14 +64,12 @@ public class NoteFragment extends Fragment {
         mViewModel.fetchNotesRandomly(10);
 
 
-        TestAPI.run();
+
         return inflater.inflate(R.layout.fragment_note, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
 
 
         ((TextView)view.findViewById(R.id.note_user_name)).setText("Hello, "+ user.getNickName());
@@ -178,6 +180,9 @@ public class NoteFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         // TODO: Use the ViewModel
+
+
+
     }
 
 }
