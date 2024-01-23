@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.edupro.data.repository.AnswerRepository;
 import com.example.edupro.data.repository.ListeningRepository;
+import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.listening.ListeningDto;
 
 import java.util.ArrayList;
@@ -98,5 +99,37 @@ public class ListeningPracticeViewModel extends ViewModel {
         }
         return answer.toString();
     }
-    // TODO: Implement the ViewModel
+
+    public LiveData<Boolean> submitAnswer(String userId) {
+        return saveAnswer(userId, true);
+    }
+
+    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted) {
+        String currentAnswer = getCurrentAnswer();
+        String id = "";
+        if (listeningId.getValue() != null) {
+            id = "l" + listeningId.getValue() + "_" + userId;
+        }
+        ArrayList<String> childId= new ArrayList<>();
+        childId.add(id);
+        AnswerDto answerDto = new AnswerDto(id, "l" + listeningId.getValue(), userId, currentAnswer, 0, "", "", isSubmitted);
+        answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
+        return answerRepository.getStatusHandling();
+    }
+
+    public LiveData<Integer> getMark() {
+        if (numberOfQuestions.getValue() != null) {
+            int count = 0;
+            for (int i = 0; i < numberOfQuestions.getValue(); i++) {
+                if (answers.get(i).getValue() != null && fixedListening.getValue() != null) {
+                    if (Objects.equals(answers.get(i).getValue(), fixedListening.getValue().getAnswers().get(i))) {
+                        count++;
+                    }
+                }
+            }
+            mark.setValue(count);
+        }
+        return mark;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.edupro.model.speaking;
 import android.util.Log;
 
 import com.example.edupro.model.SkillDto;
+import com.example.edupro.model.reading.QuestionSection;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -40,6 +41,5 @@ public class SpeakingDto extends SkillDto {
         String sampleAnswer = (String) dataSnapshot.child("sample_answer").getValue();
         return new SpeakingDto(id, type, topic, question, sampleAnswer);
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.edupro.ui.practice.reading.practice;
 
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.lifecycle.LiveData;

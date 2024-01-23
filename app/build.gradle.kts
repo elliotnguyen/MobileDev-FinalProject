@@ -89,6 +89,17 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
+    // ffmpeg
+    implementation("com.arthenica:mobile-ffmpeg-full-gpl:4.4")
+
+    // javax
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+
 
 
 }

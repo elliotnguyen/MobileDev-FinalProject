@@ -2,11 +2,13 @@ package com.example.edupro.ui.practice.listening.practice;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -161,12 +163,32 @@ public class ListeningPracticeFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                sDialog
-                                        .setTitleText("Submitted!")
-                                        .setContentText("Congratulate on finishing the test!")
-                                        .setConfirmText("View Result")
-                                        .setConfirmClickListener(null)
-                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                mViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+                                    if (isSubmit) {
+                                        //handleParadeAnimation(readingPractice);
+                                        sDialog
+                                                .setTitleText("Submitted!")
+                                                .setContentText("Congratulate on finishing the test!")
+                                                .setConfirmText("View Result")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        handleSubmitted();
+                                                        sDialog.dismissWithAnimation();
+                                                    }
+                                                })
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    } else {
+                                        sDialog
+                                                .setTitleText("Loading")
+                                                .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                        sDialog
+                                                .setCancelable(false);
+                                        sDialog
+                                                .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                        //sDialog.show();
+                                    }
+                                });
                             }
                         })
                         .setCancelText("Cancel")
@@ -178,13 +200,46 @@ public class ListeningPracticeFragment extends Fragment {
                             }
                         });
                 sweetAlertDialog.show();
-//                readingViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
-//                    if (isSubmit) {
-//
-//                    }
-//                });
             }
         });
+    }
+
+    private void handleSubmitted() {
+        String result = mViewModel.getMark().getValue() +"/" + mViewModel.getNumberOfQuestions().getValue();
+        String part1Type = String.valueOf(listeningDto.getQuestions().get(0).getType());
+        String part2Type = String.valueOf(listeningDto.getQuestions().get(1).getType());
+
+        ArrayList<String> correctAnswersPart1 = new ArrayList<>();
+        ArrayList<String> answersPart1 = new ArrayList<>();
+        int part1Size = listeningDto.getQuestions().get(0).getQuestions().size();
+        for (int i = 0; i < part1Size; i++) {
+            correctAnswersPart1.add(listeningDto.getAnswers().get(i));
+        }
+        for (int i = 0; i < part1Size; i++) {
+            answersPart1.add(mViewModel.getAnswerAtIndex(i).getValue());
+        }
+
+        ArrayList<String> correctAnswersPart2 = new ArrayList<>();
+        ArrayList<String> answersPart2 = new ArrayList<>();
+        int part2Size = listeningDto.getQuestions().get(1).getQuestions().size();
+        for (int i = 0; i < part2Size; i++) {
+            answersPart2.add(mViewModel.getAnswerAtIndex(i + part1Size).getValue());
+        }
+        for (int i = 0; i < part2Size; i++) {
+            correctAnswersPart2.add(listeningDto.getAnswers().get(i + part1Size));
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("listeningId", listeningDto.getId());
+        bundle.putString("result", result);
+        bundle.putString("part1", part1Type);
+        bundle.putString("part2", part2Type);
+        bundle.putStringArrayList("correctAnswersPart1", correctAnswersPart1);
+        bundle.putStringArrayList("answersPart1", answersPart1);
+        bundle.putStringArrayList("correctAnswersPart2", correctAnswersPart2);
+        bundle.putStringArrayList("answersPart2", answersPart2);
+
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_reading_result, bundle);
     }
 
 }
