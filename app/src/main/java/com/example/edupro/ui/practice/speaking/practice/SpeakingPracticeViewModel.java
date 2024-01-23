@@ -57,44 +57,44 @@ public class SpeakingPracticeViewModel extends ViewModel {
             answers.add(new MutableLiveData<>("-"));
         }
     }
-    private String getAnswerFilePath(String audioFile) {
-        File file = new File(audioFile);
-        return file.getAbsolutePath();
-    }
-    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted) {
-        String answer = getAnswerFilePath(currentAnswer.getValue());
-        String id = "";
-        if (speakingId.getValue() != null) {
-            id = "s" + speakingId.getValue() + "_" + userId;
-        }
-        ArrayList<String> childId= new ArrayList<>();
-        childId.add(id);
-        AnswerDto answerDto = new AnswerDto(id, "s" + speakingId.getValue(), userId, answer, 0, "", "", isSubmitted);
-        answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
-        return answerRepository.getStatusHandling();
-    }
-
-    public LiveData<Boolean> submitAnswer(String userId) {
-        return saveAnswer(userId, true);
-    }
-
-    public LiveData<Integer> getMark() {
-       return null;
-    }
-
-    public Pair<String, String> getAnswersSelected() {
-//        int count = 0;
-//        for (MutableLiveData<String> answer : answers) {
-//            if (!Objects.equals(answer.getValue(), "-")) {
-//                count++;
-//            }
+//    private String getAnswerFilePath(String audioFile) {
+//        File file = new File(audioFile);
+//        return file.getAbsolutePath();
+//    }
+//    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted) {
+//        String answer = getAnswerFilePath(currentAnswer.getValue());
+//        String id = "";
+//        if (speakingId.getValue() != null) {
+//            id = "s" + speakingId.getValue() + "_" + userId;
 //        }
-//        if (numberOfQuestions.getValue() == null) {
-//            return new Pair<>("0", "0");
-//        }
-//        return new Pair<>(String.valueOf(count), String
-//                .valueOf(numberOfQuestions.getValue() - count));
-        return null;
-    }
+//        ArrayList<String> childId= new ArrayList<>();
+//        childId.add(id);
+//        AnswerDto answerDto = new AnswerDto(id, "s" + speakingId.getValue(), userId, answer, 0, "", "", isSubmitted);
+//        answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
+//        return answerRepository.getStatusHandling();
+//    }
+//
+//    public LiveData<Boolean> submitAnswer(String userId) {
+//        return saveAnswer(userId, true);
+//    }
+//
+//    public LiveData<Integer> getMark() {
+//       return null;
+//    }
+//
+//    public Pair<String, String> getAnswersSelected() {
+////        int count = 0;
+////        for (MutableLiveData<String> answer : answers) {
+////            if (!Objects.equals(answer.getValue(), "-")) {
+////                count++;
+////            }
+////        }
+////        if (numberOfQuestions.getValue() == null) {
+////            return new Pair<>("0", "0");
+////        }
+////        return new Pair<>(String.valueOf(count), String
+////                .valueOf(numberOfQuestions.getValue() - count));
+//        return null;
+//    }
 
 }

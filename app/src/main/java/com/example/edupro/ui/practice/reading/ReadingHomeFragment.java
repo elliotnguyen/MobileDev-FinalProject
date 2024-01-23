@@ -48,7 +48,7 @@ public class ReadingHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(view);
-                navController.navigateUp();
+                navController.navigate(R.id.navigation_practice);
             }
         });
 
@@ -104,7 +104,10 @@ public class ReadingHomeFragment extends Fragment {
                 String readingId = readings.get(position).getId();
 
                 bundle.putString("readingId", readingId);
-                bundle.putString("answers", answers.get(position).getAnswer());
+
+                if (answers.size() > position) {
+                    bundle.putString("answers", answers.get(position).getAnswer());
+                }
 
                 Navigation.findNavController(view).navigate(R.id.navigation_practice_reading_practice, bundle);
             }

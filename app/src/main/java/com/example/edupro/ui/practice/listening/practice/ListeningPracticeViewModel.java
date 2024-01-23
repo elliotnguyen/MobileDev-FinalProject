@@ -11,6 +11,7 @@ import com.example.edupro.data.repository.AnswerRepository;
 import com.example.edupro.data.repository.ListeningRepository;
 import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.listening.ListeningDto;
+import com.example.edupro.ui.helper.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class ListeningPracticeViewModel extends ViewModel {
     private final ListeningRepository listeningRepository = ListeningRepository.getInstance();
     private final AnswerRepository answerRepository = AnswerRepository.getInstance();
     private final ArrayList<MutableLiveData<String>> answers = new ArrayList<>();
-    private final MutableLiveData<Integer> mark = new MutableLiveData<>(0);
+    private final MutableLiveData<String> result = new MutableLiveData<>("");
     private final MutableLiveData<Integer> numberOfQuestions = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> isQuestionShow = new MutableLiveData<>(true);
     private final MutableLiveData<String> listeningId = new MutableLiveData<>("");
@@ -58,6 +59,7 @@ public class ListeningPracticeViewModel extends ViewModel {
         }
         return fixedListening;
     }
+
 
     public LiveData<Boolean> getIsQuestionShow() {
         return isQuestionShow;
@@ -101,23 +103,25 @@ public class ListeningPracticeViewModel extends ViewModel {
     }
 
     public LiveData<Boolean> submitAnswer(String userId) {
-        return saveAnswer(userId, true);
+        return saveAnswer(userId, true, getResult().getValue().toString());
     }
 
-    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted) {
+    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted, String result) {
         String currentAnswer = getCurrentAnswer();
-        String id = "";
-        if (listeningId.getValue() != null) {
-            id = "l" + listeningId.getValue() + "_" + userId;
-        }
+        String id = DateUtil.getCurrentTimeOfDate();
+
         ArrayList<String> childId= new ArrayList<>();
-        childId.add(id);
-        AnswerDto answerDto = new AnswerDto(id, "l" + listeningId.getValue(), userId, currentAnswer, 0, "", "", isSubmitted);
+        childId.add(userId);
+        childId.add("listening");
+        childId.add(listeningId.getValue());
+        childId.add(listeningId.getValue() + "_" + userId);
+
+        AnswerDto answerDto = new AnswerDto(id, "l" + listeningId.getValue(), userId, currentAnswer, result, "", "", isSubmitted);
         answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
         return answerRepository.getStatusHandling();
     }
 
-    public LiveData<Integer> getMark() {
+    public LiveData<String> getResult() {
         if (numberOfQuestions.getValue() != null) {
             int count = 0;
             for (int i = 0; i < numberOfQuestions.getValue(); i++) {
@@ -127,9 +131,10 @@ public class ListeningPracticeViewModel extends ViewModel {
                     }
                 }
             }
-            mark.setValue(count);
+            String result = String.valueOf(count) +"/" + getNumberOfQuestions().getValue();
+            this.result.setValue(result);
         }
-        return mark;
+        return this.result;
     }
 
 }

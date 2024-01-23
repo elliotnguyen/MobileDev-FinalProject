@@ -40,6 +40,11 @@
         android:label="fragment_practice_speaking"
         tools:layout="@layout/fragment_speaking_home" />
     <fragment
+        android:id="@+id/navigation_practice_writing"
+        android:name="com.example.edupro.ui.practice.writing.WritingHomeFragment"
+        android:label="fragment_practice_writing"
+        tools:layout="@layout/fragment_writing_home" />
+    <fragment
         android:id="@+id/navigation_practice_reading_practice"
         android:name="com.example.edupro.ui.practice.reading.practice.ReadingPracticeFragment"
         android:label="fragment_practice_reading_practice"
@@ -49,6 +54,11 @@
         android:name="com.example.edupro.ui.practice.reading.result.ReadingResultFragment"
         android:label="fragment_practice_reading_result"
         tools:layout="@layout/fragment_reading_result" />
+    <fragment
+        android:id="@+id/navigation_practice_writing_result"
+        android:name="com.example.edupro.ui.practice.writing.result.WritingResultFragment"
+        android:label="fragment_practice_writing_result"
+        tools:layout="@layout/fragment_writing_result" />
     <fragment
         android:id="@+id/navigation_practice_writing_practice"
         android:name="com.example.edupro.ui.practice.writing.practice.WritingPracticeFragment"
@@ -69,6 +79,17 @@
         android:id="@+id/navigation_practice_listening_practice"
         android:name="com.example.edupro.ui.practice.listening.practice.ListeningPracticeFragment"
         android:label="fragment_practice_listening_practice"
+        tools:layout="@layout/fragment_listening_practice" />
+    <fragment
+        android:id="@+id/navigation_practice_listening_result"
+        android:name="com.example.edupro.ui.practice.listening.result.ListeningResultFragment"
+        android:label="fragment_practice_listening_result"
+        tools:layout="@layout/fragment_listening_result" />
+
+    <fragment
+        android:id="@+id/navigation_result_listening_practice"
+        android:name="com.example.edupro.ui.practice.listening.result.ListeningResultFragment"
+        android:label="fragment_result_listening_practice"
         tools:layout="@layout/fragment_listening_practice" />
     <fragment
         android:id="@+id/navigation_practice_speaking_practice"

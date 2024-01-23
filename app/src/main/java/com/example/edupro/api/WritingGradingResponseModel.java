@@ -1,19 +1,25 @@
 package com.example.edupro.api;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class WritingGradingResponseModel {
-    private String explanation;
+    @SerializedName("explaination")
+    private String explaination;
+    @SerializedName("bard_grade")
     private double bardGrade;
+    @SerializedName("model_grade")
     private double modelGrade;
+    @SerializedName("warnings")
     private List<String> warnings;
 
-    public String getExplanation() {
-        return explanation;
+    public String getExplaination() {
+        return explaination;
     }
 
     public void setExplanation(String explanation) {
-        this.explanation = explanation;
+        this.explaination = explanation;
     }
 
     public double getBardGrade() {

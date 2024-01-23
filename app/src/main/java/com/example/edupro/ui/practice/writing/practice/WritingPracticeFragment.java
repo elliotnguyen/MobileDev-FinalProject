@@ -54,6 +54,7 @@ public class WritingPracticeFragment extends Fragment {
         writingPracticeViewModel.getWritingDto().observe(getViewLifecycleOwner(), writingDto -> {
             if (writingDto != null) {
                 this.writingDto = writingDto;
+                writingPracticeViewModel.setWritingDto(writingDto);
             }
         });
     }

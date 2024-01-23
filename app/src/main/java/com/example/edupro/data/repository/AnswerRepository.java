@@ -3,12 +3,10 @@ package com.example.edupro.data.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.edupro.api.RetrofitClient;
+import com.example.edupro.api.ServerAPIService;
 import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.reading.ReadingDto;
-import com.example.edupro.service.RetrofitAPI;
-import com.example.edupro.service.RetrofitClient;
-import com.example.edupro.service.request.SpeakingRequestModel;
-import com.example.edupro.service.response.SpeakingGradingReponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -124,30 +122,5 @@ public class AnswerRepository {
         return firebaseRepository.getStatusHandling();
     }
 
-//    public void gradeAnswer(AnswerDto answerDto, List<QuestionAnswerPair> questionAnswerPairs, MutableLiveData<GradingResponse> gradingResponseLiveData) {
-//        RetrofitAPI gradingApiService = RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
-//
-//        SpeakingRequestModel speakingRequestModel = new SpeakingRequestModel(answerDto.getAudioFile(), answerDto.getAnswer());
-//        Call<SpeakingGradingReponse> call = gradingApiService.gradeSpeaking(answerDto, questionAnswerPairs)
-//
-//        call.enqueue(new Callback<GradingResponse>() {
-//            @Override
-//            public void onResponse(Call<GradingResponse> call, Response<GradingResponse> response) {
-//                if (response.isSuccessful()) {
-//                    gradingResponseLiveData.setValue(response.body());
-//                } else {
-//                    // Handle error response
-//                    // You can set an error message or handle it in another way
-//                    gradingResponseLiveData.setValue(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GradingResponse> call, Throwable t) {
-//                // Handle failure
-//                // You can set an error message or handle it in another way
-//                gradingResponseLiveData.setValue(null);
-//            }
-//        });
-//    }
+
 }

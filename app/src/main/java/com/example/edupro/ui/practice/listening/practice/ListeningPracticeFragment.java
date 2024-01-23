@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.edupro.R;
+import com.example.edupro.data.repository.UserRepository;
 import com.example.edupro.databinding.FragmentListeningPracticeBinding;
+import com.example.edupro.model.User;
 import com.example.edupro.model.listening.ListeningDto;
 import com.example.edupro.model.question.Question;
 import com.example.edupro.ui.RecyclerViewClickInterface;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.listening.practice.question.ListeningQuestionFragment;
 import com.example.edupro.ui.practice.reading.practice.ReadingQuestionListAdapter;
+import com.example.edupro.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 
@@ -38,7 +42,7 @@ public class ListeningPracticeFragment extends Fragment {
     private TextView listeningQuestions, listeningDicussion;
     private ReadingQuestionListAdapter readingQuestionAdapter;
     private RecyclerView readingQuestionRecyclerView;
-
+    private UserViewModel userViewModel;
 
     public static ListeningPracticeFragment newInstance() {
         return new ListeningPracticeFragment();
@@ -50,6 +54,19 @@ public class ListeningPracticeFragment extends Fragment {
         binding = FragmentListeningPracticeBinding.inflate(inflater, container, false);
         binding.getRoot().findViewById(R.id.listening_practice_cancel_button).setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
+        });
+
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel.initUser(new UserRepository.OnUserFetchedListener() {
+            @Override
+            public void onUserFetched(User user) {
+                Log.d("ListeningPractice", "onUserFetched: " + user.getId());
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         });
 
         readingQuestionRecyclerView = binding.getRoot().findViewById(R.id.practice_question_recycler_view);
@@ -68,6 +85,7 @@ public class ListeningPracticeFragment extends Fragment {
         handleSessionShow();
         handleBottomSheet();
         handleSubmit();
+        handleCancel(binding.getRoot());
 
         return binding.getRoot();
     }
@@ -86,23 +104,6 @@ public class ListeningPracticeFragment extends Fragment {
     }
 
     private void handleSessionShow() {
-//        listeningQuestions = binding.getRoot().findViewById(R.id.listening_practice_question_button);
-//        listeningQuestions.setBackgroundResource(R.drawable.reading_passage_button_selected);
-//        listeningQuestions.setOnClickListener(v -> mViewModel.setIsQuestionShow(true));
-//
-//        listeningDicussion = binding.getRoot().findViewById(R.id.listening_practice_discussion_button);
-//        listeningDicussion.setOnClickListener(v -> mViewModel.setIsQuestionShow(false));
-//
-//        mViewModel.getIsQuestionShow().observe(getViewLifecycleOwner(), isQuestionShow -> {
-//            Fragment newFragment = isQuestionShow ? new ListeningQuestionFragment() : new ListeningDicussionFragment();
-//            listeningQuestions.setBackgroundResource(isQuestionShow ?
-//                    R.drawable.reading_passage_button_selected : R.drawable.reading_passage_button_unselected);
-//            listeningDicussion.setBackgroundResource(isQuestionShow ?
-//                    R.drawable.reading_passage_button_unselected : R.drawable.reading_passage_button_selected);
-//            getChildFragmentManager().beginTransaction()
-//                    .replace(R.id.listening_practice_container, newFragment)
-//                    .commit();
-//        });
         Fragment newFragment = new ListeningQuestionFragment();
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.listening_practice_container, newFragment)
@@ -160,7 +161,7 @@ public class ListeningPracticeFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                mViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+                                mViewModel.submitAnswer(userViewModel.getUser().getValue().getId()).observe(getViewLifecycleOwner(), isSubmit -> {
                                     if (isSubmit) {
                                         //handleParadeAnimation(readingPractice);
                                         sDialog
@@ -202,7 +203,7 @@ public class ListeningPracticeFragment extends Fragment {
     }
 
     private void handleSubmitted() {
-        String result = mViewModel.getMark().getValue() +"/" + mViewModel.getNumberOfQuestions().getValue();
+        String result = mViewModel.getResult().getValue().toString();
         String part1Type = String.valueOf(listeningDto.getQuestions().get(0).getType());
         String part2Type = String.valueOf(listeningDto.getQuestions().get(1).getType());
 
@@ -228,6 +229,7 @@ public class ListeningPracticeFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("listeningId", listeningDto.getId());
+        Log.d("ListeningPractice", "handleSubmitted: " + listeningDto.getId());
         bundle.putString("result", result);
         bundle.putString("part1", part1Type);
         bundle.putString("part2", part2Type);
@@ -236,7 +238,31 @@ public class ListeningPracticeFragment extends Fragment {
         bundle.putStringArrayList("correctAnswersPart2", correctAnswersPart2);
         bundle.putStringArrayList("answersPart2", answersPart2);
 
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_reading_result, bundle);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_listening_result, bundle);
+    }
+
+    private void handleCancel(View view) {
+        Button cancel = view.findViewById(R.id.listening_practice_cancel_button);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                mViewModel.saveAnswer(userViewModel.getUser().getValue().getId(), false, "0");
+
+                                Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_listening);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelText("No")
+                        .setCancelClickListener(null);
+                sweetAlertDialog.show();
+            }
+        });
     }
 
 }

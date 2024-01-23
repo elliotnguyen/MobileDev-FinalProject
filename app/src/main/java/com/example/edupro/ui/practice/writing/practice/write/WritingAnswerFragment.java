@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,10 +32,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.edupro.R;
+import com.example.edupro.model.writing.WritingDto;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.writing.practice.WritingPracticeViewModel;
+import com.example.edupro.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -56,6 +63,9 @@ public class WritingAnswerFragment extends Fragment {
     private String[] storagePermission;
 
     private TextRecognizer textRecognizer;
+    private Button checkBandScoreButton;
+    private UserViewModel userViewModel;
+    private WritingDto writingDto = new WritingDto();
 
 
     @Nullable
@@ -68,27 +78,99 @@ public class WritingAnswerFragment extends Fragment {
             writingPracticeViewModel = new ViewModelProvider(parentFragment.getParentFragment()).get(WritingPracticeViewModel.class);
         }
 
+        observeAnyChange();
+
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
         cameraPermission = new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        //observeAnyChange();
+
 
         handleWritingAnswer(writingAnswer);
         handleClearAnswer(writingAnswer);
         handleImageAnswer(writingAnswer);
-
+        handleCheckScore(writingAnswer);
         return writingAnswer;
     }
 
-//    private void observeAnyChange() {
-//        writingPracticeViewModel.getCurrentAnswer().observe(getViewLifecycleOwner(), currentAnswer -> {
-//            if (currentAnswer != null) {
-//                writingAnswerEditText.setText(currentAnswer);
-//            }
-//        });
-//    }
+    private void handleCheckScore(View writingAnswer) {
+        checkBandScoreButton = writingAnswer.findViewById(R.id.writing_practice_question_write_submit_button);
+        String answer = writingPracticeViewModel.getCurrentAnswer().getValue();
+        checkBandScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Submit")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                writingPracticeViewModel.submitAnswer(userViewModel.getUser().getValue().getId(), answer)
+                                        .observe(getViewLifecycleOwner(), resultPair -> {
+                                            if (resultPair != null) {
+                                                // Handle UI updates after successful submission
+                                                String score = resultPair.first;
+                                                String explaination = resultPair.second;
+
+                                                sDialog
+                                                        .setTitleText("Submitted!")
+                                                        .setContentText("Congratulate on finishing the test!\nScore: " + score)
+                                                        .setConfirmText("View Result")
+                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                                handleSubmitted(writingAnswer, explaination);
+                                                                sDialog.dismissWithAnimation();
+                                                            }
+                                                        })
+                                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                            } else {
+                                                // Handle the case where submission failed
+                                                sDialog
+                                                        .setTitleText("Loading")
+                                                        .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                                sDialog
+                                                        .setCancelable(false);
+                                                sDialog
+                                                        .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                            }
+                                        });
+                            }
+                        })
+                        .setCancelText("Cancel")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        });
+
+                sweetAlertDialog.show();
+            }
+        });
+
+    }
+
+    private void handleSubmitted(View writingAnswer, String explaination) {
+        Bundle bundle = new Bundle();
+        bundle.putString("writingId", writingPracticeViewModel.getWritingId().getValue());
+        bundle.putString("explaination", explaination);
+        bundle.putString("score", writingPracticeViewModel.getResultScore().getValue());
+        Navigation.findNavController(writingAnswer).navigate(R.id.navigation_practice_writing_result, bundle);
+    }
+
+    private void observeAnyChange() {
+        writingPracticeViewModel.getWritingDto().observe(getViewLifecycleOwner(), writingDto -> {
+            if (writingDto != null) {
+                this.writingDto = writingDto;
+                Log.d(TAG, "observeAnyChange: " + writingDto.getQuestion());
+            }
+        });
+    }
 
 
 

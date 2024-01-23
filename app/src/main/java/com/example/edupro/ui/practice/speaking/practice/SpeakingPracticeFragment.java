@@ -63,59 +63,59 @@ public class SpeakingPracticeFragment extends Fragment {
 
     }
 
-    private void handleSubmit(View readingPractice) {
-        Button submitButton = readingPractice.findViewById(R.id.speaking_practice_submit_button);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pair<String, String> answersSelected = mViewModel.getAnswersSelected();
-                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Are you sure?")
-                        .setContentText("Answered: " + answersSelected.first + "\n" + "Unanswered: " + answersSelected.second)
-                        .setConfirmText("Submit")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                mViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
-                                    if (isSubmit) {
-                                        //handleParadeAnimation(readingPractice);
-                                        sDialog
-                                                .setTitleText("Submitted!")
-                                                .setContentText("Congratulate on finishing the test!")
-                                                .setConfirmText("View Result")
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                        //handleSubmitted(readingPractice);
-                                                        sDialog.dismissWithAnimation();
-                                                    }
-                                                })
-                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                    } else {
-                                        sDialog
-                                                .setTitleText("Loading")
-                                                .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                                        sDialog
-                                                .setCancelable(false);
-                                        sDialog
-                                                .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                                        //sDialog.show();
-                                    }
-                                });
-                            }
-                        })
-                        .setCancelText("Cancel")
-                        .showCancelButton(true)
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.cancel();
-                            }
-                        });
-                sweetAlertDialog.show();
-            }
-        });
-    }
+//    private void handleSubmit(View readingPractice) {
+//        Button submitButton = readingPractice.findViewById(R.id.speaking_practice_submit_button);
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Pair<String, String> answersSelected = mViewModel.getAnswersSelected();
+//                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+//                        .setTitleText("Are you sure?")
+//                        .setContentText("Answered: " + answersSelected.first + "\n" + "Unanswered: " + answersSelected.second)
+//                        .setConfirmText("Submit")
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                mViewModel.submitAnswer("1").observe(getViewLifecycleOwner(), isSubmit -> {
+//                                    if (isSubmit) {
+//                                        //handleParadeAnimation(readingPractice);
+//                                        sDialog
+//                                                .setTitleText("Submitted!")
+//                                                .setContentText("Congratulate on finishing the test!")
+//                                                .setConfirmText("View Result")
+//                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                    @Override
+//                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                                        //handleSubmitted(readingPractice);
+//                                                        sDialog.dismissWithAnimation();
+//                                                    }
+//                                                })
+//                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                                    } else {
+//                                        sDialog
+//                                                .setTitleText("Loading")
+//                                                .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+//                                        sDialog
+//                                                .setCancelable(false);
+//                                        sDialog
+//                                                .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//                                        //sDialog.show();
+//                                    }
+//                                });
+//                            }
+//                        })
+//                        .setCancelText("Cancel")
+//                        .showCancelButton(true)
+//                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.cancel();
+//                            }
+//                        });
+//                sweetAlertDialog.show();
+//            }
+//        });
+//    }
 
     private void handleSubmitted() {
 //        String result = mViewModel.getMark().getValue() +"/" + mViewModel.getNumberOfQuestions().getValue();
