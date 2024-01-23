@@ -46,7 +46,7 @@ public class FillProfileActivity extends AppCompatActivity {
         });
     }
 
-    private  void init(){
+    private void init(){
 
         userAuth =  FirebaseAuth.getInstance().getCurrentUser();
 
@@ -59,7 +59,6 @@ public class FillProfileActivity extends AppCompatActivity {
         edtEmailProfile.setEnabled(false);
         edtEmailProfile.setText(user.getEmail());
 
-        //
         fullName.setText(user.getName());
         phoneNumber.setText(user.getPhoneNumber());
         nickName.setText(user.getNickName());
@@ -72,9 +71,21 @@ public class FillProfileActivity extends AppCompatActivity {
         });
 
         btnContinue.setOnClickListener(view -> {
+            validate();
+        });
+    }
+
+    private void validate() {
+       if (this.nickName.getText().toString().isEmpty()) {
+            this.nickName.setError("Nick name is required");
+            this.nickName.requestFocus();
+        } else if (this.phoneNumber.getText().toString().isEmpty()) {
+            this.phoneNumber.setError("Phone number is required");
+            this.phoneNumber.requestFocus();
+        } else {
             performDialog();
             saveUserInfo();
-        });
+        }
     }
 
     private void performDialog() {

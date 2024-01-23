@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
-import com.example.edupro.model.reading.MCQQuestion;
-import com.example.edupro.model.reading.Question;
+import com.example.edupro.model.question.MCQQuestion;
+import com.example.edupro.model.question.Question;
 import com.example.edupro.ui.practice.reading.practice.ReadingPracticeViewModel;
 
 import java.util.ArrayList;

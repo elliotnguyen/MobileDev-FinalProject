@@ -5,14 +5,13 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.data.repository.AnswerRepository;
 import com.example.edupro.data.repository.ReadingRepository;
 import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.reading.ReadingDto;
+import com.example.edupro.ui.helper.DateUtil;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -24,7 +23,7 @@ public class ReadingPracticeViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isPassageShow = new MutableLiveData<>(true);
     private final MutableLiveData<Integer> numberOfQuestions = new MutableLiveData<>(0);
     private final ArrayList<MutableLiveData<String>> answers = new ArrayList<>();
-    private final MutableLiveData<Integer> mark = new MutableLiveData<>(0);
+    private final MutableLiveData<String> result = new MutableLiveData<>("");
 
     public void init() {
         for (int i = 0; i < 10; i++) {
@@ -38,6 +37,13 @@ public class ReadingPracticeViewModel extends ViewModel {
 
     public void setAnswerAtIndex(int index, String answer) {
         answers.get(index).setValue(answer);
+    }
+
+    public void setAnswers(String answers) {
+        String[] answerArray = answers.split(";");
+        for (int i = 0; i < answerArray.length; i++) {
+            setAnswerAtIndex(i, answerArray[i]);
+        }
     }
 
     public Pair<String, String> getAnswersSelected() {
@@ -102,24 +108,26 @@ public class ReadingPracticeViewModel extends ViewModel {
         return answer.toString();
     }
 
-    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted) {
+    public LiveData<Boolean> saveAnswer(String userId, Boolean isSubmitted, String score) {
         String currentAnswer = getCurrentAnswer();
-        String id = "";
-        if (readingId.getValue() != null) {
-            id = "r" + readingId.getValue() + "_" + userId;
-        }
+        String id = DateUtil.getCurrentTimeOfDate();
+
         ArrayList<String> childId= new ArrayList<>();
-        childId.add(id);
-        AnswerDto answerDto = new AnswerDto(id, "r" + readingId.getValue(), userId, currentAnswer, 0, "", "", isSubmitted);
+        childId.add(userId);
+        childId.add("reading");
+        childId.add(readingId.getValue());
+        childId.add(readingId.getValue() + "_" + userId);
+
+        AnswerDto answerDto = new AnswerDto(id, "r" + readingId.getValue(), userId, currentAnswer, score, "", "", isSubmitted);
         answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
         return answerRepository.getStatusHandling();
     }
 
     public LiveData<Boolean> submitAnswer(String userId) {
-        return saveAnswer(userId, true);
+        return saveAnswer(userId, true, getResult().getValue().toString());
     }
 
-    public LiveData<Integer> getMark() {
+    public LiveData<String> getResult() {
         if (numberOfQuestions.getValue() != null) {
             int count = 0;
             for (int i = 0; i < numberOfQuestions.getValue(); i++) {
@@ -129,8 +137,9 @@ public class ReadingPracticeViewModel extends ViewModel {
                     }
                 }
             }
-            mark.setValue(count);
+            String result = String.valueOf(count) +"/" + getNumberOfQuestions().getValue();
+            this.result.setValue(result);
         }
-        return mark;
+        return this.result;
     }
 }

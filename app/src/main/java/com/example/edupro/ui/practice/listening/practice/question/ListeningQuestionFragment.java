@@ -18,15 +18,11 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.example.edupro.R;
-import com.example.edupro.databinding.FragmentListeningPracticeBinding;
 import com.example.edupro.databinding.FragmentListeningQuestionBinding;
 import com.example.edupro.model.listening.ListeningDto;
-import com.example.edupro.model.reading.Question;
-import com.example.edupro.ui.practice.listening.practice.ListeningPracticeFragment;
+import com.example.edupro.model.question.Question;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
 import com.example.edupro.ui.practice.reading.practice.question.ReadingCompleteFormFragment;
-import com.example.edupro.ui.practice.reading.practice.question.ReadingMCQFragment;
-import com.example.edupro.ui.practice.reading.practice.question.ReadingTFNGFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -184,7 +180,6 @@ public class ListeningQuestionFragment extends Fragment {
             mediaPlayer = null;
         }
     }
-
 }
 
 

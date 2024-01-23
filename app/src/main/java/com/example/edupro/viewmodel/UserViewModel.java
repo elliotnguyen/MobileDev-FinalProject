@@ -1,7 +1,5 @@
 package com.example.edupro.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -35,7 +33,6 @@ public class UserViewModel extends ViewModel {
         });
     }
     public UserViewModel(){
-        //initUser();
         user = new MutableLiveData<>();
     }
     public MutableLiveData<User> getUser() {
@@ -53,5 +50,4 @@ public class UserViewModel extends ViewModel {
         userRepository.updateUser(user);
         this.user.setValue(user);
     }
-
 }

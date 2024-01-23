@@ -9,12 +9,12 @@
 
     <item
         android:id="@+id/navigation_practice"
-        android:icon="@drawable/practice"
+        android:icon="@drawable/bottom_nav_practice_button"
         tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/navigation_note"
-        android:icon="@drawable/note"
+        android:icon="@drawable/bottom_nav_note_button"
         tools:ignore="MenuTitle" />
 
     <item

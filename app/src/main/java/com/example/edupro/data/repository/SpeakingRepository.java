@@ -21,8 +21,13 @@ public class SpeakingRepository {
         this.firebaseRepository = FirebaseRepository.getInstance(SpeakingDto.class, "speaking");
     }
 
+    public static SpeakingRepository instance;
+
     public static SpeakingRepository getInstance() {
-        return new SpeakingRepository();
+        if (instance == null) {
+            instance = new SpeakingRepository();
+        }
+        return instance;
     }
 
     public void getAllSpeaking() {

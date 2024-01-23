@@ -37,9 +37,13 @@ public class SpeakingPracticeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentSpeakingPracticeBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(SpeakingPracticeViewModel.class);
-        mViewModel.setSpeakingId("1");
-        handleOpenQuestion();
+        String speakingId = getArguments().getString("speakingId");
+        mViewModel.setSpeakingId(speakingId);
         observeAnyChange();
+
+
+        handleOpenQuestion();
+
 
         return binding.getRoot();
     }

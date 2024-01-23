@@ -17,8 +17,13 @@ public class WritingRepository {
         firebaseRepository = FirebaseRepository.getInstance(WritingDto.class, "writing");
     }
 
+    public static WritingRepository instance;
+
     public static WritingRepository getInstance() {
-        return new WritingRepository();
+        if (instance == null) {
+            instance = new WritingRepository();
+        }
+        return instance;
     }
 
     public void getAllWriting() {

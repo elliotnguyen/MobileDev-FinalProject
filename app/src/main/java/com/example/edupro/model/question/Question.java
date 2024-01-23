@@ -1,4 +1,4 @@
-package com.example.edupro.model.reading;
+package com.example.edupro.model.question;
 
 public class Question {
     protected String content = null;

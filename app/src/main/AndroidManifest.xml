@@ -25,9 +25,6 @@
         android:theme="@style/Theme.WithActionBar.EduPro"
         tools:replace="android:icon">
         <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".FillProfileActivity"
             android:exported="false" />
         <activity

@@ -3,14 +3,10 @@ package com.example.edupro.model.listening;
 import android.util.Log;
 
 import com.example.edupro.model.SkillDto;
-import com.example.edupro.model.reading.MCQQuestion;
-import com.example.edupro.model.reading.Question;
-import com.example.edupro.model.reading.QuestionSection;
-import com.example.edupro.model.reading.TFNGQuestion;
+import com.example.edupro.model.question.QuestionSection;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListeningDto extends SkillDto {
     private final String audio;
@@ -46,8 +42,10 @@ public class ListeningDto extends SkillDto {
         String audio = (String) listening.child("content").getValue();
         Log.d("ListeningDto", "fromFirebaseData: " + audio);
 
-        ArrayList<QuestionSection> questions = new ArrayList<>();
-        questions = handleQuestions(listening);
+//        ArrayList<QuestionSection> questions = new ArrayList<>();
+//        questions = handleQuestions(listening);
+
+        ArrayList<QuestionSection> questions = QuestionSection.handleQuestions(listening);
 
         ArrayList<String> answers = new ArrayList<>();
         for (DataSnapshot answerSnapshot : listening.child("answers").getChildren()) {
@@ -58,28 +56,29 @@ public class ListeningDto extends SkillDto {
         Log.d("ListeningDto", "fromFirebaseData: " + title);
         return new ListeningDto(id, type, topic, audio, questions, answers, title);
     }
-    private static ArrayList<QuestionSection> handleQuestions(DataSnapshot dataSnapshot) {
-        ArrayList<QuestionSection> questions = new ArrayList<>();
-        for (DataSnapshot questionSection : dataSnapshot.child("questions").getChildren()) {
-            long type = (long) questionSection.child("type").getValue();
-            ArrayList<Question> questionList = new ArrayList<>();
-            for (DataSnapshot question : questionSection.child("questions").getChildren()) {
-                String content = (String) question.child("content").getValue();
-                if (type == 0) {
-                    questionList.add(new TFNGQuestion(content));
-                } else if (type == 1) {
-                    ArrayList<String> options = new ArrayList<>();
-                    for (DataSnapshot option : question.child("choices").getChildren()) {
-                        String optionContent = (String) option.getValue();
-                        options.add(optionContent);
-                    }
-                    questionList.add(new MCQQuestion(content, options));
-                }
-            }
-            questions.add(new QuestionSection(type, questionList));
-        }
-        return questions;
-    }
+
+//    private static ArrayList<QuestionSection> handleQuestions(DataSnapshot dataSnapshot) {
+//        ArrayList<QuestionSection> questions = new ArrayList<>();
+//        for (DataSnapshot questionSection : dataSnapshot.child("questions").getChildren()) {
+//            long type = (long) questionSection.child("type").getValue();
+//            ArrayList<Question> questionList = new ArrayList<>();
+//            for (DataSnapshot question : questionSection.child("questions").getChildren()) {
+//                String content = (String) question.child("content").getValue();
+//                if (type == 0) {
+//                    questionList.add(new TFNGQuestion(content));
+//                } else if (type == 1) {
+//                    ArrayList<String> options = new ArrayList<>();
+//                    for (DataSnapshot option : question.child("choices").getChildren()) {
+//                        String optionContent = (String) option.getValue();
+//                        options.add(optionContent);
+//                    }
+//                    questionList.add(new MCQQuestion(content, options));
+//                }
+//            }
+//            questions.add(new QuestionSection(type, questionList));
+//        }
+//        return questions;
+//    }
 
     public String getAudio() {
         return audio;

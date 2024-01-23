@@ -77,7 +77,9 @@ public class SpeakingHomeFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 NavController navController = Navigation.findNavController(getView());
-                navController.navigate(R.id.navigation_practice_speaking_practice);
+                Bundle bundle = new Bundle();
+                bundle.putString("speakingId", speakings.get(position).getId());
+                navController.navigate(R.id.navigation_practice_speaking_practice,bundle);
             }
 
             @Override
