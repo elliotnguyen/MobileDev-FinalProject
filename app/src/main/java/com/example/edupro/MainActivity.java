@@ -55,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
+        if(userViewModel.getUser().getValue() == null)
+            disableBottomNavigationClick(navView);
         userViewModel.initUser(new UserRepository.OnUserFetchedListener() {
             @Override
             public void onUserFetched(User user) {
-                showBottomNavigationBar();
+                enableBottomNavigationClick(navView);
             }
 
             @Override
@@ -73,5 +75,17 @@ public class MainActivity extends AppCompatActivity {
     }
     private void hideBottomNavigationBar() {
         binding.navView.setVisibility(View.GONE);
+    }
+
+    private void disableBottomNavigationClick(BottomNavigationView bottomNavigationView) {
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setEnabled(false);
+        }
+    }
+
+    private void enableBottomNavigationClick(BottomNavigationView bottomNavigationView) {
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setEnabled(true);
+        }
     }
 }
