@@ -1,4 +1,4 @@
-package com.example.edupro.viewmodel;
+package com.example.edupro.ui.note;
 
 import android.util.Log;
 
@@ -9,24 +9,26 @@ import com.example.edupro.data.repository.NoteRepository;
 import com.example.edupro.model.Note;
 
 public class NoteDetailViewModel extends ViewModel {
-
-    private MutableLiveData<Note> note = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private NoteRepository noteRepository;
-
+    private final MutableLiveData<Note> note = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final NoteRepository noteRepository;
+    private boolean isAllowedEdit = false;
+    public boolean isAllowedEdit() {
+        return isAllowedEdit;
+    }
+    public void setAllowedEdit(boolean allowedEdit) {
+        isAllowedEdit = allowedEdit;
+    }
     public NoteDetailViewModel() {
         this.noteRepository = new NoteRepository();
     }
-
     // Method to observe the list of notes
     public MutableLiveData<Note> getMutableNote() {
         return note;
     }
-
     public void setNote(Note note) {
         this.note.setValue(note);
     }
-
     // Method to add a note to the list
     public MutableLiveData<Boolean> getIsLoading() {
         return isLoading;
@@ -96,6 +98,4 @@ public class NoteDetailViewModel extends ViewModel {
             }
         });
     }
-
-
 }

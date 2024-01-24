@@ -84,13 +84,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("err", " Dont have permission");
             ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_MEDIA_AUDIO}, REQUEST_PERMISSION_READ);
         }
-
-
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            Log.e("err", " Dont have permission W");
-//            ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ);
-//        }
     }
 
 

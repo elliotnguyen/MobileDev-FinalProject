@@ -7,14 +7,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/assistant_chat_window_header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:background="@drawable/gradient_blue_background">
         <ImageView
             android:id="@+id/assistant_chat_window_logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,8 +28,8 @@
             app:layout_constraintStart_toEndOf="@id/assistant_chat_window_logo"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"/>
-        <ImageView
+            android:layout_marginTop="10dp"/>
+        <TextView
             android:layout_marginRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,17 +37,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/cancel_icon"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <include layout="@layout/receiver_message_viewholder"-->
-<!--        android:id="@+id/fake_receiver_message_viewholder"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginHorizontal="10dp"-->
-<!--        android:layout_below="@id/assistant_chat_window_header"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
@@ -56,6 +48,7 @@
         android:layout_below="@id/assistant_chat_window_header"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginRight="10dp" />
 
     <LinearLayout

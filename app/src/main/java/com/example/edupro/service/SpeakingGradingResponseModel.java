@@ -1,6 +1,4 @@
-package com.example.edupro.api;
-
-
+package com.example.edupro.service;
 public class SpeakingGradingResponseModel {
 
     private String explanation;
@@ -21,6 +19,4 @@ public class SpeakingGradingResponseModel {
     public void setGrade(double grade) {
         this.grade = grade;
     }
-
-
 }

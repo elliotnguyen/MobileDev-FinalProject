@@ -1,80 +1,169 @@
 package com.example.edupro.ui.note;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edupro.R;
 import com.example.edupro.data.repository.NoteRepository;
+import com.example.edupro.databinding.FragmentNoteDetailBinding;
 import com.example.edupro.model.Note;
-import com.example.edupro.ui.helper.LoadingDialogFragment;
-import com.example.edupro.viewmodel.NoteDetailViewModel;
-import com.example.edupro.viewmodel.NoteViewModel;
+import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.viewmodel.UserViewModel;
 
-import java.util.List;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class NoteDetailFragment extends Fragment {
-    RecyclerView wordRecyclerView;
     NoteDetailAdapter noteDetailAdapter;
     NoteDetailViewModel noteDetailViewModel;
     Note note;
+    FragmentNoteDetailBinding binding;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detail_note, container, false);
+        binding = FragmentNoteDetailBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Bundle args = getArguments();
         if (args != null) {
             note = args.getParcelable("selected_note");
-            Log.d("dictionary: ", note.getWordList().toString());
         } else {
-            Log.e("err", "null");
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+            sweetAlertDialog.setTitleText("Error");
+            sweetAlertDialog.setContentText("Error loading note");
+            sweetAlertDialog.show();
             return;
         }
-        wordRecyclerView = view.findViewById(R.id.note_recycler_view_my_words);
-        View addWordBtn = view.findViewById(R.id.note_add_word);
-        View backBtn = view.findViewById(R.id.note_detail_back);
-        wordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         noteDetailViewModel = new ViewModelProvider(this).get(NoteDetailViewModel.class);
         noteDetailViewModel.setNote(note);
-        UserViewModel userViewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
-        boolean isAllowEdit = (userViewModel.getUser().getValue().getId()).equals(note.getUser_id());
 
-        noteDetailAdapter = new NoteDetailAdapter(note.getWordList(), isAllowEdit);
+        handleEditNote();
 
-        ((TextView)view.findViewById(R.id.note_detail_category)).setText(note.getCategory());
-        ((TextView)view.findViewById(R.id.note_detail_auth)).setText(note.getUser_name());
-        wordRecyclerView.setAdapter(noteDetailAdapter);
+        binding.noteDetailName.setText(note.getCategory());
+        binding.noteDetailUserName.setText(note.getUser_name());
+        binding.noteDetailNumberOfWords.setText(String.valueOf(note.getWordList().size()));
+
+        configurationRecyclerView();
+
+        observeAnyChange();
+
+        handleBackButton();
+    }
+
+    private void handleBackButton() {
+        binding.noteDetailName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.navigation_note);
+            }
+        });
+    }
+
+    private void observeAnyChange() {
+        noteDetailViewModel.getMutableNote().observe(getViewLifecycleOwner(), new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                noteDetailAdapter.setWordMap(note.getWordList());
+                noteDetailAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void configurationRecyclerView(){
+        binding.noteRecyclerViewMyWords.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        noteDetailAdapter = new NoteDetailAdapter(note.getWordList(), noteDetailViewModel.isAllowedEdit());
+        binding.noteRecyclerViewMyWords.setAdapter(noteDetailAdapter);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(binding.noteRecyclerViewMyWords);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(removeItemCallback);
+        itemTouchHelper.attachToRecyclerView(binding.noteRecyclerViewMyWords);
+    }
+
+    public ItemTouchHelper.SimpleCallback removeItemCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView noteRecyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
+
+            String choosenWord = getWordAtPosition(position);
+
+            if (choosenWord.equals("")) {
+                return;
+            }
+
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+                    showDeleteConfirmationDialog(choosenWord, position);
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    showEditDialog(choosenWord, true);
+                    break;
+            }
+        }
+
+        private String getWordAtPosition(int position) {
+            String choosenWord = "";
+            int idx = 0;
+            for (String word : note.getWordList().keySet()) {
+                if (idx == position) {
+                    choosenWord = word;
+                    break;
+                }
+                idx++;
+            }
+            return choosenWord;
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(requireContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                    .addSwipeLeftActionIcon(R.drawable.baseline_auto_delete_24)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                    .addSwipeRightActionIcon(R.drawable.edit_icon_blue)
+                    .setActionIconTint(ContextCompat.getColor(recyclerView.getContext(), android.R.color.white))
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
+    private void handleEditNote() {
+        UserViewModel userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        boolean isAllowEdit = userViewModel.getUser().getValue().getId().equals(note.getUser_id());
+        noteDetailViewModel.setAllowedEdit(isAllowEdit);
 
         if(isAllowEdit){
-            view.findViewById(R.id.note_delete).setOnClickListener(v->{
-                showDeleteNoteConfirmationDialog();
-            });
-            addWordBtn.setOnClickListener(new View.OnClickListener() {
+            binding.fragmentNoteDetailAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showEditDialog(null,false);
@@ -82,117 +171,50 @@ public class NoteDetailFragment extends Fragment {
             });
         }
         else {
-            view.findViewById(R.id.note_delete).setVisibility(View.GONE);
-            view.findViewById(R.id.note_add_word).setVisibility(View.GONE);
+            binding.fragmentNoteDetailAdd.setVisibility(View.GONE);
         }
-
-        noteDetailViewModel.getMutableNote().observe(getViewLifecycleOwner(), new Observer<Note>() {
-            @Override
-            public void onChanged(Note note) {
-
-                noteDetailAdapter.setWordMap(note.getWordList());
-                noteDetailAdapter.notifyDataSetChanged();
-            }
-        });
-
-
-        noteDetailViewModel.getIsLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isLoading) {
-                if (isLoading) {
-                    showLoadingDialog();
-                } else {
-                    hideLoadingDialog();
-                }
-            }
-        });
-
-
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(wordRecyclerView);
-
-
-        noteDetailAdapter.setOnEditClickListener(new NoteDetailAdapter.OnEditClickListener() {
-            @Override
-            public void onEditClick(String word) {
-                // Handle item click here
-                showEditDialog(word,true);
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                NavController navController = Navigation.findNavController(view);
-//                navController.navigateUp();
-
-                getActivity().onBackPressed();
-            }
-        });
-
-
-
-
-        noteDetailAdapter.setOnDeleteClickListener(new NoteDetailAdapter.OnDeleteClickListener() {
-            @Override
-            public void onDeleteClick(String word) {
-                // Handle the delete action here
-                showDeleteConfirmationDialog(word);
-            }
-        });
     }
-    private void showDeleteConfirmationDialog(String word) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Confirm Deletion");
-        builder.setMessage("Are you sure you want to delete this word?");
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+    private void showDeleteConfirmationDialog(String word, int position) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setTitleText("Confirm Deletion");
+        sweetAlertDialog.setContentText("Are you sure you want to delete this word?");
+        sweetAlertDialog.setConfirmText("Delete");
+        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action, e.g., call a method in your ViewModel
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                sweetAlertDialog.setTitleText("Loading");
                 noteDetailViewModel.deleteWord(word, new NoteRepository.OnNoteUpdatedListener() {
                     @Override
                     public void onNoteUpdated() {
-
+                        sweetAlertDialog.dismissWithAnimation();
                     }
 
                     @Override
                     public void onError(Exception e) {
-
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialog.setTitleText("Error");
+                        sweetAlertDialog.setContentText("Error deleting word");
+                        sweetAlertDialog.show();
                     }
                 });
             }
         });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-    }
-
-    private void showDeleteNoteConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Confirm Deletion");
-        builder.setMessage("Are you sure you want to delete this note and all its contents?");
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action, e.g., call a method in your ViewModel
-                noteDetailViewModel.deleteNote(note, new NoteRepository.OnNoteDeletedListener() {
+        sweetAlertDialog.setCancelText("Cancel");
+        sweetAlertDialog.setCancelClickListener(
+                new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onNoteDeleted() {
-                        getActivity().onBackPressed();
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        noteDetailAdapter.notifyItemChanged(position);
+                        sweetAlertDialog.dismissWithAnimation();
                     }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
+                }
+        );
+        sweetAlertDialog.show();
     }
 
     private void showEditDialog(String word, boolean disableTerm) {
-
         // Create and show the dialog using the selectedWord
         EditWordDialogFragment editDialog = EditWordDialogFragment.newInstance(
                 word,
@@ -200,27 +222,26 @@ public class NoteDetailFragment extends Fragment {
                 disableTerm
         );
 
-
         editDialog.setOnSaveClickListener(new EditWordDialogFragment.OnSaveClickListener() {
             @Override
             public void onSaveClick(String term, String description) {
-                // Handle the save action, update your data or perform any necessary tasks
-                // For example, update the note or call a method in your ViewModel
-
                 if(term.isEmpty()){
-                    Toast.makeText(getContext(),"In valid term ",Toast.LENGTH_SHORT).show();
-                    return;
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitleText("Error");
+                    sweetAlertDialog.setContentText("Term cannot be empty");
+                    sweetAlertDialog.show();
                 }
                 noteDetailViewModel.updateWord(term, description, new NoteRepository.OnNoteUpdatedListener() {
                     @Override
                     public void onNoteUpdated() {
 
                     }
-
                     @Override
                     public void onError(Exception e) {
-
-                        Log.e("NoteDetailFragment", "Error updating note: " + e.getMessage());
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialog.setTitleText("Error");
+                        sweetAlertDialog.setContentText("Error updating word");
+                        sweetAlertDialog.show();
                     }
                 });
             }
@@ -228,17 +249,4 @@ public class NoteDetailFragment extends Fragment {
 
         editDialog.show(getChildFragmentManager(), "EditWordDialogFragment");
     }
-    private void showLoadingDialog() {
-
-        LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
-        loadingDialog.show(getChildFragmentManager(), "LoadingDialogFragment");
-    }
-
-    private void hideLoadingDialog() {
-        Fragment loadingDialog = getChildFragmentManager().findFragmentByTag("LoadingDialogFragment");
-        if (loadingDialog != null) {
-            ((DialogFragment) loadingDialog).dismiss();
-        }
-    }
-
 }

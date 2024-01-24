@@ -57,9 +57,8 @@
     <fragment
         android:id="@+id/navigation_note_detail"
         android:name="com.example.edupro.ui.note.NoteDetailFragment"
-        android:label="fragment_practice_writing_practice"
-        tools:layout="@layout/fragment_detail_note" />
-
+        android:label="fragment_note_detail"
+        tools:layout="@layout/fragment_note_detail" />
     <fragment
         android:id="@+id/navigation_search_note"
         android:name="com.example.edupro.ui.note.SearchNoteFragment"
