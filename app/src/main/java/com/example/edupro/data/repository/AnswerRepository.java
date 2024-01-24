@@ -3,7 +3,6 @@ package com.example.edupro.data.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-
 import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.reading.ReadingDto;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,12 +32,26 @@ public class AnswerRepository {
         return instance;
     }
 
-    public void getAnswerByTestIdOfUserId(String testId, String userId) {
-        firebaseRepository.getDataById(testId + "_" + userId, new ValueEventListener() {
+    public void getAnswerByTestIdOfUserId(String testId, String skillId, String userId) {
+        ArrayList<String> childrenIds = new ArrayList<>();
+        childrenIds.add(userId);
+        childrenIds.add(skillId);
+        childrenIds.add(testId);
+
+        firebaseRepository.getAllDataOfChild(childrenIds, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                AnswerDto answerDto = AnswerDto.fromFirebaseData(dataSnapshot);
-                firebaseRepository.getData().setValue(answerDto);
+                ArrayList<AnswerDto> answers = new ArrayList<>();
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    firebaseRepository.getListData().setValue(answers);
+                    return;
+                }
+
+                for (DataSnapshot answer : dataSnapshot.getChildren()) {
+                    AnswerDto answerDto = AnswerDto.fromFirebaseData(answer);
+                    answers.add(answerDto);
+                }
+                firebaseRepository.getListData().setValue(answers);
             }
 
             @Override
@@ -70,8 +83,6 @@ public class AnswerRepository {
                         AnswerDto answerDto = AnswerDto.fromFirebaseData(answerOfUser);
                         answers.add(answerDto);
                     }
-//                    AnswerDto answerDto = AnswerDto.fromFirebaseData(answer.getChildren());
-//                    answers.add(answerDto);
                 }
                 firebaseRepository.getListData().setValue(answers);
             }

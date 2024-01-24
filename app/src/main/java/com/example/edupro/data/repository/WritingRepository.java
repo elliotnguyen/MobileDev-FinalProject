@@ -96,13 +96,15 @@ public class WritingRepository {
                     WritingGradingResponseModel responseModel = response.body();
                     double model_score = responseModel.getModelGrade();
                     double bard_score = responseModel.getBardGrade();
-                    String explanation = responseModel.getExplanation();
+
+                    String explanation = responseModel.getExplaination();
+                    Log.d("api", "onResponse: " + explanation);
                     List<String> warnings = responseModel.getWarnings();
 
                     double score = getScore(model_score, bard_score);
 
                     scoreLiveData.setValue(String.valueOf(score));
-                    explanationLiveData.setValue(responseModel.getExplanation());
+                    explanationLiveData.setValue(responseModel.getExplaination());
                     Log.d("api score", String.valueOf(score));
                 } else {
                     // Handle the error

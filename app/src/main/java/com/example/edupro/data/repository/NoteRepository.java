@@ -47,8 +47,8 @@ public class NoteRepository {
             Log.e("Loi2","Herre");
             listener.onError(e);
         }
-
     }
+
     public void getNotesByUserId(String userId, final OnNotesFetchedListener listener) {
         Query query = databaseReference.orderByChild("user_id").equalTo(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {

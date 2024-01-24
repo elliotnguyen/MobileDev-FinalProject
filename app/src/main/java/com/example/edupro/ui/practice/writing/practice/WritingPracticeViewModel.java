@@ -18,17 +18,29 @@ import com.example.edupro.ui.helper.DateUtil;
 
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 public class WritingPracticeViewModel extends ViewModel {
     private final WritingRepository writingRepository = WritingRepository.getInstance();
+    private final AnswerRepository answerRepository = AnswerRepository.getInstance();
     private final MutableLiveData<String> writingId = new MutableLiveData<>("");
     private final MutableLiveData<WritingDto> writingDto = new MutableLiveData<>(new WritingDto());
     private final MutableLiveData<Boolean> isWriteAnswerShow = new MutableLiveData<>(true);
     private final MutableLiveData<Boolean> isSampleAnswerShow = new MutableLiveData<>(false);
     private final MutableLiveData<String> currentAnswer = new MutableLiveData<>("");
+
+    private final MutableLiveData<ArrayList<AnswerDto>> answerDtos = new MutableLiveData<>(new ArrayList<>());
+    public void setAnswerDtos(ArrayList<AnswerDto> answerDtos) {
+        this.answerDtos.setValue(answerDtos);
+    }
+    public LiveData<ArrayList<AnswerDto>> getAnswerDtos(String userId) {
+        answerRepository.getAnswerByTestIdOfUserId(writingId.getValue(), "writing", userId);
+        return answerRepository.getAnswers();
+    }
+
     private final MutableLiveData<String> result = new MutableLiveData<>("");
     private final MutableLiveData<String> explaination = new MutableLiveData<>("");
     private final ArrayList<MutableLiveData<String>> answers = new ArrayList<>();
-    private final AnswerRepository answerRepository = AnswerRepository.getInstance();
     public void setWritingId(String id) {
         writingId.setValue(id);
     }
@@ -80,7 +92,7 @@ public class WritingPracticeViewModel extends ViewModel {
                 if (resultAndExplanation != null) {
                     String score = resultAndExplanation.first;
                     Log.d("api", "onChanged: " + answer);
-                    AnswerDto answerDto = new AnswerDto(id, "w" + writingId.getValue(), userId, currentAnswer.getValue(), score, "", "", isSubmitted);
+                    AnswerDto answerDto = new AnswerDto(id, "w" + writingId.getValue(), userId, currentAnswer.getValue(), score, id, explaination.getValue(), isSubmitted);
                     answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
                 }
             }
