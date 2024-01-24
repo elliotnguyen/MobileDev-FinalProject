@@ -18,7 +18,10 @@ public class NoBottomNavFragment {
                     R.id.navigation_practice_speaking_practice,
                     R.id.navigation_chat,
                     R.id.navigation_note_detail,
-                    R.id.navigation_practice_writing_result_detail
+                    R.id.navigation_practice_writing_result_detail,
+                    R.id.navigation_practice_writing,
+                    R.id.navigation_practice_speaking_result
+
             )
     );
 

@@ -96,6 +96,7 @@ public class WritingRepository {
                     WritingGradingResponseModel responseModel = response.body();
                     double model_score = responseModel.getModelGrade();
                     double bard_score = responseModel.getBardGrade();
+
                     String explanation = responseModel.getExplaination();
                     Log.d("api", "onResponse: " + explanation);
                     List<String> warnings = responseModel.getWarnings();
