@@ -84,8 +84,8 @@ public class User implements Serializable {
         } else if (lastAccessedCalendar.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
                 lastAccessedCalendar.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR)) {
             streakCount = 1;
-            lastAccessed = new Date();
         }
+        lastAccessed = new Date();
 
     }
 

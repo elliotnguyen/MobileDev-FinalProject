@@ -13,7 +13,7 @@
         android:layout_margin="10dp">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:src="@drawable/logo"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"/>
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:text="Let's Sign In ..!"
             android:textColor="@color/dark_blue"
-            android:textSize="22sp"
-            android:layout_marginTop="30dp"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center|center_vertical"/>
         <TextView
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/editTextLayoutStyle"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginHorizontal="20dp"
             android:elevation="10dp"
             app:endIconMode="clear_text"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:layout_marginRight="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:gravity="right"/>
 
         <TextView

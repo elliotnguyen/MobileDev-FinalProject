@@ -60,6 +60,11 @@
         android:label="fragment_practice_writing_result"
         tools:layout="@layout/fragment_writing_result" />
     <fragment
+        android:id="@+id/navigation_practice_speaking_result"
+        android:name="com.example.edupro.ui.practice.speaking.result.SpeakingResultFragment"
+        android:label="fragment_practice_speaking_result"
+        tools:layout="@layout/fragment_speaking_result" />
+    <fragment
         android:id="@+id/navigation_practice_writing_practice"
         android:name="com.example.edupro.ui.practice.writing.practice.WritingPracticeFragment"
         android:label="fragment_practice_writing_practice"

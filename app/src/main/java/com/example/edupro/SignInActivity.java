@@ -2,9 +2,14 @@ package com.example.edupro;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +20,7 @@ import com.example.edupro.model.User;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -47,6 +53,10 @@ public class SignInActivity extends AppCompatActivity {
         handleSignInWithFirebase();
         handleSignInWithGoogle();
         handleSignUpWhenLogInFailed();
+
+
+
+
     }
 
     private void redirectWhenLoggedIn() {
@@ -60,12 +70,10 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInWithFirebase() {
         email = findViewById(R.id.edtEmail);
         password = findViewById(R.id.edtPassword);
-
         Button signIn = findViewById(R.id.btnSignIn);
         signIn.setOnClickListener(view -> {
             String email = this.email.getText().toString();
             String password = this.password.getText().toString();
-
             if (validate(email, password)) {
                 performFirebaseLogin(email, password);
             }
@@ -137,8 +145,20 @@ public class SignInActivity extends AppCompatActivity {
         ImageView signInWithGoogle = findViewById(R.id.signin_google);
 
         signInWithGoogle.setOnClickListener(view -> {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            if (account != null) {
+                // If already signed in, sign out first
+                mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                });
+            } else {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            }
+
         });
     }
 

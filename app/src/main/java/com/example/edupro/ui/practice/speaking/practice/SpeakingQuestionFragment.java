@@ -5,6 +5,7 @@ import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
 
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
@@ -19,10 +20,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +43,11 @@ import com.example.edupro.databinding.FragmentListeningQuestionBinding;
 import com.example.edupro.databinding.FragmentSpeakingQuestionBinding;
 import com.example.edupro.model.listening.ListeningDto;
 import com.example.edupro.model.speaking.SpeakingDto;
+import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
 import com.example.edupro.ui.practice.listening.practice.question.ListeningQuestionFragment;
+import com.example.edupro.utils.FFmpegUtils;
+import com.example.edupro.viewmodel.UserViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,12 +66,8 @@ public class SpeakingQuestionFragment extends Fragment {
     private Chronometer chronometer;
     private boolean isRecording = false;
     private long recordingStartTime = 0;
-    private static final int SAMPLE_RATE = 16000;
-    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_CONFIGURATION_MONO;
-    private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
-
-    private AudioRecord audioRecord;
-
+    private UserViewModel userViewModel;
+    private File answerFile;
     public static SpeakingQuestionFragment newInstance() {
         return new SpeakingQuestionFragment();
     }
@@ -74,12 +76,13 @@ public class SpeakingQuestionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentSpeakingQuestionBinding.inflate(inflater, container, false);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         mViewModel = new ViewModelProvider(requireParentFragment()).get(SpeakingPracticeViewModel.class);
         outputFile = getOutputFilePath();
         observeAnyChange();
 
         chronometer = binding.chronometer;
-
+        chronometer.setBase(SystemClock.elapsedRealtime());
         binding.recordBtn.setOnClickListener(v -> onRecordButtonClicked());
 
         binding.recordAgainTv.setOnClickListener(v -> handleRecordUI());
@@ -106,11 +109,54 @@ public class SpeakingQuestionFragment extends Fragment {
     }
 
     private void onRecordButtonClicked() {
-        if (audioRecord == null) {
+        if (mediaRecorder == null) {
             requestAudioPermissions();
         } else {
             stopRecording();
         }
+    }
+
+    private void startRecording() {
+        binding.recordBtn.setBackgroundResource(R.drawable.ic_microphone_playing);
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setOutputFile(outputFile);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+            chronometer.start();
+            Toast.makeText(requireContext(), "Recording started", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getOutputFilePath() {
+        ContextWrapper contextWrapper = new ContextWrapper(requireContext());
+        File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file = new File(musicDirectory, "recording.mp3");
+        answerFile = file;
+        return file.getAbsolutePath();
+    }
+    private void stopRecording() {
+        if (mediaRecorder != null) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            chronometer.stop();
+            handleStopRecordingUI();
+            Toast.makeText(requireContext(), "Recording Completed", Toast.LENGTH_LONG).show();
+            gradingSpeaking();
+        }
+    }
+    private void handleStopRecordingUI() {
+        binding.recordBtn.setVisibility(View.GONE);
+        binding.chronometer.setVisibility(View.GONE);
+        binding.recordBtn.setBackgroundResource(R.drawable.ic_microphone);
+        binding.doneRecordView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -128,152 +174,22 @@ public class SpeakingQuestionFragment extends Fragment {
             }
         }
     }
-
-    private void startRecording() {
-        binding.recordBtn.setBackgroundResource(R.drawable.ic_microphone_playing);
-//            mediaRecorder = new MediaRecorder();
-//            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//            mediaRecorder.setOutputFile(outputFile);
-//
-//            mediaRecorder.prepare();
-//            mediaRecorder.start();
-        int bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT) * 3;
-
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, bufferSize);
-
-            final byte[] buffer = new byte[bufferSize];
-
-            audioRecord.startRecording();
-            isRecording = true;
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FileOutputStream outputStream = new FileOutputStream(outputFile);
-                    int bytesRead;
-                    int totalBytesRead = 0;
-
-                    // Write WAV header with a placeholder for the total audio length
-                    writeWavHeader(outputStream,  0);
-
-                    // Recording loop
-                    while (isRecording && audioRecord != null) {
-                        bytesRead = audioRecord.read(buffer, 0, bufferSize);
-                        if (bytesRead > 0) {
-                            outputStream.write(buffer, 0, bytesRead);
-                            totalBytesRead += bytesRead;
-                        }
-                    }
-
-                    // Update the WAV header with the correct total audio length
-                    writeWavHeader(outputStream, totalBytesRead + 44);
-
-                    // Close the outputStream
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.RECORD_AUDIO)) {
+                Toast.makeText(requireContext(), "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        PERMISSION_REQUEST_CODE);
             }
-        }).start();
-            recordingStartTime = SystemClock.elapsedRealtime();
-            chronometer.setBase(recordingStartTime);
-            chronometer.start();
-    }
-    private void writeWavHeader(FileOutputStream outputStream, long totalDataLen) throws IOException {
-        long longSampleRate = SAMPLE_RATE;
-        int channelsMask = CHANNEL_CONFIG == AudioFormat.CHANNEL_CONFIGURATION_MONO ? 0x00000004 : 0x00000003;
-        long byteRate = SAMPLE_RATE * CHANNEL_CONFIG * AUDIO_FORMAT / 8;
-
-        byte[] header = new byte[44];
-
-        // RIFF/WAVE header
-        header[0] = 'R';
-        header[1] = 'I';
-        header[2] = 'F';
-        header[3] = 'F';
-        header[4] = (byte) (totalDataLen & 0xFF);
-        header[5] = (byte) ((totalDataLen >> 8) & 0xFF);
-        header[6] = (byte) ((totalDataLen >> 16) & 0xFF);
-        header[7] = (byte) ((totalDataLen >> 24) & 0xFF);
-        header[8] = 'W';
-        header[9] = 'A';
-        header[10] = 'V';
-        header[11] = 'E';
-
-        // 'fmt ' chunk
-        int fmtLength = 16;
-        header[16] = (byte)(fmtLength & 0xFF);
-        header[17] = (byte)((fmtLength >> 8) & 0xFF);
-        header[18] = 0;
-        header[19] = 0;
-        header[20] = 1;  // PCM format
-        header[21] = 0;
-        header[22] = (byte) CHANNEL_CONFIG;
-        header[23] = 0;
-        header[24] = (byte) (longSampleRate & 0xFF);
-        header[25] = (byte) ((longSampleRate >> 8) & 0xFF);
-        header[26] = (byte) ((longSampleRate >> 16) & 0xFF);
-        header[27] = (byte) ((longSampleRate >> 24) & 0xFF);
-        header[28] = (byte) (byteRate & 0xFF);
-        header[29] = (byte) ((byteRate >> 8) & 0xFF);
-        header[30] = (byte) ((byteRate >> 16) & 0xFF);
-        header[31] = (byte) ((byteRate >> 24) & 0xFF);
-        header[32] = (byte) (CHANNEL_CONFIG * AUDIO_FORMAT / 8);  // Block align
-        header[33] = 0;
-        header[34] = 16;  // Bits per sample
-
-        // 'data' chunk
-        long dataLen = totalDataLen - 36;  // 36 is the size of the header
-        header[40] = (byte)(dataLen & 0xFF);
-        header[41] = (byte)((dataLen >> 8) & 0xFF);
-        header[42] = (byte)((dataLen >> 16) & 0xFF);
-        header[43] = (byte)((dataLen >> 24) & 0xFF);
-
-        outputStream.write(header, 0, 44);
-    }
-
-
-
-
-
-    private byte[] intToByteArray(int value) {
-        return new byte[]{
-                (byte) (value & 0xff),
-                (byte) ((value >> 8) & 0xff),
-                (byte) ((value >> 16) & 0xff),
-                (byte) ((value >> 24) & 0xff)
-        };
-    }
-
-    private byte[] shortToByteArray(short value) {
-        return new byte[]{
-                (byte) (value & 0xff),
-                (byte) ((value >> 8) & 0xff)
-        };
-    }
-    private void stopRecording() {
-        if (audioRecord != null) {
-            Log.d("TAG", "stopRecording: ");
-            chronometer.stop();
-            audioRecord.stop();
-            handleStopRecordingUI();
-            audioRecord.release();
-            audioRecord = null;
+        }
+        // if permission already granted
+        else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            startRecording();
         }
     }
-    private void handleStopRecordingUI() {
-        binding.recordBtn.setVisibility(View.GONE);
-        binding.chronometer.setVisibility(View.GONE);
-        binding.recordBtn.setBackgroundResource(R.drawable.ic_microphone);
-        binding.doneRecordView.setVisibility(View.VISIBLE);
-    }
-
     private void playRecordedAudio() {
         if (isPlaying) {
             mediaPlayer.stop();
@@ -306,39 +222,70 @@ public class SpeakingQuestionFragment extends Fragment {
             }
         });
     }
-
-    private String getOutputFilePath() {
-        ContextWrapper contextWrapper = new ContextWrapper(requireContext());
-        File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        File file = new File(musicDirectory, "recording.wav");
-        return file.getAbsolutePath();
-    }
-
-    private void requestAudioPermissions() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.RECORD_AUDIO)) {
-                Toast.makeText(requireContext(), "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
-                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
-            } else {
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        PERMISSION_REQUEST_CODE);
-            }
-        }
-        // if permission already granted
-        else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-            startRecording();
-        }
-    }
-
     private void gradingSpeaking() {
-        String answer = outputFile;
-        String sampleAnswer = speakingDto.getSampleAnswer();
-        double score = 0;
-        if (answer.equals(sampleAnswer)) {
-            score = 10;
-        }
-//        mViewModel.setScore(score);
+        FFmpegUtils.convertAacToMp3(outputFile, outputFile);
+        File file = new File(outputFile);
+        mViewModel.setCurrentAnswer(file);
+        String question = speakingDto.getQuestion();
+        binding.saveAnswerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Submit")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                mViewModel.submitAnswer(userViewModel.getUser().getValue().getId(), file).observe(getViewLifecycleOwner(), resultPair -> {
+                                    if (resultPair != null) {
+                                        // Handle UI updates after successful submission
+                                        String score = resultPair.first;
+                                        String explaination = resultPair.second;
+
+                                        sDialog
+                                                .setTitleText("Submitted!")
+                                                .setContentText("Congratulate on finishing the test!\nScore: " + score)
+                                                .setConfirmText("View Result")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        handleSubmitted(explaination);
+                                                        sDialog.dismissWithAnimation();
+                                                    }
+                                                })
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    } else {
+                                        // Handle the case where submission failed
+                                        sDialog
+                                                .setTitleText("Loading")
+                                                .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                        sDialog
+                                                .setCancelable(false);
+                                        sDialog
+                                                .getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                    }
+                                });
+                            }
+                        })
+                        .setCancelText("Cancel")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        });
+                sweetAlertDialog.show();
+            }
+        });
+    }
+
+    private void handleSubmitted(String explaination) {
+        Bundle bundle = new Bundle();
+        bundle.putString("speakingId", mViewModel.getSpeakingId().getValue());
+        bundle.putString("explaination", explaination);
+        bundle.putString("score", mViewModel.getResultScore().getValue());
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_speaking_result, bundle);
     }
 
     @Override

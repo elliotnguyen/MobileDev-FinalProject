@@ -87,7 +87,7 @@ public class WritingRepository {
 
         ServerAPIService apiService = RetrofitClient.createService();
         WritingGradingRequestModel requestModel = new WritingGradingRequestModel(question, answer);
-        Call<WritingGradingResponseModel> call = apiService.postData(requestModel);
+        Call<WritingGradingResponseModel> call = apiService.gradeWritingAPI(requestModel);
 
         call.enqueue(new Callback<WritingGradingResponseModel>() {
             @Override
@@ -126,7 +126,6 @@ public class WritingRepository {
             // return higher score
             return model_score > bard_score ? model_score : bard_score;
         }
-
     }
 
 }

@@ -17,6 +17,7 @@ import com.example.edupro.ui.practice.reading.practice.passage.ReadingPassageFra
 import com.example.edupro.ui.practice.reading.practice.question.ReadingQuestionFragment;
 import com.example.edupro.ui.practice.writing.practice.history.HistorySubmissionFragment;
 import com.example.edupro.ui.practice.writing.practice.write.WriteAnswerFragment;
+import com.example.edupro.viewmodel.UserViewModel;
 
 public class WritingPracticeFragment extends Fragment {
     private static final String TAG = "WritingPracticeFragment";
@@ -26,8 +27,9 @@ public class WritingPracticeFragment extends Fragment {
     private WritingPracticeViewModel writingPracticeViewModel;
 
     private TextView writeAnswer;
-
+    private String writingId;
     private TextView historySubmission;
+    private UserViewModel userViewModel;
 
     @Nullable
     @Override
@@ -36,11 +38,17 @@ public class WritingPracticeFragment extends Fragment {
         View writingPractice = inflater.inflate(R.layout.fragment_writing_practice, container, false);
 
         writingPracticeViewModel = new ViewModelProvider(this).get(WritingPracticeViewModel.class);
-//        if (getArguments() != null) {
-//            String writingId = getArguments().getString("writingId");
-//            writingPracticeViewModel.setWritingId(writingId);
-//        }
-        writingPracticeViewModel.setWritingId("1");
+        if (getArguments() != null) {
+            writingId = getArguments().getString("writingId");
+            String answers = getArguments().getString("answers");
+            if (answers != null && !answers.equals("")) {
+                writingPracticeViewModel.setCurrentAnswer(answers);
+            }
+            writingPracticeViewModel.setWritingId(writingId);
+        }
+
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        writingPracticeViewModel.init();
         observeAnyChange();
 
         writeAnswer = writingPractice.findViewById(R.id.writing_practice_question_button);

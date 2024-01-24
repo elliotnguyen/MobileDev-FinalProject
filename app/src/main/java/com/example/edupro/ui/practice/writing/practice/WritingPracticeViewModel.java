@@ -27,7 +27,7 @@ public class WritingPracticeViewModel extends ViewModel {
     private final MutableLiveData<String> currentAnswer = new MutableLiveData<>("");
     private final MutableLiveData<String> result = new MutableLiveData<>("");
     private final MutableLiveData<String> explaination = new MutableLiveData<>("");
-
+    private final ArrayList<MutableLiveData<String>> answers = new ArrayList<>();
     private final AnswerRepository answerRepository = AnswerRepository.getInstance();
     public void setWritingId(String id) {
         writingId.setValue(id);
@@ -131,4 +131,9 @@ public class WritingPracticeViewModel extends ViewModel {
         return resultLiveData;
     }
 
+    public void init() {
+        for (int i = 0; i < 10; i++) {
+            answers.add(new MutableLiveData<>("-"));
+        }
+    }
 }

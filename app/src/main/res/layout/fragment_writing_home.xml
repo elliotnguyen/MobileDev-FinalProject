@@ -63,7 +63,7 @@
             android:textColor="@color/black"
             android:background="@drawable/bg_editext_search" />
         <LinearLayout
-            android:id="@+id/reading_home_filter"
+            android:id="@+id/writing_home_filter"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="10dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:layout_marginStart="10dp"
-                    android:id="@+id/reading_topic_filter"
+                    android:id="@+id/writing_topic_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/filter" />
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:layout_marginStart="10dp"
-                    android:id="@+id/reading_question_type_filter"
+                    android:id="@+id/writing_question_type_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/filter" />
@@ -123,8 +123,8 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reading_home_filter"
-            android:id="@+id/reading_home_recycler_view"
+            app:layout_constraintTop_toBottomOf="@id/writing_home_filter"
+            android:id="@+id/writing_home_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

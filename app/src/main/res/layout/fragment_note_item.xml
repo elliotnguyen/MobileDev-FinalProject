@@ -12,17 +12,17 @@
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/note_item_cate_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Enviroment aaaa heheheh ahhhh"
             android:textStyle="bold"
             android:textSize="20sp"
             android:ellipsize="end"
-            android:maxWidth="150dp"
             android:lineSpacingMultiplier="0.7"
             android:maxLines="2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/note_item_author_name"
             android:textColor="@color/semi_black"/>
         <TextView
             android:id="@+id/note_item_author_name"
