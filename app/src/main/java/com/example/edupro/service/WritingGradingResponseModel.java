@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class WritingGradingResponseModel {
-    @SerializedName("explaination")
-    private String explaination;
+    @SerializedName("explanation")
+    private String explanation;
     @SerializedName("bard_grade")
     private double bardGrade;
     @SerializedName("model_grade")
@@ -14,12 +14,12 @@ public class WritingGradingResponseModel {
     @SerializedName("warnings")
     private List<String> warnings;
 
-    public String getExplaination() {
-        return explaination;
+    public String getExplanation() {
+        return explanation;
     }
 
     public void setExplanation(String explanation) {
-        this.explaination = explanation;
+        this.explanation = explanation;
     }
 
     public double getBardGrade() {

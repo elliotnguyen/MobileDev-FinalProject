@@ -40,7 +40,7 @@ import com.example.edupro.model.speaking.SpeakingDto;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.listening.practice.ListeningPracticeViewModel;
 import com.example.edupro.ui.practice.listening.practice.question.ListeningQuestionFragment;
-import com.example.edupro.utils.FFmpegUtils;
+//import com.example.edupro.utils.FFmpegUtils;
 import com.example.edupro.viewmodel.UserViewModel;
 
 import java.io.File;
@@ -228,7 +228,7 @@ public class SpeakingQuestionFragment extends Fragment {
         });
     }
     private void gradingSpeaking() {
-        FFmpegUtils.convertAacToMp3(outputFile, outputFile);
+        //FFmpegUtils.convertAacToMp3(outputFile, outputFile);
         File file = new File(outputFile);
         mViewModel.setCurrentAnswer(file);
         String question = speakingDto.getQuestion();
@@ -305,23 +305,23 @@ public class SpeakingQuestionFragment extends Fragment {
         }
 
         EmitterConfig emitterConfig = new Emitter(5, TimeUnit.SECONDS).perSecond(30);
-        konfettiView.start(
-                new PartyFactory(emitterConfig)
-                        .angle(Angle.RIGHT - 45)
-                        .spread(Spread.SMALL)
-                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
-                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
-                        .setSpeedBetween(10f, 30f)
-                        .position(new Position.Relative(0.0, 0.5))
-                        .build(),
-                new PartyFactory(emitterConfig)
-                        .angle(Angle.LEFT + 45)
-                        .spread(Spread.SMALL)
-                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
-                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
-                        .setSpeedBetween(10f, 30f)
-                        .position(new Position.Relative(1.0, 0.5))
-                        .build());
+//        konfettiView.start(
+//                new PartyFactory(emitterConfig)
+//                        .angle(Angle.RIGHT - 45)
+//                        .spread(Spread.SMALL)
+//                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+//                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+//                        .setSpeedBetween(10f, 30f)
+//                        .position(new Position.Relative(0.0, 0.5))
+//                        .build(),
+//                new PartyFactory(emitterConfig)
+//                        .angle(Angle.LEFT + 45)
+//                        .spread(Spread.SMALL)
+//                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+//                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+//                        .setSpeedBetween(10f, 30f)
+//                        .position(new Position.Relative(1.0, 0.5))
+//                        .build());
     }
 
     @Override

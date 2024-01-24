@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.api.RetrofitClient;
-import com.example.edupro.api.ServerAPIService;
-import com.example.edupro.api.SpeakingGradingResponseModel;
+
 import com.example.edupro.model.speaking.SpeakingDto;
 import com.example.edupro.model.writing.WritingDto;
+import com.example.edupro.service.RetrofitClient;
+import com.example.edupro.service.ServerAPIService;
+import com.example.edupro.service.SpeakingGradingResponseModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -121,36 +122,39 @@ public class SpeakingRepository {
     public Pair<MutableLiveData<String>, MutableLiveData<String>> checkBandScore(File audioFile, String questionText) {
         final MutableLiveData<String> score = new MutableLiveData<>("");
         final MutableLiveData<String> explaination = new MutableLiveData<>("");
-        RequestBody questionBody = RequestBody.create(MediaType.parse("text/plain"), questionText);
-        RequestBody fileBody = RequestBody.create(MediaType.parse("audio/mp3"), audioFile);
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", audioFile.getName(), fileBody);
 
-
-        ServerAPIService apiService = RetrofitClient.createService();
-
-        Call<SpeakingGradingResponseModel> call = apiService.gradeSpeakingAPI(questionBody, filePart);
-        call.enqueue(new Callback<SpeakingGradingResponseModel>() {
-            @Override
-            public void onResponse(Call<SpeakingGradingResponseModel> call, Response<SpeakingGradingResponseModel> response) {
-                if (response.isSuccessful()) {
-                    SpeakingGradingResponseModel gradingResponse = response.body();
-                    Log.d(TAG, "onResponse: " + gradingResponse);
-                    double grade = gradingResponse.getGrade();
-                    String explanation = gradingResponse.getExplanation();
-
-                    score.setValue(String.valueOf(grade));
-                    explaination.setValue(explanation);
-                    Log.d(TAG, "onResponse1 " + grade);
-                } else {
-                    Log.d(TAG, "onResponse2: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SpeakingGradingResponseModel> call, Throwable t) {
-                Log.e(TAG, "API call failed: " + t.getMessage());
-            }
-        });
+        score.setValue(String.valueOf(2.0));
+        explaination.setValue(" ");
+//        RequestBody questionBody = RequestBody.create(MediaType.parse("text/plain"), questionText);
+//        RequestBody fileBody = RequestBody.create(MediaType.parse("audio/mp3"), audioFile);
+//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", audioFile.getName(), fileBody);
+//
+//
+//        ServerAPIService apiService = RetrofitClient.createService();
+//
+//        Call<SpeakingGradingResponseModel> call = apiService.gradeSpeakingAPI(questionBody, filePart);
+//        call.enqueue(new Callback<SpeakingGradingResponseModel>() {
+//            @Override
+//            public void onResponse(Call<SpeakingGradingResponseModel> call, Response<SpeakingGradingResponseModel> response) {
+//                if (response.isSuccessful()) {
+//                    SpeakingGradingResponseModel gradingResponse = response.body();
+//                    Log.d(TAG, "onResponse: " + gradingResponse);
+//                    double grade = gradingResponse.getGrade();
+//                    String explanation = gradingResponse.getExplanation();
+//
+//                    score.setValue(String.valueOf(2.0));
+//                    explaination.setValue(explanation);
+//                    Log.d(TAG, "onResponse1 " + grade);
+//                } else {
+//                    Log.d(TAG, "onResponse2: " + response.message());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<SpeakingGradingResponseModel> call, Throwable t) {
+//                Log.e(TAG, "API call failed: " + t.getMessage());
+//            }
+//        });
 
         return new Pair<>(new MutableLiveData<>(""), new MutableLiveData<>(""));
     }

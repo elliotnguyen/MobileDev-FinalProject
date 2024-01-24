@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.api.RetrofitClient;
-import com.example.edupro.api.ServerAPIService;
-import com.example.edupro.api.WritingGradingRequestModel;
-import com.example.edupro.api.WritingGradingResponseModel;
+import com.example.edupro.service.RetrofitClient;
+import com.example.edupro.service.ServerAPIService;
+import com.example.edupro.service.WritingGradingRequestModel;
+import com.example.edupro.service.WritingGradingResponseModel;
 import com.example.edupro.model.writing.WritingDto;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,13 +96,13 @@ public class WritingRepository {
                     WritingGradingResponseModel responseModel = response.body();
                     double model_score = responseModel.getModelGrade();
                     double bard_score = responseModel.getBardGrade();
-                    String explanation = responseModel.getExplaination();
+                    String explanation = responseModel.getExplanation();
                     List<String> warnings = responseModel.getWarnings();
 
                     double score = getScore(model_score, bard_score);
 
                     scoreLiveData.setValue(String.valueOf(score));
-                    explanationLiveData.setValue(responseModel.getExplaination());
+                    explanationLiveData.setValue(responseModel.getExplanation());
                     Log.d("api score", String.valueOf(score));
                 } else {
                     // Handle the error

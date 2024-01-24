@@ -18,6 +18,7 @@ import com.example.edupro.ui.helper.DateUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class SpeakingPracticeViewModel extends ViewModel {
@@ -79,17 +80,27 @@ public class SpeakingPracticeViewModel extends ViewModel {
                 audioFile.setValue("");
             }
         });
+        result.setValue("4.5");
 
-        getResult(audio).observeForever(new Observer<Pair<String, String>>() {
-            @Override
-            public void onChanged(Pair<String, String> resultAndExplanation) {
-                if (resultAndExplanation != null) {
-                    String score = resultAndExplanation.first;
-                    AnswerDto answerDto = new AnswerDto(id, "w" + speakingId.getValue(), userId, audioFile.getValue(), score, "", "", isSubmitted);
-                    answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
-                }
-            }
-        });
+        explaination.setValue("I can't provide a complete score and explanation within the required format for just one question and answer. Assessing IELTS Speaking requires evaluating fluency, vocabulary, grammar, pronunciation, and coherence across all parts of the test. However, I can offer some feedback on your answer for \"what will you do in your free time\":\n\n**Strengths:**\n\n* **Variety of activities:** You mention a diverse range of activities, showcasing different interests and ways to spend free time.\n* **Connecting activities to goals:** You explain how some activities, like watching movies or practicing yoga, contribute to specific goals like English language improvement or relaxation.\n* **Use of linking words:** You connect your ideas using words like \"after that,\" \"not only that,\" and \"finally,\" showing logical flow.\n\n**Areas for improvement:**\n\n* **Redundancy:** Some phrases like \"get a fire\" and \"recomfort\" could be rephrased or omitted for greater conciseness.\n* **Word choice:** Certain words like \"aphonia\" might be inaccurate or unclear to the examiner. Choose simpler, more precise vocabulary.\n* **Grammar:** Minor grammatical errors like \"by omitting to do\" could be corrected to enhance clarity.\n\nOverall, your answer displays potential but falls short of a top score due to occasional vagueness, grammatical errors, and redundancy. With refinement and practice, you can improve your fluency, vocabulary, and accuracy for a stronger overall IELTS Speaking performance.\n\nI recommend practicing with a wider range of questions and seeking feedback from an IELTS expert or tutor for a comprehensive assessment and detailed advice on maximizing your score.");
+
+        AnswerDto answerDto = new AnswerDto(id, "w" + speakingId.getValue(), userId, audioFile.getValue(), result.getValue(), new Date().toString(), explaination.getValue(), isSubmitted);
+        answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
+
+
+//        getResult(audio).observeForever(new Observer<Pair<String, String>>() {
+//            @Override
+//            public void onChanged(Pair<String, String> resultAndExplanation) {
+//                if (resultAndExplanation != null) {
+//
+//                    String score = resultAndExplanation.first;
+//                    Log.d("update database","yes" + score);
+//
+//                    AnswerDto answerDto = new AnswerDto(id, "w" + speakingId.getValue(), userId, audioFile.getValue(), score, new Date().toString(), "", isSubmitted);
+//                    answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
+//                }
+//            }
+//        });
 
         // Return the status LiveData
         return answerRepository.getStatusHandling();
@@ -100,6 +111,7 @@ public class SpeakingPracticeViewModel extends ViewModel {
 
         saveAnswer(userId, audio, true).observeForever(isSubmit -> {
             if (isSubmit) {
+
                 // Handle the case where submission succeeded
                 resultLiveData.setValue(new Pair<>(result.getValue(), explaination.getValue()));
             } else {
@@ -119,13 +131,16 @@ public class SpeakingPracticeViewModel extends ViewModel {
 
         Log.d("ViewModel", "getResult: " + audio.getAbsolutePath());
         MutableLiveData<Pair<String, String>> resultLiveData = new MutableLiveData<>();
+        Log.d("herre", "to Herre: " + audio.getAbsolutePath());
 
         Pair<MutableLiveData<String>, MutableLiveData<String>> resultPair = speakingRepository.checkBandScore(
                 audio,
                 speakingDto.getValue().getQuestion()
         );
+        Log.d("call donne", "to Herre: " + audio.getAbsolutePath());
 
         resultPair.first.observeForever(score -> {
+            Log.d("call donne", " update rope " );
             // Update UI with the score as needed
             result.setValue(score);
             resultLiveData.setValue(new Pair<>(score, explaination.getValue()));
