@@ -162,6 +162,7 @@ public class WritingAnswerFragment extends Fragment {
 //        bundle.putString("score", writingPracticeViewModel.getResultScore().getValue());
 //        Navigation.findNavController(writingAnswer).navigate(R.id.navigation_practice_writing_result, bundle);
         Bundle bundle = new Bundle();
+        bundle.putString("question", writingPracticeViewModel.getWritingDto().getValue().getQuestion());
         bundle.putString("your_answer", writingPracticeViewModel.getCurrentAnswer().getValue());
         bundle.putString("grade", writingPracticeViewModel.getResultScore().getValue());
         bundle.putString("explanation", explaination);
