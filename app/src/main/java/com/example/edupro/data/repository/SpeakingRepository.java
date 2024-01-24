@@ -12,7 +12,7 @@ import com.example.edupro.service.RetrofitClient;
 import com.example.edupro.service.ServerAPIService;
 import com.example.edupro.service.SpeakingGradingResponseModel;
 import com.example.edupro.model.speaking.SpeakingDto;
-import com.example.edupro.model.writing.WritingDto;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -38,6 +38,7 @@ public class SpeakingRepository {
     public LiveData<String> getDownloadUrlLiveData() {
         return downloadUrlLiveData;
     }
+
     public SpeakingRepository() {
         this.firebaseRepository = FirebaseRepository.getInstance(SpeakingDto.class, "speaking");
     }

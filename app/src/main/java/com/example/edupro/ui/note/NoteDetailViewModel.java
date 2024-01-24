@@ -2,6 +2,7 @@ package com.example.edupro.ui.note;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -13,6 +14,14 @@ public class NoteDetailViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final NoteRepository noteRepository;
     private boolean isAllowedEdit = false;
+    private final MutableLiveData<String> numberOfWords = new MutableLiveData<>();
+    public LiveData<String> getNumberOfWords() {
+        return numberOfWords;
+    }
+    public void setNumberOfWords(String numberOfWords) {
+        this.numberOfWords.setValue(numberOfWords);
+    }
+
     public boolean isAllowedEdit() {
         return isAllowedEdit;
     }

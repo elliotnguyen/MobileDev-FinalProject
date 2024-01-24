@@ -61,7 +61,8 @@ public class NoteDetailFragment extends Fragment {
 
         binding.noteDetailName.setText(note.getCategory());
         binding.noteDetailUserName.setText(note.getUser_name());
-        binding.noteDetailNumberOfWords.setText(String.valueOf(note.getWordList().size()));
+        String numOfWords = "Num of words: " + note.getWordList().size() + " words";
+        binding.noteDetailNumberOfWords.setText(numOfWords);
 
         configurationRecyclerView();
 
@@ -71,7 +72,7 @@ public class NoteDetailFragment extends Fragment {
     }
 
     private void handleBackButton() {
-        binding.noteDetailName.setOnClickListener(new View.OnClickListener() {
+        binding.noteDetailBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.navigation_note);
@@ -85,6 +86,9 @@ public class NoteDetailFragment extends Fragment {
             public void onChanged(Note note) {
                 noteDetailAdapter.setWordMap(note.getWordList());
                 noteDetailAdapter.notifyDataSetChanged();
+
+                String numOfWords = "Num of words: " + note.getWordList().size() + " words";
+                binding.noteDetailNumberOfWords.setText(numOfWords);
             }
         });
     }
@@ -97,8 +101,10 @@ public class NoteDetailFragment extends Fragment {
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(binding.noteRecyclerViewMyWords);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(removeItemCallback);
-        itemTouchHelper.attachToRecyclerView(binding.noteRecyclerViewMyWords);
+        if (noteDetailViewModel.isAllowedEdit()) {
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(removeItemCallback);
+            itemTouchHelper.attachToRecyclerView(binding.noteRecyclerViewMyWords);
+        }
     }
 
     public ItemTouchHelper.SimpleCallback removeItemCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
