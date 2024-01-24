@@ -8,8 +8,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://192.168.1.16:5000";
+
+    private static final String BASE_URL = "http://10.0.2.2:5000";
     public static int TIME_OUT_DURATION = 60;
+
 
     public static ServerAPIService createService() {
         OkHttpClient client = new OkHttpClient.Builder()

@@ -12,12 +12,12 @@ import com.example.edupro.R;
 
 import java.util.ArrayList;
 
-public class ReadingResultListAdapter extends RecyclerView.Adapter<ReadingResultListAdapter.ViewHolder>{
+public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.ViewHolder>{
     private final ArrayList<String> answers;
     private final ArrayList<String> correctAnswers;
     private final int part;
 
-    public ReadingResultListAdapter(ArrayList<String> answers, ArrayList<String> correctAnswers, int part) {
+    public ResultListAdapter(ArrayList<String> answers, ArrayList<String> correctAnswers, int part) {
         this.answers = answers;
         this.correctAnswers = correctAnswers;
         this.part = part;
@@ -26,9 +26,9 @@ public class ReadingResultListAdapter extends RecyclerView.Adapter<ReadingResult
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View readingResultItem = LayoutInflater.from(parent.getContext()).
+        View resultItem = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.reading_result_viewholder, parent, false);
-        return new ViewHolder(readingResultItem);
+        return new ViewHolder(resultItem);
     }
 
     @Override

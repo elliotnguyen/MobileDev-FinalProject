@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FirebaseRepository<T> {
@@ -76,5 +77,10 @@ public class FirebaseRepository<T> {
 
     public MutableLiveData<Boolean> getStatusHandling() {
         return statusHandling;
+    }
+
+    public void uploadFileToStorage(File audioFile, String speakingId) {
+
+
     }
 }

@@ -48,7 +48,7 @@ public class ReadingHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(view);
-                navController.navigateUp();
+                navController.navigate(R.id.navigation_practice);
             }
         });
 

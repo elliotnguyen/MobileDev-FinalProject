@@ -1,22 +1,28 @@
 package com.example.edupro.service;
 
 public class WritingGradingRequestModel {
-    private   String question;
-    private  String answer;
+    private   String question_data;
+    private  String answer_data;
+    public WritingGradingRequestModel() {
+    }
+    public WritingGradingRequestModel(String question, String answer) {
+        this.question_data = question;
+        this.answer_data = answer;
+    }
 
     public void setAnswer(String answer) {
-        this.answer = answer;
+        this.answer_data = answer;
     }
 
     public void setQuestion(String question) {
-        this.question = question;
+        this.question_data = question;
     }
 
     public String getAnswer() {
-        return answer;
+        return answer_data;
     }
 
     public String getQuestion() {
-        return question;
+        return question_data;
     }
 }
