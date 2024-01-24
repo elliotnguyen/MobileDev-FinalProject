@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.edupro.R;
 import com.example.edupro.model.writing.WritingDto;
+import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.reading.practice.passage.ReadingPassageFragment;
 import com.example.edupro.ui.practice.reading.practice.question.ReadingQuestionFragment;
 import com.example.edupro.ui.practice.writing.practice.history.HistorySubmissionFragment;
@@ -29,6 +33,7 @@ public class WritingPracticeFragment extends Fragment {
     private TextView writeAnswer;
     private String writingId;
     private TextView historySubmission;
+    private AppCompatButton cancelButton;
     private UserViewModel userViewModel;
 
     @Nullable
@@ -53,9 +58,35 @@ public class WritingPracticeFragment extends Fragment {
 
         writeAnswer = writingPractice.findViewById(R.id.writing_practice_question_button);
         historySubmission = writingPractice.findViewById(R.id.writing_practice_history_submission_button);
+
         handleSessionShow();
 
+        handleCancel(writingPractice);
         return writingPractice;
+    }
+
+    private void handleCancel(View writingPractice) {
+        Button cancel = writingPractice.findViewById(R.id.writing_practice_cancel_button);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                writingPracticeViewModel.saveAnswer(userViewModel.getUser().getValue().getId(), writingPracticeViewModel.getCurrentAnswer().getValue(), false);
+
+                                Navigation.findNavController(writingPractice).navigate(R.id.navigation_practice_writing);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelText("No")
+                        .setCancelClickListener(null);
+                sweetAlertDialog.show();
+            }
+        });
     }
 
     private void observeAnyChange() {

@@ -71,7 +71,7 @@ public class PracticeFragment extends Fragment {
         writingCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.navigation_practice_writing_practice);
+                Navigation.findNavController(view).navigate(R.id.navigation_practice_writing);
             }
         });
     }

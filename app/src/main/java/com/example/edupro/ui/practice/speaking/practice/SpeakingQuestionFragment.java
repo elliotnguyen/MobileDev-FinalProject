@@ -6,6 +6,7 @@ import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
@@ -52,6 +53,17 @@ import com.example.edupro.viewmodel.UserViewModel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class SpeakingQuestionFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 1234;
@@ -238,7 +250,7 @@ public class SpeakingQuestionFragment extends Fragment {
                             public void onClick(SweetAlertDialog sDialog) {
                                 mViewModel.submitAnswer(userViewModel.getUser().getValue().getId(), file).observe(getViewLifecycleOwner(), resultPair -> {
                                     if (resultPair != null) {
-                                        // Handle UI updates after successful submission
+                                        handleParadeAnimation(binding.getRoot());
                                         String score = resultPair.first;
                                         String explaination = resultPair.second;
 
@@ -286,6 +298,37 @@ public class SpeakingQuestionFragment extends Fragment {
         bundle.putString("explaination", explaination);
         bundle.putString("score", mViewModel.getResultScore().getValue());
         Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_speaking_result, bundle);
+    }
+
+    private void handleParadeAnimation(View readingPractice) {
+        KonfettiView konfettiView = readingPractice.findViewById(R.id.konfetti_speaking_practice);
+        Shape.DrawableShape drawableShape = null;
+
+        final Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart);
+        if (drawable != null) {
+            drawableShape = new Shape.DrawableShape(
+                    drawable,
+                    true, true);
+        }
+
+        EmitterConfig emitterConfig = new Emitter(5, TimeUnit.SECONDS).perSecond(30);
+        konfettiView.start(
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.RIGHT - 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(0.0, 0.5))
+                        .build(),
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.LEFT + 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(1.0, 0.5))
+                        .build());
     }
 
     @Override

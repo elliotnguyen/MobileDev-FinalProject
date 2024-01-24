@@ -1,8 +1,10 @@
 package com.example.edupro.ui.practice.listening.practice;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.example.edupro.R;
@@ -33,6 +36,17 @@ import com.example.edupro.ui.practice.reading.practice.ReadingQuestionListAdapte
 import com.example.edupro.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class ListeningPracticeFragment extends Fragment {
 
@@ -43,6 +57,7 @@ public class ListeningPracticeFragment extends Fragment {
     private ReadingQuestionListAdapter readingQuestionAdapter;
     private RecyclerView readingQuestionRecyclerView;
     private UserViewModel userViewModel;
+    private Chronometer chronometer;
 
     public static ListeningPracticeFragment newInstance() {
         return new ListeningPracticeFragment();
@@ -55,7 +70,8 @@ public class ListeningPracticeFragment extends Fragment {
         binding.getRoot().findViewById(R.id.listening_practice_cancel_button).setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
-
+        chronometer = binding.getRoot().findViewById(R.id.listening_practice_timer);
+        chronometer.start();
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.initUser(new UserRepository.OnUserFetchedListener() {
             @Override
@@ -163,7 +179,7 @@ public class ListeningPracticeFragment extends Fragment {
                             public void onClick(SweetAlertDialog sDialog) {
                                 mViewModel.submitAnswer(userViewModel.getUser().getValue().getId()).observe(getViewLifecycleOwner(), isSubmit -> {
                                     if (isSubmit) {
-                                        //handleParadeAnimation(readingPractice);
+                                        handleParadeAnimation(binding.getRoot());
                                         sDialog
                                                 .setTitleText("Submitted!")
                                                 .setContentText("Congratulate on finishing the test!")
@@ -263,6 +279,37 @@ public class ListeningPracticeFragment extends Fragment {
                 sweetAlertDialog.show();
             }
         });
+    }
+
+    private void handleParadeAnimation(View readingPractice) {
+        KonfettiView konfettiView = readingPractice.findViewById(R.id.konfetti_listening_practice);
+        Shape.DrawableShape drawableShape = null;
+
+        final Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart);
+        if (drawable != null) {
+            drawableShape = new Shape.DrawableShape(
+                    drawable,
+                    true, true);
+        }
+
+        EmitterConfig emitterConfig = new Emitter(5, TimeUnit.SECONDS).perSecond(30);
+        konfettiView.start(
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.RIGHT - 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(0.0, 0.5))
+                        .build(),
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.LEFT + 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(1.0, 0.5))
+                        .build());
     }
 
 }

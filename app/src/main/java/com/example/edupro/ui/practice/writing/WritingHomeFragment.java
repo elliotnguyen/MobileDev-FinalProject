@@ -98,7 +98,7 @@ public class WritingHomeFragment extends Fragment {
                 if (answers.size() > position) {
                     bundle.putString("answers", answers.get(position).getAnswer());
                 }
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_writing, bundle);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_writing_practice, bundle);
             }
 
             @Override

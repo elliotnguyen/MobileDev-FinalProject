@@ -65,7 +65,7 @@ public class WritingPracticeViewModel extends ViewModel {
         return currentAnswer;
     }
 
-    private LiveData<Boolean> saveAnswer(String userId, String answer, boolean isSubmitted) {
+    public LiveData<Boolean> saveAnswer(String userId, String answer, boolean isSubmitted) {
         String id = DateUtil.getCurrentTimeOfDate();
 
         ArrayList<String> childId= new ArrayList<>();
