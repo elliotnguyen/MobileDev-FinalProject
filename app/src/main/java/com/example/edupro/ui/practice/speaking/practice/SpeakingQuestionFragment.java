@@ -1,8 +1,5 @@
 package com.example.edupro.ui.practice.speaking.practice;
 
-import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL;
-import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
-
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -35,10 +32,6 @@ import android.Manifest;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
-import com.arthenica.mobileffmpeg.Config;
-import com.arthenica.mobileffmpeg.ExecuteCallback;
-import com.arthenica.mobileffmpeg.FFmpeg;
-import com.arthenica.mobileffmpeg.FFmpegExecution;
 import com.example.edupro.R;
 import com.example.edupro.databinding.FragmentListeningQuestionBinding;
 import com.example.edupro.databinding.FragmentSpeakingQuestionBinding;

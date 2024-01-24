@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Environment;
 import android.util.Log;
 
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -140,6 +142,34 @@ public class TestAPI {
 //            // Handle the case where file writing failed
 //            Log.e("File write error", "Failed to write MP3 file to: " + outputFile.getAbsolutePath());
 //        }
+    }
+
+    public static byte[] readAssetFile(Context context, String fileName) {
+        AssetManager assetManager = context.getAssets();
+        try {
+            // Open the file from the assets folder
+            InputStream inputStream = assetManager.open(fileName);
+
+            // Read the file content
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+
+            // Close the input stream
+            inputStream.close();
+            bos.close();
+
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the case where file reading failed
+            Log.e("Asset file read error", "Failed to read asset file: " + fileName);
+            return null;
+        }
     }
 
 
