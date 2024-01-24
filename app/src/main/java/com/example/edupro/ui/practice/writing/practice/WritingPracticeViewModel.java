@@ -92,7 +92,7 @@ public class WritingPracticeViewModel extends ViewModel {
                 if (resultAndExplanation != null) {
                     String score = resultAndExplanation.first;
                     Log.d("api", "onChanged: " + answer);
-                    AnswerDto answerDto = new AnswerDto(id, "w" + writingId.getValue(), userId, currentAnswer.getValue(), score, "", "", isSubmitted);
+                    AnswerDto answerDto = new AnswerDto(id, "w" + writingId.getValue(), userId, currentAnswer.getValue(), score, id, explaination.getValue(), isSubmitted);
                     answerRepository.createAnswerByTestIdOfUserId(childId, answerDto);
                 }
             }

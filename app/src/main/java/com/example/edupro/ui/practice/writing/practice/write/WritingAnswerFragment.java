@@ -114,7 +114,7 @@ public class WritingAnswerFragment extends Fragment {
                                                 // Handle UI updates after successful submission
                                                 String score = resultPair.first;
                                                 String explaination = resultPair.second;
-
+                                                Log.d("api", "onChanged: " + explaination);
                                                 sDialog
                                                         .setTitleText("Submitted!")
                                                         .setContentText("Congratulate on finishing the test!\nScore: " + score)

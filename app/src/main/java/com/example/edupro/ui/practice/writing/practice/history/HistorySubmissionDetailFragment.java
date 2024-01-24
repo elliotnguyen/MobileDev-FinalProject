@@ -60,9 +60,9 @@ public class HistorySubmissionDetailFragment extends Fragment {
     }
 
     private void observeAnyChange() {
-        historySubmissionDetailViewModel.getExplanationOfResult().observe(getViewLifecycleOwner(), s -> {
-            binding.writingResultExplanation.setText(s);
-        });
+//        historySubmissionDetailViewModel.getExplanationOfResult().observe(getViewLifecycleOwner(), s -> {
+//            binding.writingResultExplanation.setText(s);
+//        });
     }
 
     private void handleExplanation() {
