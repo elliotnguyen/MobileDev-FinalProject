@@ -1,20 +1,15 @@
-package com.example.edupro.api;
-
-
-import com.google.gson.annotations.SerializedName;
-
+package com.example.edupro.service;
 public class SpeakingGradingResponseModel {
-    @SerializedName("explaination")
-    private String explaination;
-    @SerializedName("grade")
+
+    private String explanation;
     private double grade;
 
     public String getExplanation() {
-        return explaination;
+        return explanation;
     }
 
     public void setExplanation(String explanation) {
-        this.explaination = explanation;
+        this.explanation = explanation;
     }
 
     public double getGrade() {
@@ -24,6 +19,4 @@ public class SpeakingGradingResponseModel {
     public void setGrade(double grade) {
         this.grade = grade;
     }
-
-
 }

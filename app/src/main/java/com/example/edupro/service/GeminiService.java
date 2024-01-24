@@ -1,6 +1,5 @@
 package com.example.edupro.service;
 
-import com.example.edupro.R;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 

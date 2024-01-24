@@ -64,9 +64,10 @@
                     android:gravity="end"
                     android:paddingEnd="10dp">
                     <ImageView
+                        android:id="@+id/message_icon_home"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/icon4_header_home"/>
+                        android:background="@drawable/message_icon"/>
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout

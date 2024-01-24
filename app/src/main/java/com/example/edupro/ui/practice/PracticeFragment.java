@@ -38,6 +38,9 @@ public class PracticeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View practiceHome = inflater.inflate(R.layout.fragment_practice, container, false);
+
+        handleAnimation(practiceHome);
+
         handleReading(practiceHome);
         handleWriting(practiceHome);
         handleListening(practiceHome);
@@ -84,6 +87,19 @@ public class PracticeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.navigation_practice_listening);
             }
         });
+    }
+
+    private void handleAnimation(View practiceHome) {
+        View skillCards = practiceHome.findViewById(R.id.linear_layout_3);
+        skillCards.setVisibility(View.GONE);
+
+        skillCards.setAlpha(0f);
+        skillCards.setVisibility(View.VISIBLE);
+
+        skillCards.animate()
+                .alpha(1f)
+                .setDuration(500)
+                .setListener(null);
     }
 
     @Override

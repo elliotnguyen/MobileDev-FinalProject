@@ -1,4 +1,4 @@
-package com.example.edupro.api;
+package com.example.edupro.service;
 
 import com.google.gson.annotations.SerializedName;
 
