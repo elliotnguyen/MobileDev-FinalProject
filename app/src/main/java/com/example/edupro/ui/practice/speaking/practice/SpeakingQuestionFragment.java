@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.Manifest;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
@@ -73,6 +74,7 @@ public class SpeakingQuestionFragment extends Fragment {
     private long recordingStartTime = 0;
     private UserViewModel userViewModel;
     private File answerFile;
+
     public static SpeakingQuestionFragment newInstance() {
         return new SpeakingQuestionFragment();
     }
@@ -93,6 +95,7 @@ public class SpeakingQuestionFragment extends Fragment {
         binding.recordAgainTv.setOnClickListener(v -> handleRecordUI());
 
         binding.playBtn.setOnClickListener(v -> playRecordedAudio());
+
 
         return binding.getRoot();
     }

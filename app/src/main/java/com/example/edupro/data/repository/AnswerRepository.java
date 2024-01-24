@@ -3,8 +3,8 @@ package com.example.edupro.data.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.api.RetrofitClient;
-import com.example.edupro.api.ServerAPIService;
+import com.example.edupro.service.RetrofitClient;
+import com.example.edupro.service.ServerAPIService;
 import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.reading.ReadingDto;
 import com.google.android.gms.tasks.OnCompleteListener;

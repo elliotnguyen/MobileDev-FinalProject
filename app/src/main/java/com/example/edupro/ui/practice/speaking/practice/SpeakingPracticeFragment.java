@@ -25,15 +25,16 @@ import com.example.edupro.model.speaking.SpeakingDto;
 import com.example.edupro.model.writing.WritingDto;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
 import com.example.edupro.ui.practice.writing.practice.WritingPracticeViewModel;
+import com.example.edupro.viewmodel.UserViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SpeakingPracticeFragment extends Fragment {
     private FragmentSpeakingPracticeBinding binding;
     private SpeakingPracticeViewModel mViewModel;
     private SpeakingDto speakingDto = new SpeakingDto();
-
-    private SpeakingPracticeViewModel speakingPracticeViewModel;
+    private UserViewModel userViewModel;
 
     public static SpeakingPracticeFragment newInstance() {
         return new SpeakingPracticeFragment();
@@ -46,12 +47,39 @@ public class SpeakingPracticeFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(SpeakingPracticeViewModel.class);
         String speakingId = getArguments().getString("speakingId");
         mViewModel.setSpeakingId(speakingId);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         observeAnyChange();
 
 
         handleOpenQuestion();
 
-
+        Button cancelButton = binding.getRoot().findViewById(R.id.speaking_practice_cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                File file = new File(mViewModel.getCurrentAnswer().getValue().getPath());
+                                mViewModel.saveAnswer(userViewModel.getUser().getValue().getId(),file,false);
+                                Navigation.findNavController(binding.getRoot()).navigate(R.id.navigation_practice_speaking);
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelText("No")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        });
+                sweetAlertDialog.show();
+            }
+        });
         return binding.getRoot();
     }
 

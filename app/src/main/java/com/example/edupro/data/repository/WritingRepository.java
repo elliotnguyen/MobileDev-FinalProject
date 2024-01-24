@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.api.RetrofitClient;
-import com.example.edupro.api.ServerAPIService;
-import com.example.edupro.api.WritingGradingRequestModel;
-import com.example.edupro.api.WritingGradingResponseModel;
+import com.example.edupro.service.RetrofitClient;
+import com.example.edupro.service.ServerAPIService;
+import com.example.edupro.service.WritingGradingRequestModel;
+import com.example.edupro.service.WritingGradingResponseModel;
 import com.example.edupro.model.writing.WritingDto;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -63,7 +63,7 @@ public class SpeakingPracticeViewModel extends ViewModel {
         }
     }
 
-    private LiveData<Boolean> saveAnswer(String userId, File audio, boolean isSubmitted) {
+    public LiveData<Boolean> saveAnswer(String userId, File audio, boolean isSubmitted) {
         String id = DateUtil.getCurrentTimeOfDate();
 
         ArrayList<String> childId= new ArrayList<>();

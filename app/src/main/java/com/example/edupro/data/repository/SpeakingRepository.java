@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.edupro.api.RetrofitClient;
-import com.example.edupro.api.ServerAPIService;
-import com.example.edupro.api.SpeakingGradingResponseModel;
+import com.example.edupro.service.RetrofitClient;
+import com.example.edupro.service.ServerAPIService;
+import com.example.edupro.service.SpeakingGradingResponseModel;
 import com.example.edupro.model.speaking.SpeakingDto;
 import com.example.edupro.model.writing.WritingDto;
 import com.google.firebase.database.DataSnapshot;

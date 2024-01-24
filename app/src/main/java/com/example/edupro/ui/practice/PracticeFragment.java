@@ -90,7 +90,7 @@ public class PracticeFragment extends Fragment {
     }
 
     private void handleAnimation(View practiceHome) {
-        View skillCards = practiceHome.findViewById(R.id.linear_layout_3);
+        View skillCards = practiceHome.findViewById(R.id.linear_layout_1);
         skillCards.setVisibility(View.GONE);
 
         skillCards.setAlpha(0f);
