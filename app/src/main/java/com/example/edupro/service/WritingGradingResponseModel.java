@@ -14,6 +14,7 @@ public class WritingGradingResponseModel {
     @SerializedName("warnings")
     private List<String> warnings;
 
+
     public String getExplaination() {
         return explanation;
     }
