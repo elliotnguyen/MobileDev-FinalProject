@@ -25,6 +25,10 @@ public class ReadingTFNGFragment extends Fragment {
     private final ArrayList<TFNGQuestion> tfngQuestions = new ArrayList<>();
 
     private ReadingPracticeViewModel readingPracticeViewModel;
+
+    public ReadingTFNGFragment() {
+        this.index = 0;
+    }
     public ReadingTFNGFragment(ArrayList<Question> tfngQuestions, int index) {
         for (Question question : tfngQuestions) {
             this.tfngQuestions.add((TFNGQuestion) question);

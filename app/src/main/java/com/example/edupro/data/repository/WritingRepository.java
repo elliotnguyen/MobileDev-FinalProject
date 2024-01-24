@@ -1,14 +1,27 @@
 package com.example.edupro.data.repository;
 
+import android.util.Log;
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.edupro.api.RetrofitClient;
+import com.example.edupro.api.ServerAPIService;
+import com.example.edupro.api.WritingGradingRequestModel;
+import com.example.edupro.api.WritingGradingResponseModel;
 import com.example.edupro.model.writing.WritingDto;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WritingRepository {
     private final FirebaseRepository<WritingDto> firebaseRepository;
@@ -67,4 +80,52 @@ public class WritingRepository {
     public MutableLiveData<WritingDto> getWriting() {
         return firebaseRepository.getData();
     }
+
+    public Pair<MutableLiveData<String>, MutableLiveData<String>> checkBandScore(String answer, String question) {
+        final MutableLiveData<String> scoreLiveData = new MutableLiveData<>();
+        final MutableLiveData<String> explanationLiveData = new MutableLiveData<>();
+
+        ServerAPIService apiService = RetrofitClient.createService();
+        WritingGradingRequestModel requestModel = new WritingGradingRequestModel(question, answer);
+        Call<WritingGradingResponseModel> call = apiService.gradeWritingAPI(requestModel);
+
+        call.enqueue(new Callback<WritingGradingResponseModel>() {
+            @Override
+            public void onResponse(Call<WritingGradingResponseModel> call, Response<WritingGradingResponseModel> response) {
+                if (response.isSuccessful()) {
+                    WritingGradingResponseModel responseModel = response.body();
+                    double model_score = responseModel.getModelGrade();
+                    double bard_score = responseModel.getBardGrade();
+                    String explanation = responseModel.getExplaination();
+                    List<String> warnings = responseModel.getWarnings();
+
+                    double score = getScore(model_score, bard_score);
+
+                    scoreLiveData.setValue(String.valueOf(score));
+                    explanationLiveData.setValue(responseModel.getExplaination());
+                    Log.d("api score", String.valueOf(score));
+                } else {
+                    // Handle the error
+                    Log.d("api2", "fail22");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WritingGradingResponseModel> call, Throwable t) {
+                Log.e(" failed", "API call failed: " + t.getMessage());
+            }
+        });
+
+        return new Pair<>(scoreLiveData, explanationLiveData);
+    }
+
+    private double getScore(double model_score, double bard_score) {
+        if (bard_score > 10) {
+            return model_score;
+        } else {
+            // return higher score
+            return model_score > bard_score ? model_score : bard_score;
+        }
+    }
+
 }

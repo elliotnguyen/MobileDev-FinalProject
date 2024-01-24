@@ -19,11 +19,15 @@ import android.widget.ImageView;
 
 import com.example.edupro.R;
 import com.example.edupro.databinding.FragmentSpeakingHomeBinding;
+import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.reading.ReadingDto;
 import com.example.edupro.model.speaking.SpeakingDto;
 import com.example.edupro.ui.RecyclerViewClickInterface;
+import com.example.edupro.ui.practice.listening.ListeningHomeViewModel;
+import com.example.edupro.ui.practice.listening.ListeningListAdapter;
 import com.example.edupro.ui.practice.reading.ReadingHomeFragment;
 import com.example.edupro.ui.practice.reading.ReadingHomeViewModel;
+import com.example.edupro.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 
@@ -31,10 +35,10 @@ public class SpeakingHomeFragment extends Fragment {
 
     private SpeakingHomeViewModel mViewModel;
     private FragmentSpeakingHomeBinding binding;
-    private SpeakingHomeViewModel speakingViewModel;
     private final ArrayList<SpeakingDto> speakings = new ArrayList<>();
     private SpeakingListAdapter speakingListAdapter;
-
+    private UserViewModel userViewModel;
+    private final ArrayList<AnswerDto> answers = new ArrayList<>();
     public static SpeakingHomeFragment newInstance() {
         return new SpeakingHomeFragment();
     }
@@ -48,24 +52,50 @@ public class SpeakingHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(view);
-                navController.navigateUp();
+                navController.navigate(R.id.navigation_practice);
             }
         });
 
-        configureSpeakingListRecyclerView();
+        mViewModel = new SpeakingHomeViewModel();
 
-        speakingViewModel = new SpeakingHomeViewModel();
-        speakingViewModel.init();
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
+        mViewModel.init();
         observerAnyChange();
+
+        observeAnyChangeOfAnswer();
+
+        configureSpeakingListRecyclerView();
 
         return binding.getRoot();
     }
 
+    private void observeAnyChangeOfAnswer() {
+        if (userViewModel.getUser().getValue() == null) {
+            return;
+        }
+        mViewModel.getAllAnswerBySkillIdOfUserId(userViewModel.getUser().getValue().getId(), "speaking");
+        mViewModel.getAllAnswersBySkillIdOfUserIdList().observe(getViewLifecycleOwner(), answerDtos -> {
+            if (answerDtos == null) {
+                return;
+            }
+            answers.clear();
+            answers.addAll(answerDtos);
+            speakingListAdapter.notifyDataSetChanged();
+        });
+    }
+
     private void observerAnyChange() {
-        speakingViewModel.getAllSpeakingList().observe(getViewLifecycleOwner(), speakingList -> {
+        if (userViewModel.getUser().getValue() == null) {
+            return;
+        }
+        mViewModel.init();
+        mViewModel.getAllSpeakingList().observe(getViewLifecycleOwner(), speakingDtos -> {
+            if (speakingDtos == null) {
+                return;
+            }
             speakings.clear();
-            speakings.addAll(speakingList);
+            speakings.addAll(speakingDtos);
             speakingListAdapter.notifyDataSetChanged();
         });
     }
@@ -73,20 +103,24 @@ public class SpeakingHomeFragment extends Fragment {
     private void configureSpeakingListRecyclerView() {
         binding.speakingHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.speakingHomeRecyclerView.setHasFixedSize(true);
-        speakingListAdapter = new SpeakingListAdapter(speakings, new RecyclerViewClickInterface() {
+        speakingListAdapter = new SpeakingListAdapter(speakings,answers ,new RecyclerViewClickInterface() {
             @Override
             public void onItemClick(int position) {
-                NavController navController = Navigation.findNavController(getView());
                 Bundle bundle = new Bundle();
                 bundle.putString("speakingId", speakings.get(position).getId());
-                navController.navigate(R.id.navigation_practice_speaking_practice,bundle);
+                if (answers.size() > position) {
+                    bundle.putString("answers", answers.get(position).getAnswer());
+                }
+                NavController navController = Navigation.findNavController(binding.getRoot());
+                navController.navigate(R.id.navigation_practice_speaking_practice, bundle);
             }
 
             @Override
             public void onLongItemClick(int position) {
-                // do nothing
+                // TODO: Long click
             }
-        });
+        },R.layout.speaking_list_viewholder, R.id.speaking_list_viewholder_title, R.id.speaking_list_viewholder_progressbar_text, R.id.speaking_list_viewholder_action_btn, R.id.speaking_list_viewholder_progressbar);
+
         binding.speakingHomeRecyclerView.setAdapter(speakingListAdapter);
 
     }

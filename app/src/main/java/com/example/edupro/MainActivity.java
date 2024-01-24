@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        if(userViewModel.getUser().getValue() == null)
-            disableBottomNavigationClick(navView);
+//        if(userViewModel.getUser().getValue() == null)
+//            disableBottomNavigationClick(navView);
         userViewModel.initUser(new UserRepository.OnUserFetchedListener() {
             @Override
             public void onUserFetched(User user) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class ReadingPracticeFragment extends Fragment {
     private TextView readingQuestion;
     private RecyclerView readingQuestionRecyclerView;
     private RecyclerView.Adapter readingQuestionAdapter;
+    private Chronometer chronometer;
 
     public static ReadingPracticeFragment newInstance() {
         return new ReadingPracticeFragment();
@@ -61,6 +63,8 @@ public class ReadingPracticeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View readingPractice = inflater.inflate(R.layout.fragment_reading_practice, container, false);
 
+        chronometer = readingPractice.findViewById(R.id.reading_practice_timer);
+        chronometer.start();
         readingQuestionRecyclerView = readingPractice.findViewById(R.id.practice_question_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 6);
         readingQuestionRecyclerView.setLayoutManager(gridLayoutManager);

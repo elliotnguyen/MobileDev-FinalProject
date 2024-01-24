@@ -1,10 +1,6 @@
-package com.example.edupro.ui.practice.reading.result;
+package com.example.edupro.ui.practice.listening.result;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +10,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.example.edupro.R;
 import com.example.edupro.ui.dialog.SweetAlertDialog;
+import com.example.edupro.ui.practice.reading.result.ResultListAdapter;
 
 import java.util.ArrayList;
 
-public class ReadingResultFragment extends Fragment {
-    private static final String TAG = "ReadingResultFragment";
-    private String readingId;
+public class ListeningResultFragment extends Fragment {
+    private String listeningId;
     private String result;
     private String part1Type;
     private String part2Type;
@@ -33,14 +35,17 @@ public class ReadingResultFragment extends Fragment {
     private RecyclerView.Adapter part1ResultAdapter;
     private RecyclerView part2ResultRecyclerView;
     private RecyclerView.Adapter part2ResultAdapter;
+    public ListeningResultFragment() {
+        // Required empty public constructor
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View readingResultView = inflater.inflate(R.layout.fragment_reading_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_listening_result, container, false);
 
         if (getArguments() != null) {
-            readingId = getArguments().getString("readingId");
+            listeningId = getArguments().getString("listeningId");
             result = getArguments().getString("result");
 
             part1Type = getArguments().getString("part1");
@@ -54,20 +59,20 @@ public class ReadingResultFragment extends Fragment {
             answersPart2 = getArguments().getStringArrayList("answersPart2");
         }
 
-        TextView resultTextView = readingResultView.findViewById(R.id.reading_practice_result_text);
+        TextView resultTextView = view.findViewById(R.id.listening_practice_result_text);
         String resultText = "Your Result: " + result;
         resultTextView.setText(resultText);
 
-        handleRetry(readingResultView);
-        handleCancel(readingResultView);
+        handleRetry(view);
+        handleCancel(view);
 
-        part1ResultRecyclerView = readingResultView.findViewById(R.id.reading_result_part1_recycler_view);
+        part1ResultRecyclerView = view.findViewById(R.id.listening_result_part1_recycler_view);
         handleResultShow(part1ResultRecyclerView, answersPart1, correctAnswersPart1, part1Type);
 
-        part2ResultRecyclerView = readingResultView.findViewById(R.id.reading_result_part2_recycler_view);
+        part2ResultRecyclerView = view.findViewById(R.id.listening_result_part2_recycler_view);
         handleResultShow(part2ResultRecyclerView, answersPart2, correctAnswersPart2, part2Type);
 
-        return readingResultView;
+        return view;
     }
 
     private void handleResultShow(RecyclerView partResultRecyclerView, ArrayList<String> answers, ArrayList<String> correctAnswers, String part) {
@@ -76,8 +81,8 @@ public class ReadingResultFragment extends Fragment {
         partResultRecyclerView.setAdapter(partResultAdapter);
     }
 
-    private void handleRetry(View readingResultView) {
-        AppCompatButton retryButton = readingResultView.findViewById(R.id.reading_practice_result_retry_button);
+    private void handleRetry(View view) {
+        AppCompatButton retryButton = view.findViewById(R.id.listening_practice_result_retry_button);
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,8 +93,8 @@ public class ReadingResultFragment extends Fragment {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 Bundle bundle = new Bundle();
-                                bundle.putString("readingId", readingId);
-                                Navigation.findNavController(readingResultView).navigate(R.id.navigation_practice_reading_practice, bundle);
+                                bundle.putString("listeningId", listeningId);
+                                Navigation.findNavController(view).navigate(R.id.navigation_practice_listening_practice, bundle);
                                 sweetAlertDialog.dismissWithAnimation();
                             }
                         })
@@ -100,8 +105,9 @@ public class ReadingResultFragment extends Fragment {
         });
     }
 
-    private void handleCancel(View readingResultView) {
-        AppCompatButton cancelButton = readingResultView.findViewById(R.id.reading_practice_result_cancel_button);
+    private void handleCancel(View view) {
+        Log.d("ListeningPractice", "handleCancel: ");
+        AppCompatButton cancelButton = view.findViewById(R.id.listening_practice_result_cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +117,8 @@ public class ReadingResultFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                Navigation.findNavController(readingResultView).navigate(R.id.navigation_practice_reading);
+                                Log.d("ListeningPractice", "onClick: ");
+                                Navigation.findNavController(view).navigate(R.id.navigation_practice_listening);
                                 sweetAlertDialog.dismissWithAnimation();
                             }
                         })
