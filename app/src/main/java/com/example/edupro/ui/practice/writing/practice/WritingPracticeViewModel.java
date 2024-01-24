@@ -4,17 +4,30 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.edupro.data.repository.ReadingRepository;
+import com.example.edupro.data.repository.AnswerRepository;
 import com.example.edupro.data.repository.WritingRepository;
+import com.example.edupro.model.AnswerDto;
 import com.example.edupro.model.writing.WritingDto;
+
+import java.util.ArrayList;
 
 public class WritingPracticeViewModel extends ViewModel {
     private final WritingRepository writingRepository = WritingRepository.getInstance();
+    private final AnswerRepository answerRepository = AnswerRepository.getInstance();
     private final MutableLiveData<String> writingId = new MutableLiveData<>("");
     private final MutableLiveData<WritingDto> writingDto = new MutableLiveData<>(new WritingDto());
     private final MutableLiveData<Boolean> isWriteAnswerShow = new MutableLiveData<>(true);
     private final MutableLiveData<Boolean> isSampleAnswerShow = new MutableLiveData<>(false);
     private final MutableLiveData<String> currentAnswer = new MutableLiveData<>("");
+    private final MutableLiveData<ArrayList<AnswerDto>> answerDtos = new MutableLiveData<>(new ArrayList<>());
+    public void setAnswerDtos(ArrayList<AnswerDto> answerDtos) {
+        this.answerDtos.setValue(answerDtos);
+    }
+    public LiveData<ArrayList<AnswerDto>> getAnswerDtos(String userId) {
+        answerRepository.getAnswerByTestIdOfUserId(writingId.getValue(), "writing", userId);
+        return answerRepository.getAnswers();
+    }
+
     public void setWritingId(String id) {
         writingId.setValue(id);
     }

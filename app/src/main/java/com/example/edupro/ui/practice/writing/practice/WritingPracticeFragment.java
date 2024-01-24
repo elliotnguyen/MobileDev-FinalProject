@@ -44,7 +44,21 @@ public class WritingPracticeFragment extends Fragment {
         observeAnyChange();
 
         writeAnswer = writingPractice.findViewById(R.id.writing_practice_question_button);
+        writeAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                writingPracticeViewModel.setWriteAnswerShow(true);
+            }
+        });
+
         historySubmission = writingPractice.findViewById(R.id.writing_practice_history_submission_button);
+        historySubmission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                writingPracticeViewModel.setWriteAnswerShow(false);
+            }
+        });
+
         handleSessionShow();
 
         return writingPractice;

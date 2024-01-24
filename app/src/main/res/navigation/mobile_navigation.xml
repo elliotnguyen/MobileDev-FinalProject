@@ -79,4 +79,9 @@
         android:name="com.example.edupro.ui.chat.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/navigation_practice_writing_result_detail"
+        android:name="com.example.edupro.ui.practice.writing.practice.history.HistorySubmissionDetailFragment"
+        android:label="fragment_practice_writing_result_detail"
+        tools:layout="@layout/writing_history_result_detail" />
 </navigation>
